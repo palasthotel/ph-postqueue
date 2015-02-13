@@ -37,9 +37,10 @@ class Ph_Postqueue_Activator {
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `queue_id` int(11) unsigned NOT NULL,
 				  `post_id` int(11) unsigned NOT NULL,
-				  `weight` int(11) unsigned NOT NULL DEFAULT 0,
+				  `position` int(11) unsigned NOT NULL DEFAULT 0,
 				  PRIMARY KEY (`id`),
 				  UNIQUE KEY `post_in_queue` (`post_id`, `queue_id`),
+				  UNIQUE KEY `position_in_queue` (`position`, `queue_id`),
 				  KEY `queue_id` (`queue_id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;');
 	}

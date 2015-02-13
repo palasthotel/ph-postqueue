@@ -44,7 +44,7 @@ class PH_Postqueue {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-ph-queue-store.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-ph-postqueue-store.php';
 
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
@@ -99,6 +99,14 @@ class PH_Postqueue {
 		 * settings page
 		 */
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'tools_page' );
+		/**
+		 * Ajax endpoint for adding a new queue
+		 */
+		$this->loader->add_action( 'wp_ajax_ph_postqueue_create_queue', $plugin_admin, 'create_queue' );
+		/**
+		 * Ajax endpoint for loading a queue
+		 */
+		$this->loader->add_action( 'wp_ajax_ph_postqueue_load_queue', $plugin_admin, 'load_queue' );
 
 	}
 
