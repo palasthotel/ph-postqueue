@@ -151,6 +151,15 @@ $error: #dd3d36;
 		 */
 		.queue-item-set{
 			transition: all 0.3s;
+			.drag-handle{
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				bottom: 0px;
+				width: 30px;
+				cursor: move;
+				z-index: 2;
+			}
 			&:before{
 				content: "";
 				position: absolute;
@@ -183,7 +192,7 @@ $error: #dd3d36;
 				}
 			}
 		}
-		&:not(.has-new-item) .queue-item-set{
+		&:not(.prevent-add-post) .queue-item-set{
 			&:hover .add-post{
 				display: block;
 			}

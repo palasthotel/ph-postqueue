@@ -159,7 +159,7 @@
  	 				console.log(data);
  	 				$the_queue.attr("data-queue-id", queue_id);
  	 				
- 	 				$the_queue.removeClass("has-new-item");
+ 	 				$the_queue.removeClass("prevent-add-post");
  	 				if(data.result.length > 0){
  	 					$.each(data.result, function(index, item){
 	 	 					add_post_item(item.post_id, item.post_title);
@@ -188,11 +188,27 @@
 	 	var $new_posts_list = null;
 
 	 	var post_autocomplete_interval = null;
+	 	
+	 	/**
+	 	 * make it sortable
+	 	 */
+	 	$the_queue.sortable({
+	 		handle: ".drag-handle",
+	 		appendTo: window.document.body,
+	 		start: function(event, ui){
+	 			$the_queue.addClass("prevent-add-post");
+	 		},
+	 		stop: function(event, ui){
+	 			$the_queue.removeClass("prevent-add-post");
+	 		},
+	 	});
 	 	/**
 	 	 * on cancel queue
 	 	 */
 	 	$the_queue_wrapper.on("click", ".save-queue", function(){
-	 		console.log("save queue");
+	 		savePostqueue(function(data){
+	 			$the_queue_wrapper.find(".cancel-queue").trigger("click");
+	 		});
 	 	});
 	 	/**
 	 	 * on save queue
@@ -207,6 +223,7 @@
 	 	 */
 	 	function add_post_item(post_id, title){
 	 		$the_queue.append( render_post_item(post_id, title) );
+	 		$the_queue.sortable( "refresh" );
 	 	}
 	 	/**
 	 	 * build new queue list item
@@ -214,6 +231,7 @@
 	 	function render_post_item(post_id, title){
 	 		var $item = $(
 	 		'<li class="queue-item queue-item-set">'
+	 			+'<div class="drag-handle"></div>'
 				+'<div class="add-post add-post-top">Add Post</div>'
 				+'<span>'+title+'</span>'
 				+'<div class="add-post add-post-bottom">Add Post</div>'
@@ -226,7 +244,7 @@
 	 	 */
 	 	$the_queue_wrapper.on("click", ".add-post", function(e){
 	 		var $this = $(this);
-	 		$the_queue.addClass("has-new-item");
+	 		$the_queue.addClass("prevent-add-post");
 	 		if($this.hasClass("add-post-top"))
 	 		{
 	 			$this.parents(".queue-item").before( render_new_post_widget() );
@@ -242,7 +260,7 @@
 	 		'<li class="queue-item queue-item-new new-post-widget">'
 	 			+'<div class="new-post-controls">'
 					+'<input class="search-query" type="text" placeholder="Post Titel oder ID" />'
-					//+'<button class="add-new-post">Hinzufügen</button>'
+					// +'<button class="add-new-post">Hinzufügen</button>'
 					+'<button class="cancel-new-post button-secondary delete">Abbrechen</button>'
 				+'</div>'
 				+'<ul class="new-posts-list post-suggestions"></ul>'
@@ -294,7 +312,7 @@
 	 	 */
 	 	$the_queue_wrapper.on("click", ".cancel-new-post", function(e){
 	 		$(this).parents(".queue-item").remove();
-	 		$the_queue.removeClass("has-new-item");
+	 		$the_queue.removeClass("prevent-add-post");
 	 	});
 	 	/**
 	 	 * save post in queue
@@ -305,6 +323,29 @@
 	 		var $queue_item = $suggestion_item.parents(".queue-item");
 	 		$queue_item.attr("data-post-id", post_id);
 	 		var title = $suggestion_item.text();
+	 		$the_queue.removeClass("prevent-add-post");
+	 		$queue_item.replaceWith( render_post_item( post_id, title ) );
+
+	 		// $.ajax({
+ 	 	// 		url: "/wp-admin/admin-ajax.php?action=ph_postqueue_save_post_items",
+ 	 	// 		dataType: "json",
+ 	 	// 		data: {
+ 	 	// 			queue_id: $the_queue.attr("data-queue-id"),
+ 	 	// 			items: items,
+ 	 	// 		},
+ 	 	// 		success: function( data ) {
+ 	 				
+ 	 				
+ 	 	// 			console.log(data);
+ 	 	// 		},
+ 	 	// 		error: function(jqXHR, textStatus, errorThrown){
+ 	 	// 			console.error([jqXHR, textStatus, errorThrown]);
+ 	 	// 		},
+ 	 	// 	});
+	 	});
+
+	 	function savePostqueue(success){
+
 	 		var items = [];
 	 		$the_queue.children(".queue-item").each(function(index, element){
 	 			var $element = $(element);
@@ -319,29 +360,8 @@
  	 				items: items,
  	 			},
  	 			success: function( data ) {
- 	 				$queue_item.replaceWith( render_post_item( post_id, title ) );
- 	 				$the_queue.removeClass("has-new-item");
  	 				console.log(data);
- 	 			},
- 	 			error: function(jqXHR, textStatus, errorThrown){
- 	 				console.error([jqXHR, textStatus, errorThrown]);
- 	 			},
- 	 		});
-	 	});
-
-	 	function savePostqueue(postqueue_id, success){
-
-	 		$.ajax({
- 	 			url: "/wp-admin/admin-ajax.php?action=ph_postqueue_save_post_items",
- 	 			dataType: "json",
- 	 			data: {
- 	 				queue_id: $the_queue.attr("data-queue-id"),
- 	 				items: [ "eins", "zwei", "drei" ],
- 	 			},
- 	 			success: function( data ) {
- 	 				$queue_item.replaceWith( render_post_item(2, title) );
- 	 				$the_queue.removeClass("has-new-item");
- 	 				console.log(data);
+ 	 				if(typeof success === "function") success(data);
  	 			},
  	 			error: function(jqXHR, textStatus, errorThrown){
  	 				console.error([jqXHR, textStatus, errorThrown]);

@@ -133,7 +133,7 @@ class PH_Postqueue_Admin {
 		wp_enqueue_script(
 			$this->plugin_name, 
 			plugin_dir_url( __FILE__ ) . 'js/ph-postqueue-editor.js',
-			array( 'jquery', 'jquery-ui-autocomplete' ),
+			array( 'jquery', 'jquery-ui-autocomplete', 'jquery-ui-sortable' ),
 			$this->version,
 			false
 		);
