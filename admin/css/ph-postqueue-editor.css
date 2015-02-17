@@ -53,7 +53,8 @@
           border-top: 1px solid #b3b3b3; }
         .ph-postqueue .ph-postqueues-widget .queues-list .queue .queue-name {
           font-weight: bold;
-          font-size: 1.2rem; }
+          font-size: 1.2rem;
+          margin-bottom: 4px; }
   .ph-postqueue .ph-the-queue-wrapper {
     display: none; }
   .ph-postqueue .the-queue {
@@ -117,6 +118,22 @@
         top: -11px; }
       .ph-postqueue .the-queue .queue-item .add-post-bottom {
         bottom: -14px; }
+      .ph-postqueue .the-queue .queue-item .delete-post {
+        position: absolute;
+        display: none;
+        right: 0px;
+        top: 14px;
+        bottom: 11px;
+        width: 60px;
+        background-color: #dd3d36;
+        color: white;
+        padding: 3px;
+        cursor: pointer;
+        opacity: 0.7;
+        -webkit-transition: all 0.3s;
+                transition: all 0.3s; }
+        .ph-postqueue .the-queue .queue-item .delete-post:hover {
+          opacity: 1; }
     .ph-postqueue .the-queue .queue-item-set {
       -webkit-transition: all 0.3s;
               transition: all 0.3s; }
@@ -155,6 +172,8 @@
         background: #0074a2;
         border-color: #0074a2; }
     .ph-postqueue .the-queue:not(.prevent-add-post) .queue-item-set:hover .add-post {
+      display: block; }
+    .ph-postqueue .the-queue:not(.prevent-add-post) .queue-item-set:hover .delete-post {
       display: block; }
     .ph-postqueue .the-queue .queue-item-new {
       padding-top: 10px; }

@@ -114,7 +114,15 @@ class PH_Postqueue {
 		/**
 		 * Ajax endpoint for loading a queue
 		 */
+		$this->loader->add_action( 'wp_ajax_ph_postqueue_delete_post', $plugin_admin, 'delete_post' );
+		/**
+		 * Ajax endpoint for loading a queue
+		 */
 		$this->loader->add_action( 'wp_ajax_ph_postqueue_search_posts', $plugin_admin, 'search_posts' );
+		/**
+		 * registers delete_post action that is triggert before post is deleted
+		 */
+		$this->loader->add_action( 'delete_post', $plugin_admin, 'on_post_delete' );
 
 	}
 

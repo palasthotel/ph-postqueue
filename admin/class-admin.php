@@ -70,6 +70,18 @@ class PH_Postqueue_Admin {
 		$this->return_ajax($result);
 	}
 
+	/**
+	 * delete ajax function
+	 */
+	public function delete_post()
+	{
+		$result = (object)array();
+		$queue_id = intval($_GET["queue_id"]);
+		$post_id = intval($_GET["post_id"]);
+		$store = new PH_Postqueue_Store();
+		$store->delete_queue_post($queue_id, $post_id);
+	}
+
 	public function search_posts()
 	{
 		$result = (object)array();
@@ -94,6 +106,15 @@ class PH_Postqueue_Admin {
 		}
 
 		$this->return_ajax($result);
+	}
+
+	/**
+	 * triggered when a post is deleted
+	 */
+	public function on_post_delete($post_id)
+	{
+		$store = new PH_Postqueue_Store();
+		$store->clear_for_post_id($post_id);
 	}
 
 	/**

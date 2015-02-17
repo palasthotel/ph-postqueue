@@ -73,7 +73,8 @@ class PH_Postqueue_Store
 		return $results;
 	}
 
-	public function queue_clear($queue_id){
+	public function queue_clear($queue_id)
+	{
 		global $wpdb;
 		$wpdb->delete(
 			$wpdb->prefix."ph_postqueue_contents",
@@ -82,13 +83,15 @@ class PH_Postqueue_Store
 		);
 	}
 
-	public function queue_add_all($qid, $post_ids){
+	public function queue_add_all($qid, $post_ids)
+	{
 		foreach ($post_ids as $position => $post_id) {
 			$this->queue_add($qid, $post_id, $position);
 		}
 	}
 
-	public function queue_add($queue_id, $post_id, $position){
+	public function queue_add($queue_id, $post_id, $position)
+	{
 		global $wpdb;
 		$wpdb->insert(
 			$wpdb->prefix."ph_postqueue_contents",
@@ -100,6 +103,39 @@ class PH_Postqueue_Store
 			array(
 				"%d",
 				"%d",
+				"%d",
+			)
+		);
+	}
+
+	public function delete_queue_post($queue_id, $post_id)
+	{
+		global $wpdb;
+		$wpdb->delete(
+			$wpdb->prefix."ph_postqueue_contents",
+			array(
+				"post_id" => $post_id,
+				"queue_id" => $queue_id,
+			),
+			array(
+				"%d",
+				"%d",
+			)
+		);
+	}
+
+	/**
+	 * delets all queue contents of the deleted post id
+	 */
+	public function clear_for_post_id($post_id)
+	{
+		global $wpdb;
+		$wpdb->delete(
+			$wpdb->prefix."ph_postqueue_contents",
+			array(
+				"post_id" => $post_id,
+			),
+			array(
 				"%d",
 			)
 		);

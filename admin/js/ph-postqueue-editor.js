@@ -104,9 +104,9 @@
 	 		var $controls = $("<div>"
 				+"["+element.slug+"]"
 				+" | "
-				+"<a href='#' target='_new'>RSS-Feed</a>"
-				+" | "
 				+"<a href='#' class='queue-edit'>Bearbeiten</a>"
+				+" | "
+				+"<a href='#' class='queue-delete submitdelete'>Löschen</a>"
 				+"</div>")
 	 			.addClass("queue-controls");
 	 		var $li = $("<li></li>")
@@ -235,6 +235,7 @@
 				+'<div class="add-post add-post-top">Add Post</div>'
 				+'<span>'+title+'</span>'
 				+'<div class="add-post add-post-bottom">Add Post</div>'
+				+'<div class="delete-post">Löschen</div>'
 			+'</li>');
 			$item.attr("data-post-id", post_id);
 			return $item;
@@ -251,6 +252,12 @@
 	 		} else {
 	 			$this.parents(".queue-item").after( render_new_post_widget() );
 	 		}
+	 	});
+	 	/**
+	 	 * delete post from queue
+	 	 */
+	 	$the_queue_wrapper.on("click", ".delete-post", function(e){
+	 		var $this = $(this).parents(".queue-item").remove();
 	 	});
 	 	/**
 	 	 * build add post list item
@@ -325,33 +332,23 @@
 	 		var title = $suggestion_item.text();
 	 		$the_queue.removeClass("prevent-add-post");
 	 		$queue_item.replaceWith( render_post_item( post_id, title ) );
-
-	 		// $.ajax({
- 	 	// 		url: "/wp-admin/admin-ajax.php?action=ph_postqueue_save_post_items",
- 	 	// 		dataType: "json",
- 	 	// 		data: {
- 	 	// 			queue_id: $the_queue.attr("data-queue-id"),
- 	 	// 			items: items,
- 	 	// 		},
- 	 	// 		success: function( data ) {
- 	 				
- 	 				
- 	 	// 			console.log(data);
- 	 	// 		},
- 	 	// 		error: function(jqXHR, textStatus, errorThrown){
- 	 	// 			console.error([jqXHR, textStatus, errorThrown]);
- 	 	// 		},
- 	 	// 	});
 	 	});
-
+	 	/**
+	 	 * saves postqueue to database
+	 	 */
 	 	function savePostqueue(success){
-
+	 		/**
+	 		 * get all post ids of queue
+	 		 * @type {Array}
+	 		 */
 	 		var items = [];
 	 		$the_queue.children(".queue-item").each(function(index, element){
 	 			var $element = $(element);
 	 			items.push(parseInt( $element.attr("data-post-id") ));
 	 		});
-
+	 		/**
+	 		 * save the post id array to database
+	 		 */
 	 		$.ajax({
  	 			url: "/wp-admin/admin-ajax.php?action=ph_postqueue_save_post_items",
  	 			dataType: "json",

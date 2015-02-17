@@ -60,6 +60,7 @@ $error: #dd3d36;
 				.queue-name{
 					font-weight: bold;
 					font-size: 1.2rem;
+					margin-bottom: 4px;
 				}
 				.queue-controls{
 
@@ -145,6 +146,23 @@ $error: #dd3d36;
 			.add-post-bottom{
 				bottom: -14px;
 			}
+			.delete-post{
+				position: absolute;
+				display: none;
+				right: 0px;
+				top: 14px;
+				bottom: 11px;
+				width: 60px;
+				background-color: $error;
+				color: white;
+				padding: 3px;
+				cursor: pointer;
+				opacity: 0.7;
+				transition: all 0.3s;
+				&:hover{
+					opacity: 1;
+				}
+			}
 		}
 		/**
 		 * saved item
@@ -194,6 +212,9 @@ $error: #dd3d36;
 		}
 		&:not(.prevent-add-post) .queue-item-set{
 			&:hover .add-post{
+				display: block;
+			}
+			&:hover .delete-post{
 				display: block;
 			}
 		}
