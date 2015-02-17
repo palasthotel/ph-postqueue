@@ -55,6 +55,16 @@ class PH_Postqueue_Admin {
 
 		$this->return_ajax($result);
 	}
+	/**
+	 * delete ajax function for queues
+	 */
+	public function delete_queue()
+	{
+		$result = (object)array();
+		$queue_id = intval($_GET["queue_id"]);
+		$store = new PH_Postqueue_Store();
+		$store->delete_queue($queue_id);
+	}
 
 	public function save_post_items()
 	{

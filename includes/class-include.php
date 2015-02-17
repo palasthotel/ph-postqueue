@@ -106,6 +106,10 @@ class PH_Postqueue {
 		/**
 		 * Ajax endpoint for loading a queue
 		 */
+		$this->loader->add_action( 'wp_ajax_ph_postqueue_delete_queue', $plugin_admin, 'delete_queue' );
+		/**
+		 * Ajax endpoint for loading a queue
+		 */
 		$this->loader->add_action( 'wp_ajax_ph_postqueue_load_queue', $plugin_admin, 'load_queue' );
 		/**
 		 * Ajax endpoint for loading a queue

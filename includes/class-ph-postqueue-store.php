@@ -108,6 +108,29 @@ class PH_Postqueue_Store
 		);
 	}
 
+	public function delete_queue($queue_id)
+	{
+		global $wpdb;
+		$wpdb->delete(
+			$wpdb->prefix."ph_postqueue_contents",
+			array(
+				"queue_id" => $queue_id,
+			),
+			array(
+				"%d",
+			)
+		);
+		$wpdb->delete(
+			$wpdb->prefix."ph_postqueues",
+			array(
+				"id" => $queue_id,
+			),
+			array(
+				"%d",
+			)
+		);
+	}
+
 	public function delete_queue_post($queue_id, $post_id)
 	{
 		global $wpdb;

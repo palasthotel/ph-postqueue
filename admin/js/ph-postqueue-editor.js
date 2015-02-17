@@ -174,6 +174,29 @@
  	 			},
  	 		});
 	 	});
+		/**
+	 	 * edit queue listener
+	 	 */
+	 	$queue_list.on("click", ".queue-delete", function(e){
+	 		e.preventDefault();
+	 		var $this = $(this);
+	 		var $queue = $this.parents(".queue");
+	 		var queue_id = $queue.attr("data-id");
+	 		$.ajax({
+ 	 			url: "/wp-admin/admin-ajax.php?action=ph_postqueue_delete_queue",
+ 	 			dataType: "json",
+ 	 			data: {
+ 	 				queue_id: queue_id,
+ 	 			},
+ 	 			success: function( data ) {
+ 	 				console.log(data);
+ 	 				$queue.remove(); 	 				
+ 	 			},
+ 	 			error: function(jqXHR, textStatus, errorThrown){
+ 	 				console.error([jqXHR, textStatus, errorThrown]);
+ 	 			},
+ 	 		});
+	 	});
 
 	 	/**
 	 	 * queue list section ENDE
