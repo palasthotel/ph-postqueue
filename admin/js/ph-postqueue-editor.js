@@ -147,15 +147,27 @@
 	 		$postqueue_name_display.text($queue.attr("data-name"));
 	 		$queues_widget.hide();
 	 		$the_queue_wrapper.show();
-
+	 		var queue_id = $queue.attr("data-id");
+	 		$the_queue.empty();
 	 		$.ajax({
  	 			url: "/wp-admin/admin-ajax.php?action=ph_postqueue_load_queue",
  	 			dataType: "json",
  	 			data: {
- 	 				queue_id: $queue.attr("data-id"),
+ 	 				queue_id: queue_id,
  	 			},
  	 			success: function( data ) {
- 	 				console.log(data)
+ 	 				console.log(data);
+ 	 				$the_queue.attr("data-queue-id", queue_id);
+ 	 				
+ 	 				$the_queue.removeClass("has-new-item");
+ 	 				if(data.result.length > 0){
+ 	 					$.each(data.result, function(index, item){
+	 	 					add_post_item(item.post_id, item.post_title);
+	 	 				});
+ 	 				} else {
+ 	 					$the_queue.append( render_new_post_widget(true) );
+ 	 				}
+ 	 				
  	 			},
  	 			error: function(jqXHR, textStatus, errorThrown){
  	 				console.error([jqXHR, textStatus, errorThrown]);
@@ -171,11 +183,171 @@
 	 	 * queue section
 	 	 */
 	 	var $the_queue_wrapper = $(".ph-the-queue-wrapper");
+	 	var $the_queue = $the_queue_wrapper.find(".the-queue");
+	 	var $new_post_item = null;
+	 	var $new_posts_list = null;
 
-	 	
+	 	var post_autocomplete_interval = null;
+	 	/**
+	 	 * on cancel queue
+	 	 */
+	 	$the_queue_wrapper.on("click", ".save-queue", function(){
+	 		console.log("save queue");
+	 	});
+	 	/**
+	 	 * on save queue
+	 	 */
+	 	$the_queue_wrapper.on("click", ".cancel-queue", function(){
+	 		$queues_widget.show();
+	 		$the_queue_wrapper.hide();
+	 		$postqueue_name_display.text("");
+	 	});
+	 	/**
+	 	 * add post to post list
+	 	 */
+	 	function add_post_item(post_id, title){
+	 		$the_queue.append( render_post_item(post_id, title) );
+	 	}
+	 	/**
+	 	 * build new queue list item
+	 	 */
+	 	function render_post_item(post_id, title){
+	 		var $item = $(
+	 		'<li class="queue-item queue-item-set">'
+				+'<div class="add-post add-post-top">Add Post</div>'
+				+'<span>'+title+'</span>'
+				+'<div class="add-post add-post-bottom">Add Post</div>'
+			+'</li>');
+			$item.attr("data-post-id", post_id);
+			return $item;
+	 	}
+	 	/**
+	 	 * add new post
+	 	 */
+	 	$the_queue_wrapper.on("click", ".add-post", function(e){
+	 		var $this = $(this);
+	 		$the_queue.addClass("has-new-item");
+	 		if($this.hasClass("add-post-top"))
+	 		{
+	 			$this.parents(".queue-item").before( render_new_post_widget() );
+	 		} else {
+	 			$this.parents(".queue-item").after( render_new_post_widget() );
+	 		}
+	 	});
+	 	/**
+	 	 * build add post list item
+	 	 */
+	 	function render_new_post_widget(not_removeable){
+	 		$new_post_item = $(
+	 		'<li class="queue-item queue-item-new new-post-widget">'
+	 			+'<div class="new-post-controls">'
+					+'<input class="search-query" type="text" placeholder="Post Titel oder ID" />'
+					//+'<button class="add-new-post">Hinzufügen</button>'
+					+'<button class="cancel-new-post button-secondary delete">Abbrechen</button>'
+				+'</div>'
+				+'<ul class="new-posts-list post-suggestions"></ul>'
+			+'</li> ');
+			if(not_removeable){
+				$new_post_item.find(".cancel-new-post").remove();
+			}
+			$new_posts_list = $new_post_item.find(".new-posts-list");
+	 		return $new_post_item;
+	 	}
+	 	/**
+	 	 * listen to input of post search
+	 	 */
+	 	$the_queue.on("keyup", ".search-query", function(e){
+	 		var query = this.value;
+	 		clearTimeout(post_autocomplete_interval);
+	 		if(query != "" && query.length > 0) 
+	 		{
+	 			post_autocomplete_interval = setTimeout(function(){
+	 				$.ajax({
+		 	 			url: "/wp-admin/admin-ajax.php?action=ph_postqueue_search_posts",
+		 	 			dataType: "json",
+		 	 			data: {
+		 	 				search: query,
+		 	 			},
+		 	 			success: function( data ) {
+		 	 				console.log(data);
+		 	 				$new_posts_list.empty();
+		 	 				$.each(data.result.posts, function(index, post){
+		 	 					console.log(post);
+		 	 					var $post = $("<li></li>");
+		 	 					$post.text(post.post_title);
+		 	 					$post.attr("data-post-id", post.post_id);
+		 	 					$post.addClass("post-suggestion");
+		 	 					$new_posts_list.prepend($post);
+		 	 				});
+		 	 			},
+		 	 			error: function(jqXHR, textStatus, errorThrown){
+		 	 				console.error([jqXHR, textStatus, errorThrown]);
+		 	 			},
+		 	 		});
+	 			}, 1000);
+	 		} else {
+	 			$new_posts_list.empty();
+	 		}
+	 	});
+	 	/**
+	 	 * cancel new post
+	 	 */
+	 	$the_queue_wrapper.on("click", ".cancel-new-post", function(e){
+	 		$(this).parents(".queue-item").remove();
+	 		$the_queue.removeClass("has-new-item");
+	 	});
+	 	/**
+	 	 * save post in queue
+	 	 */
+	 	$the_queue_wrapper.on("click", ".post-suggestion", function(e){
+	 		var $suggestion_item = $(this);
+	 		var post_id = $suggestion_item.attr("data-post-id");
+	 		var $queue_item = $suggestion_item.parents(".queue-item");
+	 		$queue_item.attr("data-post-id", post_id);
+	 		var title = $suggestion_item.text();
+	 		var items = [];
+	 		$the_queue.children(".queue-item").each(function(index, element){
+	 			var $element = $(element);
+	 			items.push(parseInt( $element.attr("data-post-id") ));
+	 		});
+
+	 		$.ajax({
+ 	 			url: "/wp-admin/admin-ajax.php?action=ph_postqueue_save_post_items",
+ 	 			dataType: "json",
+ 	 			data: {
+ 	 				queue_id: $the_queue.attr("data-queue-id"),
+ 	 				items: items,
+ 	 			},
+ 	 			success: function( data ) {
+ 	 				$queue_item.replaceWith( render_post_item( post_id, title ) );
+ 	 				$the_queue.removeClass("has-new-item");
+ 	 				console.log(data);
+ 	 			},
+ 	 			error: function(jqXHR, textStatus, errorThrown){
+ 	 				console.error([jqXHR, textStatus, errorThrown]);
+ 	 			},
+ 	 		});
+	 	});
+
+	 	function savePostqueue(postqueue_id, success){
+
+	 		$.ajax({
+ 	 			url: "/wp-admin/admin-ajax.php?action=ph_postqueue_save_post_items",
+ 	 			dataType: "json",
+ 	 			data: {
+ 	 				queue_id: $the_queue.attr("data-queue-id"),
+ 	 				items: [ "eins", "zwei", "drei" ],
+ 	 			},
+ 	 			success: function( data ) {
+ 	 				$queue_item.replaceWith( render_post_item(2, title) );
+ 	 				$the_queue.removeClass("has-new-item");
+ 	 				console.log(data);
+ 	 			},
+ 	 			error: function(jqXHR, textStatus, errorThrown){
+ 	 				console.error([jqXHR, textStatus, errorThrown]);
+ 	 			},
+ 	 		});
+	 	}
 
 	 });
-
-	
-
 })( jQuery );

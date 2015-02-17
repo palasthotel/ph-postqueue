@@ -107,6 +107,14 @@ class PH_Postqueue {
 		 * Ajax endpoint for loading a queue
 		 */
 		$this->loader->add_action( 'wp_ajax_ph_postqueue_load_queue', $plugin_admin, 'load_queue' );
+		/**
+		 * Ajax endpoint for loading a queue
+		 */
+		$this->loader->add_action( 'wp_ajax_ph_postqueue_save_post_items', $plugin_admin, 'save_post_items' );
+		/**
+		 * Ajax endpoint for loading a queue
+		 */
+		$this->loader->add_action( 'wp_ajax_ph_postqueue_search_posts', $plugin_admin, 'search_posts' );
 
 	}
 

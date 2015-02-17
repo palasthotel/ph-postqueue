@@ -71,24 +71,27 @@ $error: #dd3d36;
 	/**
 	 * the post queue
 	 */
+	.ph-the-queue-wrapper{
+		display: none;
+	}
 	.the-queue{
 		position: relative;
 		list-style: none;
 		padding: 0px;
-		margin: 10px 0;
+		margin: 20px 0;
 		counter-reset: posts;
 		margin-right: 315px;
-		display: none;
-		&:before{
-			content: "";
-			position: absolute;
-			top: 25px;
-			bottom: 25px;
-			left: 10px;
-			width: 2px;
-			border-radius: 1px;
-			background-color: $inactive-gray;
-		}
+		min-height: 100px;
+		// &:before{
+		// 	content: "";
+		// 	position: absolute;
+		// 	top: 25px;
+		// 	bottom: 25px;
+		// 	left: 10px;
+		// 	width: 2px;
+		// 	border-radius: 1px;
+		// 	background-color: $inactive-gray;
+		// }
 		.queue-item{
 			position: relative;
 			margin: 0px;
@@ -119,11 +122,35 @@ $error: #dd3d36;
 			& + .queue-item {
 				border-top: 1px solid $inactive-gray;
 			}
+			.add-post{
+				display: none;
+				position: absolute;
+				color: white;
+				background-color: $highlight-blue;
+				height: 25px;
+				left: 30px;
+				right: 0px;
+				z-index: 2;
+				padding: 3px 30px;
+				cursor: pointer;
+				opacity: 0.7;
+				transition: all 0.3s;
+				&:hover{
+					opacity: 1;
+				}
+			}
+			.add-post-top{
+				top: -11px;
+			}
+			.add-post-bottom{
+				bottom: -14px;
+			}
 		}
 		/**
 		 * saved item
 		 */
 		.queue-item-set{
+			transition: all 0.3s;
 			&:before{
 				content: "";
 				position: absolute;
@@ -149,12 +176,16 @@ $error: #dd3d36;
 				padding-top: 1px;
 			}
 			&:hover{
-				cursor: pointer;
 				&:after{
 					color: white;
 					background: $highlight-blue;
 					border-color: $highlight-blue;
 				}
+			}
+		}
+		&:not(.has-new-item) .queue-item-set{
+			&:hover .add-post{
+				display: block;
 			}
 		}
 		/**
@@ -169,10 +200,10 @@ $error: #dd3d36;
 				left: 10px;
 				bottom: 0px;
 				width: 2px;
-				background-color: darken($active-gray,20);
+				background-color: darken($highlight-blue,10);
 			}
 			&:after{
-				background-color: darken($active-gray, 20);
+				background-color: darken($highlight-blue, 10);
 			}
 		}
 		
@@ -181,7 +212,16 @@ $error: #dd3d36;
 	 * new post widget
 	 */
 	.new-post-widget{
-		background: $background-gray;
+		background: $highlight-blue;
+		.post-suggestions{
+			background-color: white;
+			.post-suggestion{
+				padding: 15px;
+				& + .post-suggestion{
+					border-top: 1px solid $inactive-gray;
+				}
+			}
+		}
 	}
 	
 }

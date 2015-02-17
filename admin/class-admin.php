@@ -22,7 +22,8 @@ class PH_Postqueue_Admin {
 	 * Initialize the class and set its properties.
 	 * 
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $plugin_name, $version )
+	{
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
@@ -32,7 +33,8 @@ class PH_Postqueue_Admin {
 	/**
 	 * creates a new queue
 	 */
-	public function create_queue(){
+	public function create_queue()
+	{
 		$name = sanitize_text_field($_GET["queue_name"]);
 
 		$store = new PH_Postqueue_Store();
@@ -44,11 +46,52 @@ class PH_Postqueue_Admin {
 	/**
 	 * loads a single queues posts
 	 */
-	public function load_queue(){
+	public function load_queue()
+	{
 		$queue_id = intval($_GET["queue_id"]);
 
 		$store = new PH_Postqueue_Store();
 		$result = $store->get_queue_by_id($queue_id);
+
+		$this->return_ajax($result);
+	}
+
+	public function save_post_items()
+	{
+		$result = (object)array();
+		$result->queue_id = intval($_GET["queue_id"]);
+		$result->items = $_GET["items"];
+
+		$store = new PH_Postqueue_Store();
+		$store->queue_clear($result->queue_id);
+
+		$store->queue_add_all($result->queue_id, $result->items);
+
+		$this->return_ajax($result);
+	}
+
+	public function search_posts()
+	{
+		$result = (object)array();
+		$result->search = sanitize_text_field($_GET["search"]);
+		
+		global $wpdb;
+		$results = $wpdb->get_results(
+			"SELECT ID, post_title FROM ".$wpdb->prefix."posts".
+			" WHERE".
+			" post_title LIKE '%".$result->search."%'".
+			" AND (post_status = 'publish'".
+			" OR ID = '".$result->search."' )".
+			" ORDER BY ID DESC LIMIT 10"
+		);
+
+		$result->posts = array();
+		foreach ($results as $index => $post) {
+			$p = (object)array();
+			$p->post_id = $post->ID;
+			$p->post_title = $post->post_title;
+			$result->posts[] = $p;
+		}
 
 		$this->return_ajax($result);
 	}

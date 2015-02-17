@@ -23,7 +23,11 @@
 			<!-- <li class="queue">
 				<div class="queue-name">Hard codiert</div>
 				<div class="queue-controls">
-					[slug] | <a href="#" target="_new">RSS-Feed</a> | <a href="#">Bearbeiten</a>
+					[slug] 
+					| 
+					<a href="#" target="_new">RSS-Feed</a> 
+					| 
+					<a href="#">Bearbeiten</a>
 				</div> 
 			</li> -->
 		
@@ -34,18 +38,10 @@
 	<!-- Edit Postqueue -->
 	<div class="ph-the-queue-wrapper">
 		<div class="the-queue-controls">
-			<button class="button primary">Save</button><button class="button secondary">Cancel</button>
+			<button class="save-queue button button-primary">Save</button>
+			<button class="cancel-queue button button-secondary">Cancel</button>
 		</div>
-		<ol class="the-queue">
-			<li class="queue-item">Eins</li>
-			<li class="queue-item queue-item-set">zwei</li>
-			<li class="queue-item queue-item-new new-post-widget">
-				<input type="text" placeholder="Post suchen" />
-				<button>Hinzufügen</button>
-			</li>
-			<li class="queue-item queue-item-set">Drei</li>
-			<li class="queue-item queue-item-set">eins</li>
-		</ol>
+		<ol class="the-queue"></ol>
 	</div>
 	<!-- Edit Postqueue ENDE -->
 
