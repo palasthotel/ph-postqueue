@@ -40,6 +40,11 @@ class PH_Postqueue_Admin {
 		$store = new PH_Postqueue_Store();
 		$result = $store->create($name);
 
+		/**
+		 * action queue is created
+		 */
+		do_action("ph_postqueue_created", (object)array( "id" => $result->id, "slug" => $result->slug) );
+
 		$this->return_ajax($result);
 	}
 
@@ -62,8 +67,15 @@ class PH_Postqueue_Admin {
 	{
 		$result = (object)array();
 		$queue_id = intval($_GET["queue_id"]);
+
+		/**
+		 * action before queue is deleted
+		 */
+		do_action("ph_postqueue_deleting", $queue_id);
+
 		$store = new PH_Postqueue_Store();
 		$store->delete_queue($queue_id);
+
 	}
 
 	public function save_post_items()

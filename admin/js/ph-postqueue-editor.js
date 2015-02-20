@@ -101,12 +101,20 @@
 	 	{
 	 		var $name = $("<div>"+element.name+"</div>")
 	 					.addClass("queue-name");
+	 		var feed_link = "";
+	 		if(window.ph_postqueue_feed_url  != "")
+	 		{
+	 			feed_link+= " | <a href='/";
+	 			feed_link+= window.ph_postqueue_feed_url+"/"+element.slug;
+	 			feed_link+= "' target='_new'>RSS-Feed</a>";
+	 		}
 	 		var $controls = $("<div>"
 				+"["+element.slug+"]"
 				+" | "
 				+"<a href='#' class='queue-edit'>Bearbeiten</a>"
 				+" | "
 				+"<a href='#' class='queue-delete submitdelete'>Löschen</a>"
+				+ feed_link
 				+"</div>")
 	 			.addClass("queue-controls");
 	 		var $li = $("<li></li>")

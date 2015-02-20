@@ -4,7 +4,11 @@
  */
 ?>
 <script type="text/javascript">
-	window.ph_postqueues = <?php echo json_encode($store->get_queues()); ?>
+	window.ph_postqueues = <?php echo json_encode($store->get_queues()); ?>;
+
+	//TODO: hard coded?!? please not!
+	window.ph_postqueue_feed_url = "<?php echo get_site_option("ph-postqueue-feeds-url", ""); ?>";
+
 </script>
 <div class="wrap ph-postqueue">
 	<h2>Postqueues: <span class="ph-postqueues-name-display"></span></h2>

@@ -56,15 +56,38 @@ class PH_Postqueue_Store
 	}
 
 	/**
-	 * returns queue by slug
+	 * returns queue by id
 	 */
 	public function get_queue_by_id($qid)
 	{
 		global $wpdb;
 		$query = "";
-		$query.= "SELECT * FROM ".$wpdb->prefix."ph_postqueue_contents";
+		$query.= "SELECT name, slug, contents.id as cid, queue_id, post_id, position FROM";
+		$query.=" `asmb_rs_wp_ph_postqueues` queue LEFT JOIN `asmb_rs_wp_ph_postqueue_contents` contents";
+		$query.= " ON (queue.id = contents.queue_id)";
 		$query.=" WHERE queue_id = ".$qid;
 		$query.=" ORDER BY position ASC";
+		$results = $wpdb->get_results($query);
+		for($i = 0; $i < count($results); $i++) {
+			$pid = $results[$i]->post_id;
+			$results[$i]->post_title = get_the_title($pid);
+		}
+		return $results;
+	}
+
+	/**
+	 * returns queue by slug
+	 */
+	public function get_queue_by_slug($slug)
+	{
+		global $wpdb;
+		$query = "";
+		$query.= "SELECT name, slug, contents.id as cid, queue_id, post_id, position FROM";
+		$query.=" `asmb_rs_wp_ph_postqueues` queue LEFT JOIN `asmb_rs_wp_ph_postqueue_contents` contents";
+		$query.= " ON (queue.id = contents.queue_id)";
+		$query.=" WHERE slug = '".$slug."'";
+		$query.=" ORDER BY position ASC";
+		
 		$results = $wpdb->get_results($query);
 		for($i = 0; $i < count($results); $i++) {
 			$pid = $results[$i]->post_id;
