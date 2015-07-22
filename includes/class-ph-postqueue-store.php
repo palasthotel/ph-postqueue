@@ -63,7 +63,7 @@ class PH_Postqueue_Store
 		global $wpdb;
 		$query = "";
 		$query.= "SELECT name, slug, contents.id as cid, queue_id, post_id, position FROM";
-		$query.=" `asmb_rs_wp_ph_postqueues` queue LEFT JOIN `asmb_rs_wp_ph_postqueue_contents` contents";
+		$query.=" `".$wpdb->prefix."ph_postqueues` queue LEFT JOIN `".$wpdb->prefix."ph_postqueue_contents` contents";
 		$query.= " ON (queue.id = contents.queue_id)";
 		$query.=" WHERE queue_id = ".$qid;
 		$query.=" ORDER BY position ASC";
@@ -83,7 +83,7 @@ class PH_Postqueue_Store
 		global $wpdb;
 		$query = "";
 		$query.= "SELECT name, slug, contents.id as cid, queue_id, post_id, position FROM";
-		$query.=" `asmb_rs_wp_ph_postqueues` queue LEFT JOIN `asmb_rs_wp_ph_postqueue_contents` contents";
+		$query.=" `".$wpdb->prefix."ph_postqueues` queue LEFT JOIN `" . $wpdb->prefix."ph_postqueue_contents` contents";
 		$query.= " ON (queue.id = contents.queue_id)";
 		$query.=" WHERE slug = '".$slug."'";
 		$query.=" ORDER BY position ASC";
