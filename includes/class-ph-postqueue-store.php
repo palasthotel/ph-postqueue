@@ -60,20 +60,33 @@ class PH_Postqueue_Store
 	 */
 	public function get_queue_by_id($qid)
 	{
+		return $this->get_queue('queue_id',$qid);
+	}
+
+	/**
+	 * returns queue by slug
+	 */
+	public function get_queue_by_slug($slug)
+	{
+		return $this->get_queue('slug',$slug);
+
+	}
+	private function get_queue($key, $value){
+
 		global $wpdb;
 		$query = "";
 		$query.= "SELECT name, slug, contents.id as cid, queue_id, post_id, position, title_overwrite as title FROM";
 		$query.=" ".$wpdb->prefix."ph_postqueues queue LEFT JOIN ".$wpdb->prefix."ph_postqueue_contents contents";
 		$query.= " ON (queue.id = contents.queue_id)";
-		$query.=" WHERE queue_id = ".$qid;
+		$query.=" WHERE $key = '$value'";
 		$query.=" ORDER BY position ASC";
+
 		$results = $wpdb->get_results($query);
 		for($i = 0; $i < count($results); $i++) {
 			if ( FALSE === get_post_status( $results[$i]->post_id ) ) {
-				$results = array_slice($results, $i, 1);
-				$i--;
+				unset($results[$i]);
 				continue;
-			} 
+			}
 			$pid = $results[$i]->post_id;
 			if($results[$i]->title != ""){
 				$results[$i]->post_title = $results[$i]->title;
@@ -82,35 +95,6 @@ class PH_Postqueue_Store
 			}
 		}
 		return $results;
-	}
-
-	/**
-	 * returns queue by slug
-	 */
-	public function get_queue_by_slug($slug)
-	{
-		global $wpdb;
-		$query = "";
-		$query.= "SELECT name, slug, contents.id as cid, queue_id, post_id, position, title_overwrite as title FROM";
-		$query.=" ".$wpdb->prefix."ph_postqueues queue LEFT JOIN ".$wpdb->prefix."ph_postqueue_contents contents";
-		$query.= " ON (queue.id = contents.queue_id)";
-		$query.=" WHERE slug = '".$slug."'";
-		$query.=" ORDER BY position ASC";
-		
-		$results = $wpdb->get_results($query);
-		$return = array();
-		for($i = 0; $i < count($results); $i++) {
-			if($results[$i]->post_id == null) continue;
-			$pid = $results[$i]->post_id;
-			if($results[$i]->title != ""){
-				$results[$i]->post_title = $results[$i]->title;
-			} else{
-				$results[$i]->post_title = get_the_title($pid);
-			}	
-			$return[] = $results[$i];	
-		}
-
-		return $return;
 	}
 
 	public function queue_clear($queue_id)
@@ -131,9 +115,9 @@ class PH_Postqueue_Store
 	}
 
 	public function queue_add_all_with_title($qid, $post_ids, $titles)
-	{	
+	{
 
-		for ($i=0; $i < count($post_ids) ; $i++) { 
+		for ($i=0; $i < count($post_ids) ; $i++) {
 			$this->queue_add($qid, $post_ids[$i], $i, $titles[$i]);
 		}
 	}

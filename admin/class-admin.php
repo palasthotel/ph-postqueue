@@ -8,19 +8,19 @@ class PH_Postqueue_Admin {
 
 	/**
 	 * The ID of this plugin.
-	 * 
+	 *
 	 */
 	private $plugin_name;
 
 	/**
 	 * The version of this plugin.
-	 * 
+	 *
 	 */
 	private $version;
 
 	/**
 	 * Initialize the class and set its properties.
-	 * 
+	 *
 	 */
 	public function __construct( $plugin_name, $version )
 	{
@@ -108,7 +108,7 @@ class PH_Postqueue_Admin {
 	{
 		$result = (object)array();
 		$result->search = sanitize_text_field($_GET["search"]);
-		
+
 		global $wpdb;
 		$results = $wpdb->get_results(
 			"SELECT ID, post_title FROM ".$wpdb->prefix."posts".
@@ -167,20 +167,20 @@ class PH_Postqueue_Admin {
 		 * Add css and javascript
 		 */
 		wp_enqueue_style(
-			$this->plugin_name, 
+			$this->plugin_name,
 			plugin_dir_url( __FILE__ ) . 'css/ph-postqueue-editor.css',
 			array( ),
 			$this->version,
 			'all'
 		);
 		wp_enqueue_script(
-			$this->plugin_name, 
+			$this->plugin_name,
 			plugin_dir_url( __FILE__ ) . 'js/ph-postqueue-editor.js',
 			array( 'jquery', 'jquery-ui-autocomplete', 'jquery-ui-sortable' ),
 			$this->version,
 			false
 		);
-		require plugin_dir_path( __FILE__ ) .'partials/ph-postqueue-editor.tpl.php';		
+		require plugin_dir_path( __FILE__ ) .'partials/ph-postqueue-editor.tpl.php';
 	}
 
 }
