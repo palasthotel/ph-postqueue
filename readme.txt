@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: loop, order posts, queue
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -12,7 +12,7 @@ Allows you to create you very own loop order of posts
 
 == Description ==
 
-Sometimes you cannot use any parameter to order your desired post order but have to do this order by hand. Postqueue allows you to do that. 
+Sometimes you cannot use any parameter to order your desired post order but have to do this order by hand. Postqueue allows you to do that.
 
 This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Grid Landingpage Editor").
 
@@ -29,6 +29,9 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 
 
 == Changelog ==
+
+= 1.0.6 =
+* Post id zero in postqueue fix
 
 = 1.0.5 =
 * Future posts can be added to queues
