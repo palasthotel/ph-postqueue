@@ -62,15 +62,24 @@ class PH_Postqueue_Store
 	{
 		global $wpdb;
 		$query = "";
-		$query.= "SELECT name, slug, contents.id as cid, queue_id, post_id, position FROM";
-		$query.=" `".$wpdb->prefix."ph_postqueues` queue LEFT JOIN `".$wpdb->prefix."ph_postqueue_contents` contents";
+		$query.= "SELECT name, slug, contents.id as cid, queue_id, post_id, position, title_overwrite as title FROM";
+		$query.=" ".$wpdb->prefix."ph_postqueues queue LEFT JOIN ".$wpdb->prefix."ph_postqueue_contents contents";
 		$query.= " ON (queue.id = contents.queue_id)";
 		$query.=" WHERE queue_id = ".$qid;
 		$query.=" ORDER BY position ASC";
 		$results = $wpdb->get_results($query);
 		for($i = 0; $i < count($results); $i++) {
+			if ( FALSE === get_post_status( $results[$i]->post_id ) ) {
+				$results = array_slice($results, $i, 1);
+				$i--;
+				continue;
+			} 
 			$pid = $results[$i]->post_id;
-			$results[$i]->post_title = get_the_title($pid);
+			if($results[$i]->title != ""){
+				$results[$i]->post_title = $results[$i]->title;
+			} else{
+				$results[$i]->post_title = get_the_title($pid);
+			}
 		}
 		return $results;
 	}
@@ -82,18 +91,26 @@ class PH_Postqueue_Store
 	{
 		global $wpdb;
 		$query = "";
-		$query.= "SELECT name, slug, contents.id as cid, queue_id, post_id, position FROM";
-		$query.=" `".$wpdb->prefix."ph_postqueues` queue LEFT JOIN `" . $wpdb->prefix."ph_postqueue_contents` contents";
+		$query.= "SELECT name, slug, contents.id as cid, queue_id, post_id, position, title_overwrite as title FROM";
+		$query.=" ".$wpdb->prefix."ph_postqueues queue LEFT JOIN ".$wpdb->prefix."ph_postqueue_contents contents";
 		$query.= " ON (queue.id = contents.queue_id)";
 		$query.=" WHERE slug = '".$slug."'";
 		$query.=" ORDER BY position ASC";
 		
 		$results = $wpdb->get_results($query);
+		$return = array();
 		for($i = 0; $i < count($results); $i++) {
+			if($results[$i]->post_id == null) continue;
 			$pid = $results[$i]->post_id;
-			$results[$i]->post_title = get_the_title($pid);
+			if($results[$i]->title != ""){
+				$results[$i]->post_title = $results[$i]->title;
+			} else{
+				$results[$i]->post_title = get_the_title($pid);
+			}	
+			$return[] = $results[$i];	
 		}
-		return $results;
+
+		return $return;
 	}
 
 	public function queue_clear($queue_id)
@@ -113,7 +130,15 @@ class PH_Postqueue_Store
 		}
 	}
 
-	public function queue_add($queue_id, $post_id, $position)
+	public function queue_add_all_with_title($qid, $post_ids, $titles)
+	{	
+
+		for ($i=0; $i < count($post_ids) ; $i++) { 
+			$this->queue_add($qid, $post_ids[$i], $i, $titles[$i]);
+		}
+	}
+
+	public function queue_add($queue_id, $post_id, $position, $title = "")
 	{
 		global $wpdb;
 		$wpdb->insert(
@@ -122,11 +147,13 @@ class PH_Postqueue_Store
 				'queue_id' => $queue_id,
 				'post_id' => $post_id,
 				'position' => $position,
+				'title_overwrite' => $title,
 			),
 			array(
 				"%d",
 				"%d",
 				"%d",
+				'%s',
 			)
 		);
 	}

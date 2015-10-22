@@ -33,16 +33,17 @@ class Ph_Postqueue_Activator {
 		/**
 		 * create queues_content table
 		 */
-		dbDelta( 'CREATE TABLE IF NOT EXISTS `'.$wpdb->prefix.'ph_postqueue_contents` (
+		dbDelta( 'CREATE TABLE IF NOT EXISTS `'.$wpdb->prefix."ph_postqueue_contents` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `queue_id` int(11) unsigned NOT NULL,
 				  `post_id` int(11) unsigned NOT NULL,
 				  `position` int(11) unsigned NOT NULL DEFAULT 0,
+				  `title_overwrite` varchar(255) NOT NULL DEFAULT '',
 				  PRIMARY KEY (`id`),
 				  UNIQUE KEY `post_in_queue` (`post_id`, `queue_id`),
 				  UNIQUE KEY `position_in_queue` (`position`, `queue_id`),
 				  KEY `queue_id` (`queue_id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;');
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 	}
 
 }

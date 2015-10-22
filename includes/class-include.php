@@ -26,12 +26,13 @@ class PH_Postqueue {
 	public function __construct() {
 
 		$this->plugin_name = 'ph-postqueue';
-		$this->version = '1.0';
+		$this->version = '1.0.5';
 
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+		$this->define_grid_hooks();
 
 	}
 
@@ -139,6 +140,16 @@ class PH_Postqueue {
 
 		$plugin_public = new PH_Postqueue_Public( $this->get_plugin_name(), $this->get_version() );
 
+	}
+
+	/**
+	 * all grid functions
+	 */
+	private function define_grid_hooks(){
+		$this->loader->add_action('grid_load_classes', $this, 'grid_load_classes');
+	}
+	public function grid_load_classes(){
+		require dirname(__FILE__)."/../grid-boxes/grid-postqueue-box.php";
 	}
 
 	/**
