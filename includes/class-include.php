@@ -26,7 +26,7 @@ class PH_Postqueue {
 	public function __construct() {
 
 		$this->plugin_name = 'ph-postqueue';
-		$this->version = '1.0.6';
+		$this->version = '1.0.7';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -76,7 +76,7 @@ class PH_Postqueue {
 
 	/**
 	 * Define the locale for this plugin for internationalization.
-	 * 
+	 *
 	 */
 	private function set_locale() {
 
@@ -90,7 +90,7 @@ class PH_Postqueue {
 	/**
 	 * Register all of the hooks related to the dashboard functionality
 	 * of the plugin.
-	 * 
+	 *
 	 */
 	private function define_admin_hooks() {
 
@@ -134,7 +134,7 @@ class PH_Postqueue {
 	/**
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
-	 * 
+	 *
 	 */
 	private function define_public_hooks() {
 
@@ -154,7 +154,7 @@ class PH_Postqueue {
 
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
-	 * 
+	 *
 	 */
 	public function run() {
 		$this->loader->run();
@@ -163,7 +163,7 @@ class PH_Postqueue {
 	/**
 	 * The name of the plugin used to uniquely identify it within the context of
 	 * WordPress and to define internationalization functionality.
-	 * 
+	 *
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
@@ -171,7 +171,7 @@ class PH_Postqueue {
 
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
-	 * 
+	 *
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -179,7 +179,7 @@ class PH_Postqueue {
 
 	/**
 	 * Retrieve the version number of the plugin.
-	 * 
+	 *
 	 */
 	public function get_version() {
 		return $this->version;
