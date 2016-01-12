@@ -68,7 +68,7 @@ class PH_Postqueue_Store
 	 */
 	public function get_queue_by_slug($slug)
 	{
-		return $this->get_queue('slug',$slug);
+		return $this->get_queue('slug', $slug);
 
 	}
 	private function get_queue($key, $value){
@@ -83,7 +83,7 @@ class PH_Postqueue_Store
 
 		$results = $wpdb->get_results($query);
 		for($i = 0; $i < count($results); $i++) {
-			if ( FALSE === get_post_status( $results[$i]->post_id ) ) {
+			if ( FALSE === get_post_status( $results[$i]->post_id )  || $results[$i]->post_id == null ) {
 				unset($results[$i]);
 				continue;
 			}
