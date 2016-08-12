@@ -4,7 +4,8 @@
  * Fired during plugin activation.
  *
  */
-class Ph_Postqueue_Activator {
+
+class PH_Postqueue_Activator {
 
 	/**
 	 * activate plugin

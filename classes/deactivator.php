@@ -3,7 +3,7 @@
 /**
  * Fired during plugin deactivation.
  */
-class Ph_Postqueue_Deactivator {
+class PH_Postqueue_Deactivator {
 
 	/**
 	 * deactivate plugin
