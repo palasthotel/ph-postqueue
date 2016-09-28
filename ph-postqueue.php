@@ -24,6 +24,14 @@ if ( ! defined( 'WPINC' ) ) {
 use Postqueue\Activator;
 
 class Postqueue{
+	/**
+	 * filters
+	 */
+	const FILTER_VIEWMODES = "postqueue_viewmodes";
+	
+	/**
+	 * plugin path strings
+	 */
 	public $dir;
 	public $url;
 	/**
@@ -72,11 +80,25 @@ class Postqueue{
 		require_once $this->dir . 'classes/shortcode.php';
 		new \Postqueue\Shortcode($this);
 		
-		add_action('grid_load_classes', $this, 'grid_load_classes');
+		add_action('grid_load_classes', array($this, 'grid_load_classes') );
+		add_filter("grid_templates_paths", array($this,"template_paths") );
 	}
 	
+	/**
+	 * add box classes
+	 */
 	public function grid_load_classes(){
 		require $this->dir."grid-boxes/grid-postqueue-box.php";
+	}
+	
+	/**
+	 * add grid templates suggestion path
+	 * @param $paths
+	 * @return array
+	 */
+	public function template_paths($paths){
+		$paths[] = dirname(__FILE__)."/templates";
+		return $paths;
 	}
 }
 

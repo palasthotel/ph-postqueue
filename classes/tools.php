@@ -22,6 +22,7 @@ class Tools {
 	public function __construct(\Postqueue $plugin) {
 		$this->plugin = $plugin;
 		$this->store = $plugin->store;
+		
 		/**
 		 * settings page
 		 */

@@ -8,8 +8,6 @@
 
 namespace Postqueue;
 
-use WP_Query;
-
 class Shortcode {
 	
 	const TEMPLATE_NAME = "postqueue.php";
@@ -44,6 +42,9 @@ class Shortcode {
 				$pids[]=$item->post_id;
 			}
 			
+			/**
+			 * build query args for loop
+			 */
 			$query_args = array (
 				'post__in'      => $pids,
 				'post_status'   => 'publish',
@@ -51,9 +52,13 @@ class Shortcode {
 				'post_type'     => 'any',
 			);
 			
+			/**
+			 * get content from template
+			 */
 			ob_start();
-			if(locate_template(self::TEMPLATE_NAME) != ''){
-				get_template_part(self::TEMPLATE_NAME);
+			$template = locate_template(self::TEMPLATE_NAME);
+			if('' != $template){
+				include $template;
 			} else {
 				include $this->plugin->dir."/templates/".self::TEMPLATE_NAME;
 			}
