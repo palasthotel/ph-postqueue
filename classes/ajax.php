@@ -5,7 +5,7 @@ namespace Postqueue;
 
 class Ajax {
 	/**
-	 * @var \PH_Postqueue_Store
+	 * @var \Store
 	 */
 	public $store;
 	

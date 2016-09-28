@@ -1,8 +1,10 @@
 <?php
+
+namespace Postqueue;
 /**
  *	Postqueue Store class
  */
-class PH_Postqueue_Store
+class Store
 {
 
 	/**

@@ -5,7 +5,7 @@ namespace Postqueue;
 
 class Post {
 	/**
-	 * @var \PH_Postqueue_Store
+	 * @var \Store
 	 */
 	public $store;
 	

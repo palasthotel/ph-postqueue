@@ -21,11 +21,13 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+use Postqueue\Activator;
+
 class Postqueue{
 	public $dir;
 	public $url;
 	/**
-	 * @var \PH_Postqueue_Store
+	 * @var \Postqueue\Store
 	 */
 	public $store;
 	
@@ -44,17 +46,31 @@ class Postqueue{
 		 */
 		load_plugin_textdomain( 'postqueue', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 		
+		
+		/**
+		 * The code that runs during plugin activation.
+		 */
+		require_once plugin_dir_path( __FILE__ ) . 'classes/activator.php';
+		$activator = new Activator();
+		register_activation_hook( __FILE__, array( $activator, 'activate' ) );
+		
 		/**
 		 * init parts of plugin
 		 */
-		require_once $this->dir . 'classes/postqueue-store.php';
-		$this->store = new PH_Postqueue_Store($this);
+		require_once $this->dir . 'classes/store.php';
+		$this->store = new \Postqueue\Store($this);
 		
 		require_once $this->dir . 'classes/ajax.php';
 		new \Postqueue\Ajax($this);
 		
+		require_once $this->dir . 'classes/tools.php';
+		new \Postqueue\Tools($this);
+		
 		require_once $this->dir . 'classes/post.php';
 		new \Postqueue\Post($this);
+		
+		require_once $this->dir . 'classes/shortcode.php';
+		new \Postqueue\Shortcode($this);
 		
 		add_action('grid_load_classes', $this, 'grid_load_classes');
 	}
@@ -64,38 +80,11 @@ class Postqueue{
 	}
 }
 
+global $postqueue;
+$postqueue = new Postqueue();
 
 /**
- * The code that runs during plugin activation.
+ * for backward compatibility
  */
-require_once plugin_dir_path( __FILE__ ) . 'classes/activator.php';
-
-/**
- * The code that runs during plugin deactivation.
- */
-require_once plugin_dir_path( __FILE__ ) . 'classes/deactivator.php';
-
-/** This action is documented in includes/class-activator.php */
-register_activation_hook( __FILE__, array( 'PH_Postqueue_Activator', 'activate' ) );
-
-/** This action is documented in includes/class-deactivator.php */
-register_deactivation_hook( __FILE__, array( 'PH_Postqueue_Deactivator', 'deactivate' ) );
-
-
-
-/**
- * The core plugin class that is used to define internationalization,
- * dashboard-specific hooks, and public-facing site hooks.
- */
-require_once plugin_dir_path( __FILE__ ) . 'includes/class-include.php';
-
-/**
- * Begins execution of the plugin.
- */
-function run_ph_postqueue() {
-
-	$plugin = new PH_Postqueue();
-	$plugin->run();
-
+class PH_Postqueue_Store extends \Postqueue\Store {
 }
-run_ph_postqueue();

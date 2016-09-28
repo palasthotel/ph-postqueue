@@ -47,18 +47,19 @@ class Tools {
 		 */
 		wp_enqueue_style(
 			'postqueue-css',
-			$this->plugin->dir . 'css/ph-postqueue-editor.css',
+			$this->plugin->url . 'css/ph-postqueue-editor.css',
 			array( ),
 			1,
 			'all'
 		);
 		wp_enqueue_script(
 			'postqueue',
-			$this->plugin->dir . 'js/ph-postqueue-editor.js',
+			$this->plugin->url . 'js/ph-postqueue-editor.js',
 			array( 'jquery', 'jquery-ui-autocomplete', 'jquery-ui-sortable' ),
 			1,
 			false
 		);
+		$store = $this->store;
 		require $this->plugin->dir .'partials/ph-postqueue-editor.tpl.php';
 	}
 }

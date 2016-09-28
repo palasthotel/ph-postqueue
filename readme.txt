@@ -30,6 +30,10 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 
 == Changelog ==
 
+= 1.1.0 =
+* UI optimization
+* Shortcode support
+
 = 1.0.7 =
 * Fixed empty queues bug
 

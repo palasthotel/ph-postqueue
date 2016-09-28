@@ -28,7 +28,7 @@ class grid_postqueue_box extends grid_list_box
 			 * array that will be rendered
 			 */
 			
-			$store = new PH_Postqueue_Store();
+			$store = new Store();
 			$queues = $store->get_queue_by_slug($this->content->postqueue);
 			// $output = $this->content->viewmode." ";
 			$pids = array();
@@ -84,7 +84,7 @@ class grid_postqueue_box extends grid_list_box
 		$viewmodes[] = array("key"=> "detailed", "text" => "Detailed");
 		$viewmodes[] = array("key"=> "small", "text" => "Small");
 
-		$store = new PH_Postqueue_Store();
+		$store = new Store();
 		$queues = $store->get_queues();
 
 		$qs = array();

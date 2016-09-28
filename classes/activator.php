@@ -1,16 +1,17 @@
 <?php
 
+namespace Postqueue;
 /**
  * Fired during plugin activation.
  *
  */
 
-class PH_Postqueue_Activator {
-
+class Activator {
+	
 	/**
 	 * activate plugin
 	 */
-	public static function activate() {
+	public function activate() {
 		/**
 		 * wpdb object for prefix
 		 */

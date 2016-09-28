@@ -1,6 +1,8 @@
 <?php
 /**
  * template for postqueues tools admin interface
+ * @var $this \Postqueue\Tools
+ * @var $store \Postqueue\Store
  */
 ?>
 <script type="text/javascript">
