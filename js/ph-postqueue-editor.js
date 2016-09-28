@@ -109,7 +109,7 @@
 				feed_link+= "' target='_new'>RSS-Feed</a>";
 			}
 			var $controls = $("<div>"
-				+'[postqueue slug="'+element.slug+'" (viewmode="...")]'
+				+'[postqueue slug="'+element.slug+'" viewmode=""]'
 				+" | "
 				+"<a href='#' class='queue-edit'>Bearbeiten</a>"
 				+" | "
