@@ -11,6 +11,7 @@ namespace Postqueue;
 class Shortcode {
 	
 	const TEMPLATE_NAME = "postqueue.php";
+	const SHORTCODE = "postqueue";
 	
 	/**
 	 * @var \Postqueue
@@ -24,7 +25,27 @@ class Shortcode {
 	 */
 	public function __construct(\Postqueue $plugin) {
 		$this->plugin = $plugin;
-		add_shortcode( 'postqueue', array($this, "do_shortcode") );
+		add_shortcode( self::SHORTCODE, array($this, "do_shortcode") );
+		
+		add_action( 'admin_print_footer_scripts', array($this, 'add_text_editor_button'));
+		
+		add_filter( 'mce_buttons_2', array($this, 'add_tinymce_button') );
+		add_filter( 'mce_external_plugins', array($this, 'add_tinymce_plugin') );
+		
+		add_filter('mce_css', array($this, 'tiny_mce_config') );
+		
+	}
+	
+	/**
+	 * inject editor css
+	 * @param $initArray
+	 *
+	 * @return mixed
+	 */
+	public function tiny_mce_config($url){
+		if ( !empty($url) ) $url .= ',';
+		$url .= $this->plugin->url.'/css/tinymce-plugin.css';
+		return $url;
 	}
 	
 	public function do_shortcode($atts){
@@ -69,4 +90,54 @@ class Shortcode {
 		}
 		return $result;
 	}
+	
+	/**
+	 * adds a button to plaintext editor
+	 */
+	public function add_text_editor_button(){
+		?>
+		<script type="text/javascript">
+			if(typeof QTags != "undefined")
+			{
+				QTags.addButton( 'postqueues', 'Postqueues', '[<?php echo self::SHORTCODE; ?> slug=""]');
+			}
+		</script>
+		<?php
+	}
+	
+	/**
+	 * add button to tinymce
+	 */
+	public function add_tinymce_button($buttons){
+		wp_enqueue_style( 'dashicons' );
+		if($buttons[count($buttons)-1] == "wp_help"){
+			array_splice($buttons, count($buttons)-1,0,"postqueue");
+		} else {
+			array_push( $buttons, 'postqueue' );
+		}
+		return $buttons;
+	}
+	
+	/**
+	 * add tinymce plugin js
+	 */
+	public function add_tinymce_plugin($plugins_array){
+		/**
+		 * needed for dialog
+		 */
+		wp_enqueue_script( 'jquery-ui-dialog' );
+		wp_enqueue_style( 'wp-jquery-ui-dialog' );
+		
+		/**
+		 * style for dialog
+		 */
+		wp_enqueue_style( "postqueue", $this->plugin->url . '/css/tinymce.css', array(), 2, 'all' );
+		
+		/**
+		 * add plugin js
+		 */
+		$plugins_array['postqueue'] = $this->plugin->url.'/js/tinymce.js';
+		return $plugins_array;
+	}
+	
 }
