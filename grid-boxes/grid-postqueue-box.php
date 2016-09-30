@@ -44,7 +44,7 @@ class grid_postqueue_box extends grid_list_box
 			'selections' => $qs,
 		);
 		
-		$viewmodes = $this->getViewmodes();
+		$viewmodes = Postqueue::getViewmodes();
 		if(count($viewmodes) > 0){
 			$cs[] = array(
 				'key' => 'viewmode',
@@ -55,16 +55,5 @@ class grid_postqueue_box extends grid_list_box
 		}
 
 		return $cs;
-	}
-	
-	/**
-	 * get available viewmodes
-	 * @return array viewmodes
-	 */
-	public function getViewmodes(){
-		$viewmodes = array(
-			//array('key' => 'excerpt', 'text' => t('Excerpt') ),
-		);
-		return apply_filters(Postqueue::FILTER_VIEWMODES,$viewmodes);
 	}
 }

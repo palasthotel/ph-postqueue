@@ -100,6 +100,17 @@ class Postqueue{
 		$paths[] = dirname(__FILE__)."/templates";
 		return $paths;
 	}
+	
+	/**
+	 * get viewmodes for box
+	 * @return array
+	 */
+	public static function getViewmodes(){
+		$viewmodes = array(
+			array('key' => '', 'text' => t('Default') ),
+		);
+		return apply_filters(Postqueue::FILTER_VIEWMODES,$viewmodes);
+	}
 }
 
 global $postqueue;

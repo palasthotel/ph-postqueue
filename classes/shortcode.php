@@ -34,6 +34,8 @@ class Shortcode {
 		
 		add_filter('mce_css', array($this, 'tiny_mce_config') );
 		
+		add_action('wp_ajax_postqueue_data_script', array($this, "postqueue_data_script"));
+		
 	}
 	
 	/**
@@ -131,13 +133,48 @@ class Shortcode {
 		/**
 		 * style for dialog
 		 */
-		wp_enqueue_style( "postqueue", $this->plugin->url . '/css/tinymce.css', array(), 2, 'all' );
+		wp_enqueue_script( "postqueue_data", '/wp-admin/admin-ajax.php?action=postqueue_data_script', array(), 1, 'all' );
+		wp_enqueue_style( "postqueue", $this->plugin->url . '/css/tinymce.css', array("postqueue_data"), 2, 'all' );
 		
 		/**
 		 * add plugin js
 		 */
 		$plugins_array['postqueue'] = $this->plugin->url.'/js/tinymce.js';
 		return $plugins_array;
+	}
+	
+	/**
+	 * javascript data for postqueue tinymce plugin
+	 */
+	public function postqueue_data_script(){
+		header('Content-Type: application/javascript');
+		$queues = $this->plugin->store->get_queues();
+		$viewmodes = \Postqueue::getViewmodes();
+		
+		$items = array();
+		foreach ($queues as $queue){
+			$items[] = array(
+				"text" => $queue->name." [{$queue->slug}]",
+				"value" => $queue->slug,
+			);
+		}
+		
+		$viewmode_items = array();
+		foreach ($viewmodes as $viewmode){
+			$viewmode_items[] = array(
+				"text" => $viewmode["text"],
+				'value' => $viewmode["key"],
+			);
+		}
+		
+		?>
+		window.postqueue_items = <?php echo \json_encode($items); ?>;
+		window.postqueue = {
+			queues: <?php echo \json_encode($items); ?>,
+			viewmodes: <?php echo \json_encode($viewmode_items); ?>,
+		};
+		<?php
+		die();
 	}
 	
 }
