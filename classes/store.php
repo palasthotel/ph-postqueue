@@ -46,7 +46,7 @@ class Store
 
 	/**
 	 * Adds a single relation
-	 * @return  queues array
+	 * @return  array queues
 	 */
 	public function get_queues()
 	{
