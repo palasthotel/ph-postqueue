@@ -30,6 +30,11 @@ class Postqueue{
 	const FILTER_VIEWMODES = "postqueue_viewmodes";
 	
 	/**
+	 * actions
+	 */
+	const ACTION_POSTQUEUE_GRID_BOXES = "postqueue_grid_boxes";
+	
+	/**
 	 * plugin path strings
 	 */
 	public $dir;
@@ -89,6 +94,10 @@ class Postqueue{
 	 */
 	public function grid_load_classes(){
 		require $this->dir."grid-boxes/grid-postqueue-box.php";
+		/**
+		 * add boxes that extend from postqueue box
+		 */
+		do_action(self::ACTION_POSTQUEUE_GRID_BOXES);
 	}
 	
 	/**
