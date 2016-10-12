@@ -11,6 +11,8 @@
 
 $postqueue = $content->postqueue;
 $viewmode = (!empty($content->viewmode))? $content->viewmode: "";
+$offset = (!empty($content->offset))? $content->offset: 0;
+$limit = (!empty($content->limit))? $content->limit: -1;
 
 ?>
 <div class="grid-box<?php echo ($this->style)? " ".$this->style." ": " "; echo implode($this->classes," ")?>">
@@ -32,7 +34,7 @@ $viewmode = (!empty($content->viewmode))? $content->viewmode: "";
 	<?php } ?>
 	
 	<?php
-	echo do_shortcode("[postqueue slug='{$postqueue}' viewmode='{$viewmode}']");
+	echo do_shortcode("[postqueue slug='{$postqueue}' viewmode='{$viewmode}' offset='{$offset}' limit='{$limit}']");
 	?>
 	
 	<?php if($this->epilog != ""){ ?>

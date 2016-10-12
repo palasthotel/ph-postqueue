@@ -56,6 +56,8 @@ class Shortcode {
 		if ( isset( $atts['slug'] ) ) {
 			$slug = $atts['slug'];
 			$viewmode = (!empty($atts['viewmode']))? $atts["viewmode"] : "" ;
+			$offset = (!empty($atts['offset']))? $atts['offset']: 0;
+			$limit = (!empty($atts['limit']))? $atts['limit']: -1;
 			
 			$store = $this->plugin->store;
 			$queue = $store->get_queue_by_slug($slug);
@@ -73,6 +75,8 @@ class Shortcode {
 				'post_status'   => 'publish',
 				'orderby'       => 'post__in',
 				'post_type'     => 'any',
+				'offset'        => $offset,
+				'posts_per_page'=> $limit,
 			);
 			
 			/**

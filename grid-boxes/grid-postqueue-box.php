@@ -7,6 +7,8 @@ class grid_postqueue_box extends grid_list_box
 		parent::__construct();
 		$this->content->postqueue = "";
 		$this->content->viewmode = "";
+		$this->content->offset = 0;
+		$this->content->limit = -1;
 	}
 
 	public function type()
@@ -53,6 +55,17 @@ class grid_postqueue_box extends grid_list_box
 				'selections' => $viewmodes,
 			);
 		}
+		
+		$cs[] = array(
+			'key' => 'offset',
+			'label' => 'Offset',
+			'type' => 'number',
+		);
+		$cs[] = array(
+			'key' => 'limit',
+			'label' => 'Limit	',
+			'type' => 'number',
+		);
 
 		return $cs;
 	}
