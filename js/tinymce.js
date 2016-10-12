@@ -3,6 +3,8 @@
 	
 	if (typeof (tinymce) != "undefined"){
 		
+		// todo: add limit and offset support
+		
 		/**
 		 * Add plugin to tinymce editor
 		 */
