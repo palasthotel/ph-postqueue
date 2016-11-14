@@ -205,10 +205,10 @@
 			 * add button to editor
 			 */
 			editor.addButton('postqueue', {
-				text: 'Postqueue',
+				// text: 'Postqueue',
 				title: "Postqueue",
 				// image: url+'/../images/icon.png',
-				// icon: 'icon dashicons-before dashicons-location-alt',
+				icon: 'icon dashicons-before dashicons-list-view',
 				onclick: function() {
 					/**
 					 * opens jquery dialog
