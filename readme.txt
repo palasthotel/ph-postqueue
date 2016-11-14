@@ -30,45 +30,50 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 
 == Changelog ==
 
+= 1.1.4 =
+ * Theme template moved to theme/plugin-parts/*
+
 = 1.1.3 =
-* Extend grid postqueue box action
+ * Extend grid postqueue box action
 
 = 1.1.2 =
-* Tinymce preview optimized
-* template file
+ * Tinymce preview optimized
+ * template file
 
 = 1.1.1 =
-* Tested up to 4.6.1
+ * Tested up to 4.6.1
 
 = 1.1.0 =
-* UI optimization
-* Shortcode support
+ * UI optimization
+ * Shortcode support
 
 = 1.0.7 =
-* Fixed empty queues bug
+ * Fixed empty queues bug
 
 = 1.0.6 =
-* Post id zero in postqueue fix
+ * Post id zero in postqueue fix
 
 = 1.0.5 =
-* Future posts can be added to queues
+ * Future posts can be added to queues
 
 = 1.0.4 =
-* Title overwrite option
+ * Title overwrite option
 
 = 1.0.3 =
-* Grid box
+ * Grid box
 
 = 1.0.2 =
-* Copy past bugfix
+ * Copy past bugfix
 
 = 1.0.1 =
-* Table prefix bugfix
+ * Table prefix bugfix
 
 = 1.0 =
-* First release
+ * First release
 
 == Upgrade Notice ==
+
+Move theme template from theme/postqueue.php to theme/plugin-parts/postqueue.tpl.php
 
 == Arbitrary section ==
 

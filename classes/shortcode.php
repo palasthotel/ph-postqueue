@@ -10,7 +10,8 @@ namespace Postqueue;
 
 class Shortcode {
 	
-	const TEMPLATE_NAME = "postqueue.php";
+	const THEME_PATH = "plugin-parts";
+	const TEMPLATE_NAME = "postqueue.tpl.php";
 	const SHORTCODE = "postqueue";
 	
 	/**
@@ -83,7 +84,7 @@ class Shortcode {
 			 * get content from template
 			 */
 			ob_start();
-			$template = locate_template(self::TEMPLATE_NAME);
+			$template = locate_template(self::THEME_PATH."/".self::TEMPLATE_NAME);
 			if('' != $template){
 				include $template;
 			} else {
