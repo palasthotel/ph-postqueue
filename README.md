@@ -29,7 +29,7 @@ _$limit_ ===> number of posts use.
 
 Available actions for postqueue plugin.
 
-### Extend postqueue box
+### Extend grid postqueue box
 
 If you want to extend the grid-postqueue-box use this action to register your extending box. Also register all other grid boxes that depend on the postqueue plugin here.
 
