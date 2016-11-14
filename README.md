@@ -61,23 +61,3 @@ function myplugin_postqueue_viewmodes($viewmodes){
 **Parameters:**
 
 _$viewmodes_ ==> Array of Assoc Arrays with key and text.
-
----
-
-## Functions
-
-Public plugin function. Always use ```php function_exists(...)``` before using an function.
- 
-### Get license caption by attachment ID
-
-```php
-$caption = media_license_get_caption($attachment_id)
-```
-
-**Parameters:**
-
-_$attachment_id_ ==> ID of the attachment.
-
-**Return**
-
-_caption_ ===> rendered caption.
