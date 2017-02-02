@@ -52,49 +52,55 @@ class Shortcode {
 	}
 	
 	public function do_shortcode($atts){
-		$result = "";
 		
-		if ( isset( $atts['slug'] ) ) {
-			$slug = $atts['slug'];
-			$viewmode = (!empty($atts['viewmode']))? $atts["viewmode"] : "" ;
-			$offset = (!empty($atts['offset']))? $atts['offset']: 0;
-			$limit = (!empty($atts['limit']))? $atts['limit']: -1;
-			
-			$store = $this->plugin->store;
-			$queue = $store->get_queue_by_slug($slug);
-			
-			$pids = array();
-			foreach ($queue as $item) {
-				$pids[]=$item->post_id;
-			}
-			
-			/**
-			 * build query args for loop
-			 */
-			$query_args = array (
-				'post__in'      => $pids,
-				'post_status'   => 'publish',
-				'orderby'       => 'post__in',
-				'post_type'     => 'any',
-				'offset'        => $offset,
-				'posts_per_page'=> $limit,
-			);
-			
-			/**
-			 * get content from template
-			 */
-			ob_start();
-			$template = locate_template(self::THEME_PATH."/".self::TEMPLATE_NAME);
-			if('' != $template){
-				include $template;
-			} else {
-				include $this->plugin->dir."/templates/".self::TEMPLATE_NAME;
-			}
-			$result = ob_get_contents();
-			ob_end_clean();
-			wp_reset_postdata();
-			
+		if ( ! isset( $atts['slug'] ) ) return '';
+		
+		$slug = $atts['slug'];
+		$viewmode = (!empty($atts['viewmode']))? $atts["viewmode"] : "" ;
+		$offset = (!empty($atts['offset']))? $atts['offset']: 0;
+		$limit = (!empty($atts['limit']))? $atts['limit']: -1;
+		
+		$store = $this->plugin->store;
+		$queue = $store->get_queue_by_slug($slug);
+		
+		$pids = array();
+		foreach ($queue as $item) {
+			$pids[]=$item->post_id;
 		}
+		
+		/**
+		 * if no id in array return
+		 * otherwise wp_query will render all posts
+		 */
+		if( count($pids) < 1 ) return '';
+		
+		/**
+		 * build query args for loop
+		 */
+		$query_args = array (
+			'post__in'      => $pids,
+			'post_status'   => 'publish',
+			'orderby'       => 'post__in',
+			'post_type'     => 'any',
+			'offset'        => $offset,
+			'posts_per_page'=> $limit,
+		);
+		
+		/**
+		 * get content from template
+		 */
+		ob_start();
+		$template = locate_template(self::THEME_PATH."/".self::TEMPLATE_NAME);
+		if('' != $template){
+			include $template;
+		} else {
+			include $this->plugin->dir."/templates/".self::TEMPLATE_NAME;
+		}
+		$result = ob_get_contents();
+		ob_end_clean();
+		wp_reset_postdata();
+			
+		
 		return $result;
 	}
 	

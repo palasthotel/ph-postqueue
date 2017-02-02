@@ -30,6 +30,9 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 
 == Changelog ==
 
+= 1.1.5 =
+ * Empty queue fix
+
 = 1.1.4 =
  * Theme template moved to theme/plugin-parts/*
 
