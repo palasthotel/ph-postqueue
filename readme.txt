@@ -3,8 +3,8 @@ Contributors: edwardbock
 Donate link: http://palasthotel.de/
 Tags: loop, order posts, queue
 Requires at least: 4.0
-Tested up to: 4.6.1
-Stable tag: 1.1.4
+Tested up to: 4.7.2
+Stable tag: 1.1.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -32,6 +32,7 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 
 = 1.1.5 =
  * Empty queue fix
+ * Deleted queue ends in infinity loop fix
 
 = 1.1.4 =
  * Theme template moved to theme/plugin-parts/*
