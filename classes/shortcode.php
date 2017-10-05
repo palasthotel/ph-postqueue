@@ -15,16 +15,11 @@ class Shortcode {
 	const SHORTCODE = "postqueue";
 	
 	/**
-	 * @var \Postqueue
-	 */
-	public $plugin;
-	
-	/**
 	 * Shortcode constructor.
 	 *
-	 * @param \Postqueue $plugin
+	 * @param Plugin $plugin
 	 */
-	public function __construct(\Postqueue $plugin) {
+	public function __construct(Plugin $plugin) {
 		$this->plugin = $plugin;
 		add_shortcode( self::SHORTCODE, array($this, "do_shortcode") );
 		

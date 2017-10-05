@@ -8,7 +8,7 @@ class Store
 {
 
 	/**
-	 * postqueues
+	 * @var null|array
 	 */
 	private $queues;
 

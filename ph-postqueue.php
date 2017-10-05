@@ -1,5 +1,7 @@
 <?php
 
+namespace Postqueue;
+
 /**
  * Create manually ordered postqueues
  *
@@ -7,7 +9,7 @@
  * @wordpress-plugin
  * Plugin Name:       Postqueue
  * Description:       Create manually ordered postqueues
- * Version:           1.1.5
+ * Version:           1.1.6
  * Author:            PALASHOTEL by Edward Bock
  * Author URI:        http://palasthotel.de
  * License:           GPL-2.0+
@@ -21,13 +23,12 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-use Postqueue\Activator;
-
-class Postqueue{
+class Plugin{
 	/**
 	 * filters
 	 */
 	const FILTER_VIEWMODES = "postqueue_viewmodes";
+	const FILTER_POSTQUEUE_EDIT_CAPABILITY = "postqueue_edit_capability";
 	
 	/**
 	 * actions
@@ -43,6 +44,20 @@ class Postqueue{
 	 * @var \Postqueue\Store
 	 */
 	public $store;
+
+	/**
+	 * @var Plugin
+	 */
+	private static $instance;
+	/**
+	 * @return Plugin
+	 */
+	public static function instance(){
+		if(self::$instance == null){
+			self::$instance = new Plugin();
+		}
+		return self::$instance;
+	}
 	
 	/**
 	 * construct grid plugin
@@ -71,19 +86,19 @@ class Postqueue{
 		 * init parts of plugin
 		 */
 		require_once $this->dir . 'classes/store.php';
-		$this->store = new \Postqueue\Store($this);
+		$this->store = new Store();
 		
 		require_once $this->dir . 'classes/ajax.php';
-		new \Postqueue\Ajax($this);
+		new Ajax($this);
 		
 		require_once $this->dir . 'classes/tools.php';
-		new \Postqueue\Tools($this);
+		new Tools($this);
 		
 		require_once $this->dir . 'classes/post.php';
-		new \Postqueue\Post($this);
+		new Post($this);
 		
 		require_once $this->dir . 'classes/shortcode.php';
-		new \Postqueue\Shortcode($this);
+		new Shortcode($this);
 		
 		add_action('grid_load_classes', array($this, 'grid_load_classes') );
 		add_filter("grid_templates_paths", array($this,"template_paths") );
@@ -118,15 +133,9 @@ class Postqueue{
 		$viewmodes = array(
 			array('key' => '', 'text' => t('Default') ),
 		);
-		return apply_filters(Postqueue::FILTER_VIEWMODES,$viewmodes);
+		return apply_filters(Plugin::FILTER_VIEWMODES,$viewmodes);
 	}
 }
+Plugin::instance();
 
-global $postqueue;
-$postqueue = new Postqueue();
-
-/**
- * for backward compatibility
- */
-class PH_Postqueue_Store extends \Postqueue\Store {
-}
+require_once dirname(__FILE__)."/public-functions.php";

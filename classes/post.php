@@ -5,16 +5,16 @@ namespace Postqueue;
 
 class Post {
 	/**
-	 * @var \Store
+	 * @var Store
 	 */
 	public $store;
 	
 	/**
 	 * Post constructor.
 	 *
-	 * @param \Postqueue $plugin
+	 * @param Plugin $plugin
 	 */
-	function __construct(\Postqueue $plugin) {
+	function __construct(Plugin $plugin) {
 		$this->store = $plugin->store;
 		/**
 		 * registers delete_post action that is triggert before post is deleted
@@ -25,7 +25,7 @@ class Post {
 	/**
 	 * triggered when a post is deleted
 	 *
-	 * @param $post_id id of post
+	 * @param $post_id int of post
 	 */
 	public function on_post_delete($post_id)
 	{

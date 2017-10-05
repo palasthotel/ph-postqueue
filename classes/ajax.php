@@ -12,9 +12,9 @@ class Ajax {
 	/**
 	 * Ajax constructor.
 	 *
-	 * @param \Postqueue $plugin plugin object
+	 * @param Plugin $plugin plugin object
 	 */
-	public function __construct(\Postqueue $plugin) {
+	public function __construct(Plugin $plugin) {
 		$this->store = $plugin->store;
 		/**
 		 * Ajax endpoint for adding a new queue
