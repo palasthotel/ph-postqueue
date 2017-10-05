@@ -61,3 +61,18 @@ function myplugin_postqueue_viewmodes($viewmodes){
 **Parameters:**
 
 _$viewmodes_ ==> Array of Assoc Arrays with key and text.
+
+### Postqueue edit capabilities
+
+```php
+add_filter( 'postqueue_edit_capability', 'myplugin_postqueue_edit_capability');
+function postqueue_edit_capability($capabilities){
+	$capabilities = "edit_page";
+	return $capabilities;
+}
+```
+
+**Parameters:**
+
+_$capabilities_ ==> [WordPress capabilities](https://codex.wordpress.org/Roles_and_Capabilities) string
+
