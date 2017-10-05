@@ -87,8 +87,13 @@ class Shortcode {
 		ob_start();
 		$template = locate_template(self::THEME_PATH."/".self::TEMPLATE_NAME);
 		if('' != $template){
+			// theme or child theme
 			include $template;
+		} else if(is_file(get_template_directory()."/".self::THEME_PATH."/".self::TEMPLATE_NAME)) {
+			// parent theme
+			include get_template_directory()."/".self::THEME_PATH."/".self::TEMPLATE_NAME;
 		} else {
+			// plugin
 			include $this->plugin->dir."/templates/".self::TEMPLATE_NAME;
 		}
 		$result = ob_get_contents();
