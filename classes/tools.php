@@ -11,15 +11,11 @@ namespace Postqueue;
 
 class Tools {
 	/**
-	 * @var \Postqueue
-	 */
-	public $plugin;
-	/**
 	 * Ajax constructor.
 	 *
-	 * @param \Postqueue $plugin plugin object
+	 * @param Plugin $plugin plugin object
 	 */
-	public function __construct(\Postqueue $plugin) {
+	public function __construct(Plugin $plugin) {
 		$this->plugin = $plugin;
 		$this->store = $plugin->store;
 		
@@ -35,7 +31,14 @@ class Tools {
 	 */
 	public function tools_page()
 	{
-		add_submenu_page( 'tools.php', 'Postqueues', 'Postqueues', 'manage_options', 'tools-postqueue', array( $this, 'render' ) );
+		add_submenu_page(
+			'tools.php',
+			'Postqueues',
+			'Postqueues',
+			apply_filters(Plugin::FILTER_POSTQUEUE_EDIT_CAPABILITY, 'manage_options'),
+			'tools-postqueue',
+			array( $this, 'render' )
+		);
 	}
 	
 	/**
