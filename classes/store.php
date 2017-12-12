@@ -106,7 +106,7 @@ class Store
 	}
 
   /**
-   * deletes all contents of a queue
+   * clears all contents of a queue
    *
    * @param int $queue_id
    * @return void
@@ -122,18 +122,22 @@ class Store
 
 	public function queue_add_all( $qid, $post_ids ) {
 		foreach ( $post_ids as $position => $post_id ) {
-			$this->queue_add($qid, $post_id, $position);
+			$this->queue_add( $qid, $post_id, $position );
 		}
 	}
 
-	public function queue_add_all_with_title($qid, $post_ids, $titles) {
+	public function queue_add_all_with_title( $qid, $post_ids, $titles ) {
 		for ( $i=0; $i < count($post_ids); $i++ ) {
 			$this->queue_add( $qid, $post_ids[$i], $i, $titles[$i] );
 		}
 	}
 
 	public function queue_add( $queue_id, $post_id, $position = 'last', $title = "" ) {
-  	// @todo add difference between first an last position parameter in order to add posts to queue without knowing the exact position
+  	// add posts to queue without knowing the exact position
+  	if ( 'last' == $position ) {
+    	$position = $this->get_last_position_of_queue( $queue_id );
+    	$position++;
+  	}
 		global $wpdb;
 		$wpdb->insert(
 			$wpdb->prefix."ph_postqueue_contents",
@@ -237,7 +241,7 @@ class Store
    * @return true|false
    */
    public function add_post_to_queue( $post_id, $queue_id ) {
-     return true;
+     $this->queue_add( $queue_id, $post_id );
    }
    
    /**
@@ -246,7 +250,8 @@ class Store
    * @return true|false
    */
    public function remove_post_from_queue( $post_id, $queue_id ) {
-     return true;
+     // @todo not sure if this is enough, because what about position?
+     $this->delete_queue_post( $queue_id, $post_id );
    }
    
    /**
@@ -281,6 +286,20 @@ class Store
   		return true;
 		}
 		return false;
+  }
+  
+  /**
+    * return the last free position in a queue
+    *
+    * @param int $queue_id
+    * @return int $position
+    */
+  public function get_last_position_of_queue( $queue_id ) {
+    global $wpdb;
+		$query = "";
+		$query .= "SELECT MAX(position) FROM " . $wpdb->prefix . "ph_postqueue_contents";
+		$query .= " WHERE queue_id = '" . $queue_id . "'";
+		return $wpdb->get_var( $query );
   }
 }
 ?>

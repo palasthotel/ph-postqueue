@@ -7,12 +7,9 @@
 	 * Start after dom is ready
 	 */
 	$(function() {
-
-		// @todo remove debugging
-		console.log('postqueue-metabox.js loaded!');
 		
 		$('.postqueue-remove').on( 'click', function(e) {
-  		console.log('delete clicked!');
+  		
       let postid = $(this).attr('data-postid');
       let queueid = $(this).attr('data-queueid');
   		let data = {
@@ -27,7 +24,7 @@
     });
     
     $('.postqueue-add').on( 'click', function(e) {
-      console.log('add button clicked!');
+      
       let postqueue_select_value = $(this).parent().find('.postqueue-select').val();
       if( postqueue_select_value != 'none' ) {
         let postid = $(this).attr('data-postid');
