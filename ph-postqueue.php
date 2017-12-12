@@ -10,8 +10,8 @@ namespace Postqueue;
  * Plugin Name:       Postqueue
  * Description:       Create manually ordered postqueues
  * Version:           1.1.6
- * Author:            PALASHOTEL by Edward Bock
- * Author URI:        http://palasthotel.de
+ * Author:            Palasthotel <rezeption@palasthotel.de> (Edward Bock)
+ * Author URI:        https://palasthotel.de
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       postqueue
