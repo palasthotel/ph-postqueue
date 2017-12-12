@@ -26,7 +26,7 @@ class Tools {
 	}
 	
 	/**
-	 * Register the menu page for gallery sharing
+	 * Register the menu page for postqueue page
 	 *
 	 */
 	public function tools_page()
@@ -63,6 +63,13 @@ class Tools {
 			1,
 			false
 		);
+		wp_localize_script( 'postqueue', 'objectL10n', array(
+    	'edit' => esc_html__( 'Edit', 'postqueue' ),
+    	'delete' => esc_html__( 'Delete', 'postqueue' ),
+    	'add_post' => esc_html__( 'Add post', 'postqueue' ),
+    	'cancel' => esc_html__( 'Cancel', 'postqueue' ),
+    	'post_title_or_id' => esc_html__( 'Post title or ID', 'postqueue' ),
+    ) );
 		$store = $this->store;
 		require $this->plugin->dir .'partials/ph-postqueue-editor.tpl.php';
 	}

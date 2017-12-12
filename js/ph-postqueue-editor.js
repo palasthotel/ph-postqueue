@@ -111,9 +111,9 @@
 			var $controls = $("<div>"
 				+'[postqueue slug="'+element.slug+'" viewmode=""]'
 				+" | "
-				+"<a href='#' class='queue-edit'>Bearbeiten</a>"
+				+"<a href='#' class='queue-edit'>"+objectL10n.edit+"</a>"
 				+" | "
-				+"<a href='#' class='queue-delete submitdelete'>Löschen</a>"
+				+"<a href='#' class='queue-delete submitdelete'>"+objectL10n.delete+"</a>"
 				+ feed_link
 				+"</div>")
 				.addClass("queue-controls");
@@ -263,10 +263,10 @@
 			var $item = $(
 				'<li class="queue-item queue-item-set">'
 				+'<div class="drag-handle"></div>'
-				+'<div class="add-post add-post-top">Add Post</div>'
+				+'<div class="add-post add-post-top">'+objectL10n.add_post+'</div>'
 				+'<span>'+title+'</span>'
-				+'<div class="add-post add-post-bottom">Add Post</div>'
-				+'<div class="delete-post">Löschen</div>'
+				+'<div class="add-post add-post-bottom">'+objectL10n.add_post+'</div>'
+				+'<div class="delete-post">'+objectL10n.delete+'</div>'
 				+'</li>');
 			$item.attr("data-post-id", post_id);
 			return $item;
@@ -297,9 +297,9 @@
 			$new_post_item = $(
 				'<li class="queue-item queue-item-new new-post-widget">'
 				+'<div class="new-post-controls">'
-				+'<input class="search-query" type="text" placeholder="Post Titel oder ID" />'
+				+'<input class="search-query" type="text" placeholder="'+objectL10n.post_title_or_id+'" />'
 					// +'<button class="add-new-post">Hinzufügen</button>'
-				+'<button class="cancel-new-post button-secondary delete">Abbrechen</button>'
+				+'<button class="cancel-new-post button-secondary delete">'+objectL10n.cancel+'</button>'
 				+'</div>'
 				+'<ul class="new-posts-list post-suggestions"></ul>'
 				+'</li> ');
