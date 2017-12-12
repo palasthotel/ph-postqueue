@@ -23,7 +23,13 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-class Plugin{
+class Plugin {
+  
+  /**
+	 * Domain for translation
+	 */
+	const DOMAIN = "postqueue";
+
 	/**
 	 * filters
 	 */
@@ -52,8 +58,8 @@ class Plugin{
 	/**
 	 * @return Plugin
 	 */
-	public static function instance(){
-		if(self::$instance == null){
+	public static function instance() {
+		if ( self::$instance == null ) {
 			self::$instance = new Plugin();
 		}
 		return self::$instance;
@@ -62,17 +68,17 @@ class Plugin{
 	/**
 	 * construct grid plugin
 	 */
-	function __construct(){
+	function __construct() {
 		/**
 		 * base paths
 		 */
-		$this->dir = plugin_dir_path(__FILE__);
-		$this->url = plugin_dir_url(__FILE__);
+		$this->dir = plugin_dir_path( __FILE__ );
+		$this->url = plugin_dir_url( __FILE__ );
 		
 		/**
 		 * load translations
 		 */
-		load_plugin_textdomain( 'postqueue', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+		load_plugin_textdomain( self::DOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 		
 		
 		/**
@@ -89,30 +95,33 @@ class Plugin{
 		$this->store = new Store();
 		
 		require_once $this->dir . 'classes/ajax.php';
-		new Ajax($this);
+		new Ajax( $this );
 		
 		require_once $this->dir . 'classes/tools.php';
-		new Tools($this);
+		new Tools( $this );
 		
 		require_once $this->dir . 'classes/post.php';
-		new Post($this);
+		new Post( $this );
 		
 		require_once $this->dir . 'classes/shortcode.php';
-		new Shortcode($this);
+		new Shortcode( $this );
 		
-		add_action('grid_load_classes', array($this, 'grid_load_classes') );
-		add_filter("grid_templates_paths", array($this,"template_paths") );
+		require_once $this->dir . 'classes/metabox.php';
+		new MetaBox( $this );
+		
+		add_action( 'grid_load_classes', array( $this, 'grid_load_classes' ) );
+		add_filter( 'grid_templates_paths', array( $this,'template_paths' ) );
 	}
 	
 	/**
 	 * add box classes
 	 */
-	public function grid_load_classes(){
-		require $this->dir."grid-boxes/grid-postqueue-box.php";
+	public function grid_load_classes() {
+		require $this->dir . "grid-boxes/grid-postqueue-box.php";
 		/**
 		 * add boxes that extend from postqueue box
 		 */
-		do_action(self::ACTION_POSTQUEUE_GRID_BOXES);
+		do_action( self::ACTION_POSTQUEUE_GRID_BOXES );
 	}
 	
 	/**
@@ -120,8 +129,8 @@ class Plugin{
 	 * @param $paths
 	 * @return array
 	 */
-	public function template_paths($paths){
-		$paths[] = dirname(__FILE__)."/grid-templates";
+	public function template_paths( $paths ) {
+		$paths[] = dirname(__FILE__) . "/grid-templates";
 		return $paths;
 	}
 	
@@ -131,11 +140,11 @@ class Plugin{
 	 */
 	public static function getViewmodes(){
 		$viewmodes = array(
-			array('key' => '', 'text' => t('Default') ),
+			array('key' => '', 'text' => __( 'Default', 'postqueue' ) ),
 		);
-		return apply_filters(Plugin::FILTER_VIEWMODES,$viewmodes);
+		return apply_filters( Plugin::FILTER_VIEWMODES, $viewmodes );
 	}
 }
 Plugin::instance();
 
-require_once dirname(__FILE__)."/public-functions.php";
+require_once dirname(__FILE__) . "/public-functions.php";

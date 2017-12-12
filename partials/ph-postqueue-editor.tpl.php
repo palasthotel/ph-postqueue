@@ -9,7 +9,7 @@
 	window.ph_postqueues = <?php echo json_encode($store->get_queues()); ?>;
 
 	//TODO: hard coded?!? please not!
-	window.ph_postqueue_feed_url = "<?php echo get_site_option("ph-postqueue-feeds-url", ""); ?>";
+	window.ph_postqueue_feed_url = "<?php echo get_site_option( 'ph-postqueue-feeds-url', '' ); ?>";
 
 </script>
 <div class="wrap ph-postqueue">
@@ -22,7 +22,7 @@
 		</div>
 
 		<div class="ph-new-queue">
-			<p>»<span class="queue-name"></span>« <?php esc_html_e( 'Create', 'postqueue' ); ?></p>
+			<p>»<span class="queue-name"></span>« <?php esc_html_e( 'Create', Postqueue\Plugin::DOMAIN ); ?></p>
 		</div>
 		
 		<ul class="queues-list">
@@ -33,7 +33,7 @@
 					| 
 					<a href="#" target="_new">RSS-Feed</a> 
 					| 
-					<a href="#"><?php esc_html_e( 'Edit', 'postqueue' ); ?></a>
+					<a href="#"><?php esc_html_e( 'Edit', Postqueue\Plugin::DOMAIN ); ?></a>
 				</div> 
 			</li> -->
 		
@@ -44,8 +44,8 @@
 	<!-- Edit Postqueue -->
 	<div class="ph-the-queue-wrapper">
 		<div class="the-queue-controls">
-			<button class="save-queue button button-primary"><?php esc_html_e( 'Save', 'postqueue' ); ?></button>
-			<button class="cancel-queue button button-secondary"><?php esc_html_e( 'Cancel', 'postqueue' ); ?></button>
+			<button class="save-queue button button-primary"><?php esc_html_e( 'Save', Postqueue\Plugin::DOMAIN ); ?></button>
+			<button class="cancel-queue button button-secondary"><?php esc_html_e( 'Cancel', Postqueue\Plugin::DOMAIN ); ?></button>
 		</div>
 		<ol class="the-queue"></ol>
 	</div>

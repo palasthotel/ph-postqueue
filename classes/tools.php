@@ -15,14 +15,14 @@ class Tools {
 	 *
 	 * @param Plugin $plugin plugin object
 	 */
-	public function __construct(Plugin $plugin) {
+	public function __construct( Plugin $plugin ) {
 		$this->plugin = $plugin;
 		$this->store = $plugin->store;
 		
 		/**
 		 * settings page
 		 */
-		add_action( 'admin_menu', array($this, 'tools_page') );
+		add_action( 'admin_menu', array( $this, 'tools_page' ) );
 	}
 	
 	/**
@@ -35,7 +35,7 @@ class Tools {
 			'tools.php',
 			'Postqueues',
 			'Postqueues',
-			apply_filters(Plugin::FILTER_POSTQUEUE_EDIT_CAPABILITY, 'manage_options'),
+			apply_filters( Plugin::FILTER_POSTQUEUE_EDIT_CAPABILITY, 'manage_options' ),
 			'tools-postqueue',
 			array( $this, 'render' )
 		);
@@ -64,11 +64,11 @@ class Tools {
 			false
 		);
 		wp_localize_script( 'postqueue', 'objectL10n', array(
-    	'edit' => esc_html__( 'Edit', 'postqueue' ),
-    	'delete' => esc_html__( 'Delete', 'postqueue' ),
-    	'add_post' => esc_html__( 'Add post', 'postqueue' ),
-    	'cancel' => esc_html__( 'Cancel', 'postqueue' ),
-    	'post_title_or_id' => esc_html__( 'Post title or ID', 'postqueue' ),
+    	'edit' => esc_html__( 'Edit', Plugin::DOMAIN ),
+    	'delete' => esc_html__( 'Delete', Plugin::DOMAIN ),
+    	'add_post' => esc_html__( 'Add post', Plugin::DOMAIN ),
+    	'cancel' => esc_html__( 'Cancel', Plugin::DOMAIN ),
+    	'post_title_or_id' => esc_html__( 'Post title or ID', Plugin::DOMAIN ),
     ) );
 		$store = $this->store;
 		require $this->plugin->dir .'partials/ph-postqueue-editor.tpl.php';
