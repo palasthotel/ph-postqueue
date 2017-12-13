@@ -62,6 +62,16 @@ class MetaBox {
 	 * @param object $post WordPress post object
 	 */
 	public function render( $post ) {
+  	/**
+		 * Add css and javascript
+		 */
+		wp_enqueue_style(
+			'postqueue-metabox-css',
+			$this->plugin->url . 'css/postqueue-metabox.css',
+			array( ),
+			1,
+			'all'
+		);
 		wp_enqueue_script(
 			'postqueue-metabox',
 			$this->plugin->url . 'js/postqueue-metabox.js',
@@ -70,8 +80,10 @@ class MetaBox {
 			false
 		);
 		wp_localize_script( 'postqueue-metabox', 'objectL10n', array(
-  		// @todo
-    	'edit' => esc_html__( 'Edit', Plugin::DOMAIN ),
+    	'postremoved' => esc_html__( 'Post successfully removed from postqueue.', Plugin::DOMAIN ),
+    	'postadded' => esc_html__( 'Post successfully added to postqueue.', Plugin::DOMAIN ),
+    	'pleasechoose' => esc_html__( 'Please choose a postqueue!', Plugin::DOMAIN ),
+    	'erroroccured' => esc_html__( 'An error occured while sending the request. Please try again later.', Plugin::DOMAIN )
     ) );
 		$store = $this->store;
 		require $this->plugin->dir .'partials/postqueue-metabox.tpl.php';
@@ -84,7 +96,8 @@ class MetaBox {
   	$post_id = intval( $_POST['postid'] );
   	$queue_id = intval( $_POST['queueid'] );
   	$this->store->add_post_to_queue( $post_id, $queue_id );
-  	return true;
+  	echo "Postqueue ID: " . $queue_id;
+  	wp_die(); // this is required to terminate immediately and return a proper response
 	}
 	
 	/**
@@ -94,6 +107,7 @@ class MetaBox {
   	$post_id = intval( $_POST['postid'] );
   	$queue_id = intval( $_POST['queueid'] );
   	$this->store->remove_post_from_queue( $post_id, $queue_id );
-  	return true;
+  	echo "Postqueue ID: " . $queue_id;
+  	wp_die(); // this is required to terminate immediately and return a proper response
 	}
 }

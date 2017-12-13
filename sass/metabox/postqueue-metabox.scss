@@ -1,0 +1,48 @@
+/**
+ * Styles for the postqueue metabox
+ * @author Jana Eggebrecht <je@palasthotel.de>
+ * @modified 2017-13-12
+ */
+ 
+/**
+ * colors
+ */
+$highlight-blue:  #0074a2;
+$active-gray: gray;
+$inactive-gray: lighten($active-gray, 20);
+$background-gray: #222;
+$error: #dd3d36;
+$messages-background: #fff98d;
+
+.postqueue-metabox-wrapper {
+  
+  .messages {
+    background: $messages-background;
+    padding: 10px;
+    &:empty {
+      display: none;
+    }
+    &.error {
+      background: $error;
+      color: white;
+    }
+  }
+  
+  .is-loading {
+    opacity: 0.5;
+  }
+  
+  .postqueue-remove {
+    cursor: pointer;
+    &:hover {
+      color: $error;
+    }
+  }
+  
+  .postqueue-metabox-postqueuelist-wrapper {
+    li {
+      list-style: square;
+      list-style-position: inside 
+    }
+  }
+}
