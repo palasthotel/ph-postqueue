@@ -84,7 +84,8 @@ class MetaBox {
     	'postadded' => esc_html__( 'Post successfully added to postqueue.', Plugin::DOMAIN ),
     	'pleasechoose' => esc_html__( 'Please choose a postqueue!', Plugin::DOMAIN ),
     	'erroroccured' => esc_html__( 'An error occured while sending the request. Please try again later.', Plugin::DOMAIN ),
-    	'removepostfromthispostqueue' => esc_html__( 'Remove post from this postqueue.', Plugin::DOMAIN )
+    	'removepostfromthispostqueue' => esc_html__( 'Remove post from this postqueue.', Plugin::DOMAIN ),
+    	'notstoredyet' => esc_html__( 'This post is not saved in any postqueue yet. You can add it to one below.', Plugin::DOMAIN )
     ) );
 		$store = $this->store;
 		require $this->plugin->dir .'partials/postqueue-metabox.tpl.php';

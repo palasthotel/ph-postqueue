@@ -9,34 +9,9 @@
 	$(function() {
 		
 		var $messages = $('.postqueue-metabox-wrapper').find('.messages');
+		postqueue_check_empty_list();
 		
-		$('.postqueue-remove').on( 'click', function(e) {
-  		var $this = $(this);
-  		let $parent = $this.closest('.postqueue-metabox-postqueuelist-wrapper');
-  		$parent.addClass('is-loading');
-      let postid = $this.data('postid');
-      let queueid = $this.data('queueid');
-      let queuename = $this.data('queuename');
-  		let data = {
-  			'action': 'postqueue_remove_post',
-  			'postid': postid,
-  			'queueid': queueid
-  		};
-      
-  		jQuery.post( ajaxurl, data, function(response) {
-  			if( response <= 0 ) {
-    			$messages.text(objectL10n.erroroccured);
-    			$messages.addClass('error');
-  			} else {
-    			$messages.text(objectL10n.postremoved);
-    			$messages.removeClass('error');
-    			postqueue_metabox_remove_listitem( queueid, queuename, postid );
-    			postqueue_metabox_add_selectoption( queueid, queuename, postid );
-  			}
-  			$parent.removeClass('is-loading');
-  			
-  		});
-    });
+		postqueue_add_remove_eventlisteners();
     
     $('.postqueue-add').on( 'click', function(e) {
       let $parent = $(this).closest('.postqueue-metabox-postqueueselect-wrapper');
@@ -63,6 +38,7 @@
       			$messages.removeClass('error');
       			postqueue_metabox_remove_selectoption( queueid, queuename, postid );
       			postqueue_metabox_add_listitem( queueid, queuename, postid );
+      			postqueue_check_empty_list();
     			}
     			$parent.removeClass('is-loading');
     		});
@@ -94,6 +70,7 @@
   function postqueue_metabox_add_listitem( queueid, queuename, postid ) {
     let $wrapper = $('.postqueue-metabox-wrapper').find('.postqueue-metabox-postqueuelist-wrapper');
     $wrapper.find('ul').append('<li>'+queuename+'<span class="dashicons dashicons-no postqueue-remove" data-queueid="'+queueid+'" data-postid="'+postid+'" title="'+objectL10n.removepostfromthispostqueue+'" data-queuename="'+queuename+'"></span></li>');
+    postqueue_add_remove_eventlisteners();
   }
   /*
    * helper function, removes listitem from metabox DOM
@@ -102,4 +79,48 @@
     let $wrapper = $('.postqueue-metabox-wrapper').find('.postqueue-metabox-postqueuelist-wrapper');
     $wrapper.find("[data-queueid='" + queueid + "']").closest('li').remove();
   }
+  
+  /*
+   * helper function, checks if list is empty and prints a text if so
+   */
+  function postqueue_check_empty_list() {
+    let $wrapper = $('.postqueue-metabox-wrapper').find('.postqueue-metabox-postqueuelist-wrapper ul');
+    if( !$wrapper.html().trim() ) {
+      $wrapper.parent().append('<span class="postqueue-metabox-postqueuelist-emptyinfo">'+objectL10n.notstoredyet+'</span>');
+    } else {
+      $wrapper.parent().find('.postqueue-metabox-postqueuelist-emptyinfo').remove();
+    }
+  }
+  
+  function postqueue_add_remove_eventlisteners() {
+    $('.postqueue-remove').on( 'click', function(e) {
+  		var $this = $(this);
+  		let $parent = $this.closest('.postqueue-metabox-postqueuelist-wrapper');
+  		$parent.addClass('is-loading');
+      let postid = $this.data('postid');
+      let queueid = $this.data('queueid');
+      let queuename = $this.data('queuename');
+  		let data = {
+  			'action': 'postqueue_remove_post',
+  			'postid': postid,
+  			'queueid': queueid
+  		};
+      
+  		jQuery.post( ajaxurl, data, function(response) {
+  			if( response <= 0 ) {
+    			$messages.text(objectL10n.erroroccured);
+    			$messages.addClass('error');
+  			} else {
+    			$messages.text(objectL10n.postremoved);
+    			$messages.removeClass('error');
+    			postqueue_metabox_remove_listitem( queueid, queuename, postid );
+    			postqueue_metabox_add_selectoption( queueid, queuename, postid );
+    			postqueue_check_empty_list();
+  			}
+  			$parent.removeClass('is-loading');
+  			
+  		});
+    });
+  }
+
 })( jQuery );

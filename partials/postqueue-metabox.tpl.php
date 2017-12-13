@@ -15,16 +15,12 @@
       $postqueues = $store->get_queues_for_post( get_the_ID() );
     ?>
     <h4><?php esc_html_e( 'Linked postqueues', Postqueue\Plugin::DOMAIN ); ?></h4>
-    <?php if ( count( $postqueues ) > 0 ): ?>
-      <ul>
+    <ul>
       <?php foreach ( $postqueues as $postqueue ): ?>
       <?php $postqueue = $postqueue[0]; ?>
         <li><?php echo $postqueue->name; ?> <span class="dashicons dashicons-no postqueue-remove" data-queueid="<?php echo $postqueue->queue_id; ?>" data-postid="<?php echo get_the_ID(); ?>" title="<?php esc_html_e( 'Remove post from this postqueue.', Postqueue\Plugin::DOMAIN ); ?>" data-queuename="<?php echo $postqueue->name; ?>"></span></li>
       <?php endforeach; ?>
-      </ul>
-    <?php else: ?>
-      <?php esc_html_e( 'This post is not saved in any postqueue yet. You can add it to one below.', Postqueue\Plugin::DOMAIN ); ?><br /><br />
-    <?php endif; ?>
+    </ul>
   </div>
   
   <hr />
