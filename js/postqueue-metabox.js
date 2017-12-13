@@ -11,7 +11,7 @@
 		var $messages = $('.postqueue-metabox-wrapper').find('.messages');
 		postqueue_check_empty_list();
 		
-		postqueue_add_remove_eventlisteners();
+		postqueue_add_remove_eventlisteners( $messages );
     
     $('.postqueue-add').on( 'click', function(e) {
       let $parent = $(this).closest('.postqueue-metabox-postqueueselect-wrapper');
@@ -92,7 +92,7 @@
     }
   }
   
-  function postqueue_add_remove_eventlisteners() {
+  function postqueue_add_remove_eventlisteners( $messages ) {
     $('.postqueue-remove').on( 'click', function(e) {
   		var $this = $(this);
   		let $parent = $this.closest('.postqueue-metabox-postqueuelist-wrapper');
