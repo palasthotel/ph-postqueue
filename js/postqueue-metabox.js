@@ -20,11 +20,12 @@
   		};
       
   		jQuery.post( ajaxurl, data, function(response) {
-  			if( response != 0 ) {
-    			$messages.text(objectL10n.postremoved);
-  			} else {
+  			if( response <= 0 ) {
     			$messages.text(objectL10n.erroroccured);
     			$messages.addClass('error');
+  			} else {
+    			$messages.text(objectL10n.postremoved);
+    			$messages.removeClass('error');
   			}
   			$parent.removeClass('is-loading');
   			
@@ -46,11 +47,12 @@
     		};
         
     		jQuery.post( ajaxurl, data, function(response) {
-          if( response != 0 ) {
-      			$messages.text(objectL10n.postadded);
-    			} else {
-      			$messages.text(objectL10n.erroroccured);
+          if( response <= 0 ) {
+            $messages.text(objectL10n.erroroccured);
       			$messages.addClass('error');
+    			} else {
+      			$messages.text(objectL10n.postadded);
+      			$messages.removeClass('error');
     			}
     			$parent.removeClass('is-loading');
     		});
