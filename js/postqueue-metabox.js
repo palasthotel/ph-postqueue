@@ -70,7 +70,7 @@
   function postqueue_metabox_add_listitem( queueid, queuename, postid ) {
     let $wrapper = $('.postqueue-metabox-wrapper').find('.postqueue-metabox-postqueuelist-wrapper');
     $wrapper.find('ul').append('<li>'+queuename+'<span class="dashicons dashicons-no postqueue-remove" data-queueid="'+queueid+'" data-postid="'+postid+'" title="'+objectL10n.removepostfromthispostqueue+'" data-queuename="'+queuename+'"></span></li>');
-    postqueue_add_remove_eventlisteners();
+    postqueue_add_remove_eventlisteners( $('.postqueue-metabox-wrapper').find('.messages') );
   }
   /*
    * helper function, removes listitem from metabox DOM
