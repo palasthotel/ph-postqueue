@@ -19,7 +19,7 @@
       <ul>
       <?php foreach ( $postqueues as $postqueue ): ?>
       <?php $postqueue = $postqueue[0]; ?>
-        <li><?php echo $postqueue->name; ?> <span class="dashicons dashicons-no postqueue-remove" data-queueid="<?php echo $postqueue->queue_id; ?>" data-postid="<?php echo get_the_ID(); ?>" title="<?php esc_html_e( 'Remove post from this postqueue.', Postqueue\Plugin::DOMAIN ); ?>"></span></li>
+        <li><?php echo $postqueue->name; ?> <span class="dashicons dashicons-no postqueue-remove" data-queueid="<?php echo $postqueue->queue_id; ?>" data-postid="<?php echo get_the_ID(); ?>" title="<?php esc_html_e( 'Remove post from this postqueue.', Postqueue\Plugin::DOMAIN ); ?>" data-queuename="<?php echo $postqueue->name; ?>"></span></li>
       <?php endforeach; ?>
       </ul>
     <?php else: ?>
@@ -38,7 +38,7 @@
         <option value="none">-- <?php esc_html_e( 'choose', Postqueue\Plugin::DOMAIN ); ?> --</option>
       <?php foreach ( $all_postqueues as $postqueue ): ?>
         <?php if( !$store->is_post_in_queue( get_the_ID(), $postqueue->id) ): ?>
-          <option value="<?php echo $postqueue->id; ?>"><?php echo $postqueue->name; ?></option>
+          <option value="<?php echo $postqueue->id; ?>" data-queuename="<?php echo $postqueue->name; ?>"><?php echo $postqueue->name; ?></option>
         <?php endif; ?>
       <?php endforeach; ?>
       </select>
