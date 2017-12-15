@@ -94,7 +94,7 @@
 
   function postqueue_add_remove_eventlisteners( $messages ) {
     $('.postqueue-remove').on( 'click', function(e) {
-  		var $this = $(this);
+  		const $this = $(this);
   		let $parent = $this.closest('.postqueue-metabox-postqueuelist-wrapper');
   		$parent.addClass('is-loading');
       let postid = $this.data('postid');
