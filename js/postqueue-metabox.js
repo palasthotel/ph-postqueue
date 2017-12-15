@@ -1,24 +1,24 @@
 /**
  * Javascript for postqueue metabox functionality
  */
-(function( $ ) {
+(function( $, objectL10n ) {
 	'use strict';
 	/**
 	 * Start after dom is ready
 	 */
 	$(function() {
-		
-		var $messages = $('.postqueue-metabox-wrapper').find('.messages');
+
+		const $messages = $('.postqueue-metabox-wrapper').find('.messages');
 		postqueue_check_empty_list();
-		
+
 		postqueue_add_remove_eventlisteners( $messages );
-    
+
     $('.postqueue-add').on( 'click', function(e) {
       let $parent = $(this).closest('.postqueue-metabox-postqueueselect-wrapper');
   		$parent.addClass('is-loading');
       let postqueue_select_value = $parent.find('.postqueue-select').val();
 
-      if( postqueue_select_value != 'none' ) {
+      if( postqueue_select_value !== 'none' ) {
         let postid = $(this).attr('data-postid');
         let queueid = postqueue_select_value;
         let $selectedoption = $parent.find('[value="' + postqueue_select_value + '"]');
@@ -28,7 +28,7 @@
     			'postid': postid,
     			'queueid': queueid
     		};
-        
+
     		jQuery.post( ajaxurl, data, function(response) {
           if( response <= 0 ) {
             $messages.text(objectL10n.erroroccured);
@@ -49,7 +49,7 @@
       }
     });
 	});
-	
+
 	/*
    * helper function, adds selectoption to metabox DOM
    */
@@ -79,7 +79,7 @@
     let $wrapper = $('.postqueue-metabox-wrapper').find('.postqueue-metabox-postqueuelist-wrapper');
     $wrapper.find("[data-queueid='" + queueid + "']").closest('li').remove();
   }
-  
+
   /*
    * helper function, checks if list is empty and prints a text if so
    */
@@ -91,7 +91,7 @@
       $wrapper.parent().find('.postqueue-metabox-postqueuelist-emptyinfo').remove();
     }
   }
-  
+
   function postqueue_add_remove_eventlisteners( $messages ) {
     $('.postqueue-remove').on( 'click', function(e) {
   		var $this = $(this);
@@ -105,7 +105,7 @@
   			'postid': postid,
   			'queueid': queueid
   		};
-      
+
   		jQuery.post( ajaxurl, data, function(response) {
   			if( response <= 0 ) {
     			$messages.text(objectL10n.erroroccured);
@@ -118,9 +118,9 @@
     			postqueue_check_empty_list();
   			}
   			$parent.removeClass('is-loading');
-  			
+
   		});
     });
   }
 
-})( jQuery );
+})( jQuery, PostqueueMetaBoxL10n );
