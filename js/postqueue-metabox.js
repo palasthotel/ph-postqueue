@@ -93,6 +93,7 @@
   }
   
   function postqueue_add_remove_eventlisteners( $messages ) {
+    $('.postqueue-remove').off( 'click' ); //remove all click listeners and add them again
     $('.postqueue-remove').on( 'click', function(e) {
   		var $this = $(this);
   		let $parent = $this.closest('.postqueue-metabox-postqueuelist-wrapper');
