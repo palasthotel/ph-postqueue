@@ -1,10 +1,10 @@
 === Postqueue ===
-Contributors: edwardbock
+Contributors: edwardbock, janame
 Donate link: http://palasthotel.de/
 Tags: loop, order posts, queue
 Requires at least: 4.0
-Tested up to: 4.8.2
-Stable tag: 1.1.6
+Tested up to: 4.9.1
+Stable tag: 1.2.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -29,6 +29,9 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 
 
 == Changelog ==
+
+= 1.2.0 =
+ * New metabox that displays postqueues related to and lets you add post to postqueues
 
 = 1.1.6 =
  * Modify postqueue rights filter
