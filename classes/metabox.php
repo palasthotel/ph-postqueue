@@ -32,10 +32,10 @@ class MetaBox {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		
 		/**
-     * register ajax callbacks for this metabox
-     */
-     add_action( 'wp_ajax_postqueue_add_post', array( $this, 'ajax_callback_add_post' ) );
-     add_action( 'wp_ajax_postqueue_remove_post', array( $this, 'ajax_callback_remove_post' ) );
+	     * register ajax callbacks for this metabox
+	     */
+	     add_action( 'wp_ajax_postqueue_add_post', array( $this, 'ajax_callback_add_post' ) );
+	     add_action( 'wp_ajax_postqueue_remove_post', array( $this, 'ajax_callback_remove_post' ) );
 	}
 
 	/**
@@ -79,14 +79,14 @@ class MetaBox {
 			1,
 			false
 		);
-		wp_localize_script( 'postqueue-metabox', 'objectL10n', array(
-    	'postremoved' => esc_html__( 'Post successfully removed from postqueue.', Plugin::DOMAIN ),
-    	'postadded' => esc_html__( 'Post successfully added to postqueue.', Plugin::DOMAIN ),
-    	'pleasechoose' => esc_html__( 'Please choose a postqueue!', Plugin::DOMAIN ),
-    	'erroroccured' => esc_html__( 'An error occured while sending the request. Please try again later.', Plugin::DOMAIN ),
-    	'removepostfromthispostqueue' => esc_html__( 'Remove post from this postqueue.', Plugin::DOMAIN ),
-    	'notstoredyet' => esc_html__( 'This post is not saved in any postqueue yet. You can add it to one below.', Plugin::DOMAIN )
-    ) );
+		wp_localize_script( 'postqueue-metabox', 'PostqueueMetaBoxL10n', array(
+	        'postremoved' => esc_html__( 'Post successfully removed from postqueue.', Plugin::DOMAIN ),
+	        'postadded' => esc_html__( 'Post successfully added to postqueue.', Plugin::DOMAIN ),
+	        'pleasechoose' => esc_html__( 'Please choose a postqueue!', Plugin::DOMAIN ),
+	        'erroroccured' => esc_html__( 'An error occured while sending the request. Please try again later.', Plugin::DOMAIN ),
+	        'removepostfromthispostqueue' => esc_html__( 'Remove post from this postqueue.', Plugin::DOMAIN ),
+	        'notstoredyet' => esc_html__( 'This post is not saved in any postqueue yet. You can add it to one below.', Plugin::DOMAIN )
+	    ));
 		$store = $this->store;
 		require $this->plugin->dir .'partials/postqueue-metabox.tpl.php';
 	}
@@ -95,21 +95,21 @@ class MetaBox {
    * Callback function for the add post action
    */
 	function ajax_callback_add_post() {
-  	$post_id = intval( $_POST['postid'] );
-  	$queue_id = intval( $_POST['queueid'] );
-  	$this->store->add_post_to_queue( $post_id, $queue_id );
-  	echo "Postqueue ID: " . $queue_id;
-  	wp_die(); // this is required to terminate immediately and return a proper response
+	    $post_id = intval( $_POST['postid'] );
+	    $queue_id = intval( $_POST['queueid'] );
+	    $this->store->add_post_to_queue( $post_id, $queue_id );
+	    echo "Postqueue ID: " . $queue_id;
+	    wp_die(); // this is required to terminate immediately and return a proper response
 	}
 	
 	/**
    * Callback function for the remove post action
    */
 	function ajax_callback_remove_post() {
-  	$post_id = intval( $_POST['postid'] );
-  	$queue_id = intval( $_POST['queueid'] );
-  	$this->store->remove_post_from_queue( $post_id, $queue_id );
-  	echo "Postqueue ID: " . $queue_id;
-  	wp_die(); // this is required to terminate immediately and return a proper response
+	    $post_id = intval( $_POST['postid'] );
+	    $queue_id = intval( $_POST['queueid'] );
+	    $this->store->remove_post_from_queue( $post_id, $queue_id );
+	    echo "Postqueue ID: " . $queue_id;
+	    wp_die(); // this is required to terminate immediately and return a proper response
 	}
 }

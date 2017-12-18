@@ -11,19 +11,19 @@
 		/**
 		 * queue list section
 		 */
-		var $queues_widget = $(".ph-postqueues-widget");
-		var $queue_name = $queues_widget.find(".ph-postqueue-name");
-		var $new_queue = $queues_widget.find(".ph-new-queue");
-		var $new_queue_name = $new_queue.find(".queue-name");
-		var $queue_list = $queues_widget.find(".queues-list");
-		var $postqueue_name_display = $(".ph-postqueues-name-display");
+		const $queues_widget = $(".ph-postqueues-widget");
+		const $queue_name = $queues_widget.find(".ph-postqueue-name");
+		const $new_queue = $queues_widget.find(".ph-new-queue");
+		const $new_queue_name = $new_queue.find(".queue-name");
+		const $queue_list = $queues_widget.find(".queues-list");
+		const $postqueue_name_display = $(".ph-postqueues-name-display");
 
 		/**
 		 * handle new queue button
 		 */
 		$queue_name.on("change", function(e){
 			$new_queue.removeClass("ph-error");
-			if(this.value == ""){
+			if(this.value === ""){
 				$new_queue.removeClass("ph-active");
 			} else {
 				$new_queue.addClass("ph-active");
@@ -38,8 +38,8 @@
 			/**
 			 * if enter try to save postqueue
 			 */
-			var code = e.keyCode || e.which;
-			if(code == 13)
+			const code = e.keyCode || e.which;
+			if(code === 13)
 			{
 				$new_queue.trigger("click");
 				return;
@@ -47,11 +47,11 @@
 			/**
 			 * else filter queues
 			 */
-			var query = this.value.toLowerCase();
+			const query = this.value.toLowerCase();
 			$queue_list.children().each(function(index, element){
-				var $element = $(element);
-				var lower_name = $element.attr("data-name").toLowerCase();
-				if( query == "" || lower_name.indexOf(query) >= 0 )
+				const $element = $(element);
+				const lower_name = $element.attr("data-name").toLowerCase();
+				if( query === "" || lower_name.indexOf(query) >= 0 )
 				{
 					$element.show();
 				} else {
@@ -99,16 +99,16 @@
 		 */
 		function render_queue_item(element)
 		{
-			var $name = $("<div>"+element.name+"</div>")
+			const $name = $("<div>"+element.name+"</div>")
 				.addClass("queue-name");
-			var feed_link = "";
-			if(window.ph_postqueue_feed_url  != "")
+			let feed_link = "";
+			if(window.ph_postqueue_feed_url  !== "")
 			{
 				feed_link+= " | <a href='/";
 				feed_link+= window.ph_postqueue_feed_url+"/"+element.slug;
 				feed_link+= "' target='_new'>RSS-Feed</a>";
 			}
-			var $controls = $("<div>"
+			const $controls = $("<div>"
 				+'[postqueue slug="'+element.slug+'" viewmode=""]'
 				+" | "
 				+"<a href='#' class='queue-edit'>"+objectL10n.edit+"</a>"
@@ -117,7 +117,7 @@
 				+ feed_link
 				+"</div>")
 				.addClass("queue-controls");
-			var $li = $("<li></li>")
+			const $li = $("<li></li>")
 				.addClass("queue")
 				.attr("data-id", element.id)
 				.attr("data-slug", element.slug)
@@ -150,12 +150,12 @@
 		 */
 		$queue_list.on("click", ".queue-edit", function(e){
 			e.preventDefault();
-			var $this = $(this);
-			var $queue = $this.parents(".queue");
+			const $this = $(this);
+			const $queue = $this.parents(".queue");
 			$postqueue_name_display.text($queue.attr("data-name"));
 			$queues_widget.hide();
 			$the_queue_wrapper.show();
-			var queue_id = $queue.attr("data-id");
+			const queue_id = $queue.attr("data-id");
 			$the_queue.empty();
 			$.ajax({
 				url: "/wp-admin/admin-ajax.php?action=ph_postqueue_load_queue",
@@ -187,9 +187,9 @@
 		 */
 		$queue_list.on("click", ".queue-delete", function(e){
 			e.preventDefault();
-			var $this = $(this);
-			var $queue = $this.parents(".queue");
-			var queue_id = $queue.attr("data-id");
+			const $this = $(this);
+			const $queue = $this.parents(".queue");
+			const queue_id = $queue.attr("data-id");
 			$.ajax({
 				url: "/wp-admin/admin-ajax.php?action=ph_postqueue_delete_queue",
 				dataType: "json",
@@ -213,12 +213,12 @@
 		/**
 		 * queue section
 		 */
-		var $the_queue_wrapper = $(".ph-the-queue-wrapper");
-		var $the_queue = $the_queue_wrapper.find(".the-queue");
-		var $new_post_item = null;
-		var $new_posts_list = null;
+		const $the_queue_wrapper = $(".ph-the-queue-wrapper");
+		const $the_queue = $the_queue_wrapper.find(".the-queue");
+		let $new_post_item = null;
+		let $new_posts_list = null;
 
-		var post_autocomplete_interval = null;
+		let post_autocomplete_interval = null;
 
 		/**
 		 * make it sortable
@@ -260,7 +260,7 @@
 		 * build new queue list item
 		 */
 		function render_post_item(post_id, title){
-			var $item = $(
+			const $item = $(
 				'<li class="queue-item queue-item-set">'
 				+'<div class="drag-handle"></div>'
 				+'<div class="add-post add-post-top">'+objectL10n.add_post+'</div>'
@@ -275,7 +275,7 @@
 		 * add new post
 		 */
 		$the_queue_wrapper.on("click", ".add-post", function(e){
-			var $this = $(this);
+			const $this = $(this);
 			$the_queue.addClass("prevent-add-post");
 			if($this.hasClass("add-post-top"))
 			{
@@ -288,7 +288,7 @@
 		 * delete post from queue
 		 */
 		$the_queue_wrapper.on("click", ".delete-post", function(e){
-			var $this = $(this).parents(".queue-item").remove();
+			$(this).parents(".queue-item").remove();
 		});
 		/**
 		 * build add post list item
@@ -313,9 +313,9 @@
 		 * listen to input of post search
 		 */
 		$the_queue.on("keyup", ".search-query", function(e){
-			var query = this.value;
+			const query = this.value;
 			clearTimeout(post_autocomplete_interval);
-			if(query != "" && query.length > 0)
+			if(query !== "" && query.length > 0)
 			{
 				post_autocomplete_interval = setTimeout(function(){
 					$.ajax({
@@ -327,7 +327,7 @@
 						success: function( data ) {
 							$new_posts_list.empty();
 							$.each(data.result.posts, function(index, post){
-								var $post = $("<li></li>");
+								const $post = $("<li></li>");
 								$post.text(post.post_title);
 								$post.attr("data-post-id", post.post_id);
 								$post.addClass("post-suggestion");
@@ -354,11 +354,11 @@
 		 * save post in queue
 		 */
 		$the_queue_wrapper.on("click", ".post-suggestion", function(e){
-			var $suggestion_item = $(this);
-			var post_id = $suggestion_item.attr("data-post-id");
-			var $queue_item = $suggestion_item.parents(".queue-item");
+			const $suggestion_item = $(this);
+			const post_id = $suggestion_item.attr("data-post-id");
+			const $queue_item = $suggestion_item.parents(".queue-item");
 			$queue_item.attr("data-post-id", post_id);
-			var title = $suggestion_item.text();
+			const title = $suggestion_item.text();
 			$the_queue.removeClass("prevent-add-post");
 			$queue_item.replaceWith( render_post_item( post_id, title ) );
 		});
@@ -370,10 +370,10 @@
 			 * get all post ids of queue
 			 * @type {Array}
 			 */
-			var items = [];
+			const items = [];
 			$the_queue.children(".queue-item").each(function(index, element){
-				var $element = $(element);
-				var post_id = parseInt( $element.attr("data-post-id") );
+				const $element = $(element);
+				const post_id = parseInt( $element.attr("data-post-id") );
 				if(post_id > 0){
 					items.push(parseInt( $element.attr("data-post-id") ));
 				}

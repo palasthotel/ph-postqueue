@@ -134,7 +134,7 @@ class Store
 
 	public function queue_add( $queue_id, $post_id, $position = 'last', $title = "" ) {
   	// add posts to queue without knowing the exact position
-  	if ( 'last' == $position ) {
+  	if ( 'last' === $position ) {
     	$position = $this->get_last_position_of_queue( $queue_id );
     	$position++;
   	}
