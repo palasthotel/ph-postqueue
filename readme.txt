@@ -1,5 +1,5 @@
 === Postqueue ===
-Contributors: edwardbock, janame
+Contributors: palasthotel, edwardbock, janame
 Donate link: http://palasthotel.de/
 Tags: loop, order posts, queue
 Requires at least: 4.0
