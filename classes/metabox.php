@@ -43,6 +43,8 @@ class MetaBox {
 	* Goes through screens (post types) and adds the meta box.
 	*/
 	public function add_meta_boxes() {
+
+		if(!current_user_can($this->plugin->tools->getCapability())) return;
 		
 		foreach ( $this->screens as $screen ) {
 			add_meta_box(

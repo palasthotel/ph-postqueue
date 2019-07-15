@@ -24,7 +24,14 @@ class Tools {
 		 */
 		add_action( 'admin_menu', array( $this, 'tools_page' ) );
 	}
-	
+
+	/**
+	 * @return string
+	 */
+	public function getCapability(){
+		return apply_filters( Plugin::FILTER_POSTQUEUE_EDIT_CAPABILITY, 'manage_options' );
+	}
+
 	/**
 	 * Register the menu page for postqueue page
 	 *
@@ -35,7 +42,7 @@ class Tools {
 			'tools.php',
 			'Postqueues',
 			'Postqueues',
-			apply_filters( Plugin::FILTER_POSTQUEUE_EDIT_CAPABILITY, 'manage_options' ),
+			$this->getCapability(),
 			'tools-postqueue',
 			array( $this, 'render' )
 		);

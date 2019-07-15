@@ -99,7 +99,7 @@ class Plugin {
 		new Ajax( $this );
 		
 		require_once $this->dir . 'classes/tools.php';
-		new Tools( $this );
+		$this->tools = new Tools( $this );
 		
 		require_once $this->dir . 'classes/post.php';
 		new Post( $this );
