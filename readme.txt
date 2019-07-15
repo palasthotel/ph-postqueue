@@ -3,8 +3,8 @@ Contributors: palasthotel, edwardbock, janame
 Donate link: http://palasthotel.de/
 Tags: loop, order posts, queue
 Requires at least: 4.0
-Tested up to: 4.9.1
-Stable tag: 1.2.0
+Tested up to: 5.2.1
+Stable tag: 1.2.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -29,6 +29,10 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 
 
 == Changelog ==
+
+= 1.2.0 =
+ * Optimization: New filter for default add to postqueue behavior of post meta box.
+ * Security fix: Check capabilities within ajax calls.
 
 = 1.2.0 =
  * New metabox that displays postqueues related to and lets you add post to postqueues
