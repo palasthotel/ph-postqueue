@@ -15,6 +15,7 @@ class Ajax {
 	 * @param Plugin $plugin plugin object
 	 */
 	public function __construct(Plugin $plugin) {
+		$this->plugin = $plugin;
 		$this->store = $plugin->store;
 		/**
 		 * Ajax endpoint for adding a new queue
@@ -48,6 +49,9 @@ class Ajax {
 	 */
 	public function create_queue()
 	{
+
+		if(!current_user_can($this->plugin->tools->getCapability())) return;
+
 		$name = sanitize_text_field($_GET["queue_name"]);
 		
 		$result = $this->store->create($name);
@@ -65,6 +69,9 @@ class Ajax {
 	 */
 	public function load_queue()
 	{
+
+		if(!current_user_can($this->plugin->tools->getCapability())) return;
+
 		$queue_id = intval($_GET["queue_id"]);
 		
 		$result = $this->store->get_queue_by_id($queue_id);
@@ -76,6 +83,8 @@ class Ajax {
 	 */
 	public function delete_queue()
 	{
+		if(!current_user_can($this->plugin->tools->getCapability())) return;
+
 		$result = (object)array();
 		$queue_id = intval($_GET["queue_id"]);
 		
@@ -90,6 +99,9 @@ class Ajax {
 	
 	public function save_post_items()
 	{
+
+		if(!current_user_can($this->plugin->tools->getCapability())) return;
+
 		$result = (object)array();
 		$result->queue_id = intval($_GET["queue_id"]);
 		$result->items = $_GET["items"];
@@ -107,6 +119,9 @@ class Ajax {
 	 */
 	public function delete_post()
 	{
+
+		if(!current_user_can($this->plugin->tools->getCapability())) return;
+
 		$result = (object)array();
 		$queue_id = intval($_GET["queue_id"]);
 		$post_id = intval($_GET["post_id"]);
@@ -115,6 +130,9 @@ class Ajax {
 	
 	public function search_posts()
 	{
+
+		if(!current_user_can($this->plugin->tools->getCapability())) return;
+
 		$result = (object)array();
 		$result->search = sanitize_text_field($_GET["search"]);
 		
