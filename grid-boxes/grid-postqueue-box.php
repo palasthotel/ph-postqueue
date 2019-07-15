@@ -20,7 +20,15 @@ class grid_postqueue_box extends grid_list_box
 
 		if($editmode) 
 		{
-			return t("Postqueue: ".$this->content->postqueue); 
+
+			if($this->grid){
+				return t("Postqueue: ".$this->content->postqueue.
+				         "<br/> Offset: ".$this->content->offset." - Limit:".$this->content->limit);
+			} else {
+				return t("Postqueue");
+			}
+
+
 		}
 		else
 		{
