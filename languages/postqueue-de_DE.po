@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Postqueue\n"
-"POT-Creation-Date: 2019-08-26 13:00+0200\n"
-"PO-Revision-Date: 2019-08-26 13:00+0200\n"
+"POT-Creation-Date: 2019-08-26 13:05+0200\n"
+"PO-Revision-Date: 2019-08-26 13:06+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -71,6 +71,12 @@ msgstr "Abbrechen"
 #: classes/tools.php:78
 msgid "Post title or ID"
 msgstr "Titel oder ID"
+
+#: grid-boxes/grid-postqueue-box.php:83
+#, php-format
+msgctxt "Grid box content structure"
+msgid "Goto %s%s%s to edit queue contents."
+msgstr "Gehe zu %s%s%s um den Inhalt einer Postqueue zu bearbeiten."
 
 #: grid-boxes/grid-postqueue-box.php:85
 msgctxt "Grid box content structure"
