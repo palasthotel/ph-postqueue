@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: loop, order posts, queue
 Requires at least: 4.0
 Tested up to: 5.2.2
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -29,6 +29,9 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 
 
 == Changelog ==
+
+= 1.2.3 =
+ * Optimization: JS and CSS versions via file time.
 
 = 1.2.2 =
  * Optimization: Grid box with link to postqueue tools
