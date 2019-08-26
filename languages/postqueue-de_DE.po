@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Postqueue\n"
-"POT-Creation-Date: 2017-12-13 10:52+0100\n"
-"PO-Revision-Date: 2017-12-13 10:56+0100\n"
+"POT-Creation-Date: 2019-08-26 13:00+0200\n"
+"PO-Revision-Date: 2019-08-26 13:00+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: ph-postqueue.php\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -21,45 +21,61 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
 #. Plugin Name of the plugin/theme
-#: classes/metabox.php:50
+#: classes/metabox.php:52
 msgid "Postqueue"
 msgstr "Postqueue"
 
-#: classes/metabox.php:83
+#: classes/metabox.php:85
 msgid "Post successfully removed from postqueue."
 msgstr "Inhalt wurde aus der Postqueue entfernt."
 
-#: classes/metabox.php:84
+#: classes/metabox.php:86
 msgid "Post successfully added to postqueue."
 msgstr "Inhalt wurde zur Postqueue hinzugefügt."
 
-#: classes/metabox.php:85
+#: classes/metabox.php:87
 msgid "Please choose a postqueue!"
 msgstr "Bitte wähle eine Postqueue!"
 
-#: classes/metabox.php:86
+#: classes/metabox.php:88
 msgid "An error occured while sending the request. Please try again later."
 msgstr "Ein Fehler ist aufgetreten. Bitte versuch es später erneut."
 
-#: classes/tools.php:67 partials/ph-postqueue-editor.tpl.php:36
+#: classes/metabox.php:89 partials/postqueue-metabox.tpl.php:21
+msgid "Remove post from this postqueue."
+msgstr "Inhalt aus Postqueue entfernene."
+
+#: classes/metabox.php:90
+msgid ""
+"This post is not saved in any postqueue yet. You can add it to one below."
+msgstr ""
+"Dieser Inhalt ist bisher in keiner Postqueue gespeichert. Du kannst ihn "
+"unten einer hinzufügen."
+
+#: classes/tools.php:74 partials/ph-postqueue-editor.tpl.php:36
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: classes/tools.php:68
+#: classes/tools.php:75
 msgid "Delete"
 msgstr "Löschen"
 
-#: classes/tools.php:69
+#: classes/tools.php:76
 msgid "Add post"
 msgstr "Inhalt hinzufügen"
 
-#: classes/tools.php:70 partials/ph-postqueue-editor.tpl.php:48
+#: classes/tools.php:77 partials/ph-postqueue-editor.tpl.php:48
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: classes/tools.php:71
+#: classes/tools.php:78
 msgid "Post title or ID"
 msgstr "Titel oder ID"
+
+#: grid-boxes/grid-postqueue-box.php:85
+msgctxt "Grid box content structure"
+msgid "Tools › Postqueues"
+msgstr "Werkzeuge › Postqueues"
 
 #: partials/ph-postqueue-editor.tpl.php:25
 msgid "Create"
@@ -78,34 +94,23 @@ msgstr ""
 msgid "Linked postqueues"
 msgstr "Verknüpfte Postqueues"
 
-#: partials/postqueue-metabox.tpl.php:22
-msgid "Remove post from this postqueue."
-msgstr "Inhalt aus Postqueue entfernene."
-
-#: partials/postqueue-metabox.tpl.php:26
-msgid ""
-"This post is not saved in any postqueue yet. You can add it to one below."
-msgstr ""
-"Dieser Inhalt ist bisher in keiner Postqueue gespeichert. Du kannst ihn "
-"unten einer hinzufügen."
-
-#: partials/postqueue-metabox.tpl.php:35
+#: partials/postqueue-metabox.tpl.php:31
 msgid "Add post to postqueue"
 msgstr "Inhalt zu Postqueue hinzufügen"
 
-#: partials/postqueue-metabox.tpl.php:38
+#: partials/postqueue-metabox.tpl.php:34
 msgid "choose"
 msgstr "auswählen"
 
-#: partials/postqueue-metabox.tpl.php:46
+#: partials/postqueue-metabox.tpl.php:42
 msgid "There are no available postqueues yet."
 msgstr "Bisher gibt es keine Postqueues."
 
-#: partials/postqueue-metabox.tpl.php:48
+#: partials/postqueue-metabox.tpl.php:44
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: ph-postqueue.php:143
+#: ph-postqueue.php:145
 msgid "Default"
 msgstr "Standard"
 
@@ -114,7 +119,8 @@ msgid "Create manually ordered postqueues"
 msgstr "Erstelle händisch sortierte Listen von Inhalten."
 
 #. Author of the plugin/theme
-msgid "Palasthotel <rezeption@palasthotel.de> (Edward Bock)"
+msgid ""
+"Palasthotel <rezeption@palasthotel.de> (Edward Bock, Jana Marie Eggebrecht)"
 msgstr ""
 
 #. Author URI of the plugin/theme
