@@ -60,14 +60,14 @@ class Tools {
 			'postqueue-css',
 			$this->plugin->url . 'css/ph-postqueue-editor.css',
 			array( ),
-			1,
+			filemtime($this->plugin->dir."/css/ph-postqueue-editor.css"),
 			'all'
 		);
 		wp_enqueue_script(
 			'postqueue',
 			$this->plugin->url . 'js/ph-postqueue-editor.js',
 			array( 'jquery', 'jquery-ui-autocomplete', 'jquery-ui-sortable' ),
-			1,
+			filemtime($this->plugin->dir.'/js/ph-postqueue-editor.js'),
 			false
 		);
 		wp_localize_script( 'postqueue', 'objectL10n', array(
