@@ -31,7 +31,10 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 == Changelog ==
 
 = 1.2.2 =
- * Changed ajax methods from GET to POST to avoid request limits
+ * Bugfix: Changed ajax methods from GET to POST to avoid request limits
+
+= 1.2.1 =
+ * Feature: new filter to change the postqueue search order
 
 = 1.2.0 =
  * Optimization: New filter for default add to postqueue behavior of post meta box.

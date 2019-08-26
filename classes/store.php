@@ -236,15 +236,22 @@ public function clear_for_post_id( $post_id ) {
 	);
 }
 
-/**
-* search queue
-*/
+	/**
+	 * search queue
+	 *
+	 * @param string $name
+	 *
+	 * @return array
+	 */
 public function search( $name = "" ) {
 	global $wpdb;
 	$query = "";
 	$query.= "SELECT * FROM ".$wpdb->prefix."ph_postqueues";
 	$query.=" WHERE name LIKE '%".$name."%'";
-	$query.=" ORDER BY id ASC";
+
+	$order = apply_filters( Plugin::FILTER_POSTQUEUE_SEARCH_ORDER, 'id ASC' );
+	$query.=" ORDER BY $order";
+
 	$result = $wpdb->get_results($query);
 	return $result;
 }
