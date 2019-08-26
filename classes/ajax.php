@@ -52,7 +52,7 @@ class Ajax {
 
 		if(!current_user_can($this->plugin->tools->getCapability())) return;
 
-		$name = sanitize_text_field($_GET["queue_name"]);
+		$name = sanitize_text_field($_POST["queue_name"]);
 		
 		$result = $this->store->create($name);
 		
@@ -72,7 +72,7 @@ class Ajax {
 
 		if(!current_user_can($this->plugin->tools->getCapability())) return;
 
-		$queue_id = intval($_GET["queue_id"]);
+		$queue_id = intval($_POST["queue_id"]);
 		
 		$result = $this->store->get_queue_by_id($queue_id);
 		
@@ -86,7 +86,7 @@ class Ajax {
 		if(!current_user_can($this->plugin->tools->getCapability())) return;
 
 		$result = (object)array();
-		$queue_id = intval($_GET["queue_id"]);
+		$queue_id = intval($_POST["queue_id"]);
 		
 		/**
 		 * action before queue is deleted
@@ -103,8 +103,8 @@ class Ajax {
 		if(!current_user_can($this->plugin->tools->getCapability())) return;
 
 		$result = (object)array();
-		$result->queue_id = intval($_GET["queue_id"]);
-		$result->items = $_GET["items"];
+		$result->queue_id = intval($_POST["queue_id"]);
+		$result->items = $_POST["items"];
 		
 		$store = $this->store;
 		$store->queue_clear($result->queue_id);
@@ -123,8 +123,8 @@ class Ajax {
 		if(!current_user_can($this->plugin->tools->getCapability())) return;
 
 		$result = (object)array();
-		$queue_id = intval($_GET["queue_id"]);
-		$post_id = intval($_GET["post_id"]);
+		$queue_id = intval($_POST["queue_id"]);
+		$post_id = intval($_POST["post_id"]);
 		$this->store->delete_queue_post($queue_id, $post_id);
 	}
 	
@@ -134,7 +134,7 @@ class Ajax {
 		if(!current_user_can($this->plugin->tools->getCapability())) return;
 
 		$result = (object)array();
-		$result->search = sanitize_text_field($_GET["search"]);
+		$result->search = sanitize_text_field($_POST["search"]);
 		
 		global $wpdb;
 		$results = $wpdb->get_results(

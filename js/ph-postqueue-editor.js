@@ -70,9 +70,11 @@
 			if( $new_queue.hasClass("ph-loading") ) return;
 			$new_queue.addClass("ph-loading");
 			$.ajax({
-				url: "/wp-admin/admin-ajax.php?action=ph_postqueue_create_queue",
+				url: "/wp-admin/admin-ajax.php",
 				dataType: "json",
+				method: 'POST',
 				data: {
+					action:'ph_postqueue_create_queue',
 					queue_name: $queue_name.val(),
 				},
 				success: function( data ) {
@@ -158,9 +160,11 @@
 			const queue_id = $queue.attr("data-id");
 			$the_queue.empty();
 			$.ajax({
-				url: "/wp-admin/admin-ajax.php?action=ph_postqueue_load_queue",
+				url: "/wp-admin/admin-ajax.php",
 				dataType: "json",
+				method: 'POST',
 				data: {
+					action:'ph_postqueue_load_queue',
 					queue_id: queue_id,
 				},
 				success: function( data ) {
@@ -191,9 +195,11 @@
 			const $queue = $this.parents(".queue");
 			const queue_id = $queue.attr("data-id");
 			$.ajax({
-				url: "/wp-admin/admin-ajax.php?action=ph_postqueue_delete_queue",
+				url: "/wp-admin/admin-ajax.php",
 				dataType: "json",
+				method: 'POST',
 				data: {
+					action: "ph_postqueue_delete_queue",
 					queue_id: queue_id,
 				},
 				success: function( data ) {
@@ -319,9 +325,11 @@
 			{
 				post_autocomplete_interval = setTimeout(function(){
 					$.ajax({
-						url: "/wp-admin/admin-ajax.php?action=ph_postqueue_search_posts",
+						url: "/wp-admin/admin-ajax.php",
 						dataType: "json",
+						method: 'POST',
 						data: {
+							action: 'ph_postqueue_search_posts',
 							search: query,
 						},
 						success: function( data ) {
@@ -383,9 +391,11 @@
 			 * save the post id array to database
 			 */
 			$.ajax({
-				url: "/wp-admin/admin-ajax.php?action=ph_postqueue_save_post_items",
+				url: "/wp-admin/admin-ajax.php",
 				dataType: "json",
+				method: 'POST',
 				data: {
+					action: 'ph_postqueue_save_post_items',
 					queue_id: $the_queue.attr("data-queue-id"),
 					items: items,
 				},
