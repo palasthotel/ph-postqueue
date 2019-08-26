@@ -9,7 +9,7 @@ namespace Postqueue;
  * @wordpress-plugin
  * Plugin Name:       Postqueue
  * Description:       Create manually ordered postqueues
- * Version:           1.2.1
+ * Version:           1.2.2
  * Author:            Palasthotel <rezeption@palasthotel.de> (Edward Bock, Jana Marie Eggebrecht)
  * Author URI:        https://palasthotel.de
  * License:           GPL-2.0+
