@@ -53,8 +53,10 @@ class grid_postqueue_box extends grid_list_box
 			'type' => 'select',
 			'selections' => $qs,
 		);
+
+
 		
-		$viewmodes = Postqueue::getViewmodes();
+		$viewmodes = \Postqueue\Plugin::getViewmodes();
 		if(count($viewmodes) > 0){
 			$cs[] = array(
 				'key' => 'viewmode',
@@ -73,6 +75,17 @@ class grid_postqueue_box extends grid_list_box
 			'key' => 'limit',
 			'label' => 'Limit	',
 			'type' => 'number',
+		);
+
+		$cs[] = array(
+			'label' => '',
+			'text' => sprintf(
+				'Goto %s%s%s to edit queue contents.',
+				'<a href="'.admin_url('/tools.php?page=tools-postqueue').'">',
+				_x('Tools › Postqueues', 'Grid box content structure', \Postqueue\Plugin::DOMAIN),
+				'</a>'
+			),
+			'type' => 'info',
 		);
 
 		return $cs;

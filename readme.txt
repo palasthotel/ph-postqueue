@@ -31,6 +31,7 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 == Changelog ==
 
 = 1.2.2 =
+ * Optimization: Grid box with link to postqueue tools
  * Bugfix: Changed ajax methods from GET to POST to avoid request limits
 
 = 1.2.1 =
