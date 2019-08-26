@@ -36,6 +36,8 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 
 = 1.2.1 =
  * Feature: new filter to change the postqueue search order
+ * added some security conditions to ajax functions
+ * new filter for default position if adding post to postqueue via post meta box
 
 = 1.2.0 =
  * Optimization: New filter for default add to postqueue behavior of post meta box.
