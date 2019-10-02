@@ -181,13 +181,13 @@ class Store
 
         // limit the length of the queue
         $table = $wpdb->prefix . "ph_postqueue_contents";
-        $global_limit_for_postqueue = apply_filters(Plugin::FILTER_POSTQUEUE_LIMITER, 42);
-        $sql = $wpdb->prepare("DELETE FROM $table  WHERE position>%d",
-            $global_limit_for_postqueue - 1
-        );
-
-        $wpdb->query($sql);
-
+        $global_limit_for_postqueue = apply_filters(Plugin::FILTER_POSTQUEUE_LIMITER, -1);
+        if($global_limit_for_postqueue > 1){
+	        $sql = $wpdb->prepare("DELETE FROM $table  WHERE position > %d AND queue_id = %d",
+		        $global_limit_for_postqueue - 1, $queue_id
+	        );
+	        $wpdb->query($sql);
+        }
     }
 
     /**
