@@ -37,7 +37,7 @@ class Plugin {
 	const FILTER_ADD_POSITION = "postqueue_add_position";
 	const FILTER_POSTQUEUE_EDIT_CAPABILITY = "postqueue_edit_capability";
 	const FILTER_POSTQUEUE_SEARCH_ORDER = "postqueue_store_search_order";
-	
+	const FILTER_POSTQUEUE_LIMITER = "postqueue_limiter";
 	/**
 	 * actions
 	 */

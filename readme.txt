@@ -30,6 +30,9 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 
 == Changelog ==
 
+= 1.2.4 =
+ * Feature - Limit postqueue length with limiter
+
 = 1.2.3 =
  * Optimization: JS and CSS versions via file time.
 
