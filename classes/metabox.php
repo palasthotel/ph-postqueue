@@ -18,13 +18,21 @@ class MetaBox {
 	private $screens;
 	
 	/**
-	* Post constructor.
-	*
-	* @param Plugin $plugin
-	*/
-	function __construct(Plugin $plugin) {
+	 * Post constructor.
+	 *
+	 * @param Plugin $plugin
+	 */
+	public function __construct(Plugin $plugin) {
 		$this->plugin = $plugin;
 		$this->store = $plugin->store;
+		add_action( "init", array( $this, "init" ) );
+	}
+
+	/**
+	 *
+	 */
+	function init() {
+		
 		$this->screens = get_post_types( array('public' => true) ); //@todo could get a setting page where to choose for which post_types postqueues should be available
 		/**
 		* registers add_meta_boxes action that adds metaboxes to post edit
