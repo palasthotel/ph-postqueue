@@ -1,0 +1,36 @@
+{
+  "name": "@palasthotel/postqueue",
+  "version": "1.0.0",
+  "description": "Be free to order posts as you wish. Plugin is available at [WordPress.org](https://wordpress.org/plugins/postqueue/)",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "wp-scripts start src/editor.js src/meta-box.js --output-path=public/dist",
+    "build": "wp-scripts build src/editor.js src/meta-box.js --output-path=public/dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/palasthotel/ph-postqueue.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/palasthotel/ph-postqueue/issues"
+  },
+  "homepage": "https://github.com/palasthotel/ph-postqueue#readme",
+  "dependencies": {
+    "@wordpress/api-fetch": "^5.1.1",
+    "@wordpress/dom-ready": "^3.1.1",
+    "@wordpress/element": "^3.1.1",
+    "@wordpress/scripts": "^16.1.2",
+    "react": "^17.0.2",
+    "react-dnd": "^14.0.2",
+    "react-dnd-html5-backend": "^14.0.0",
+    "react-dom": "^17.0.2",
+    "react-sortablejs": "^6.0.0",
+    "sortablejs": "^1.13.0"
+  },
+  "devDependencies": {
+    "@types/sortablejs": "^1.10.6"
+  }
+}

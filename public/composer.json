@@ -1,0 +1,9 @@
+{
+  "name": "palasthotel/postqueue",
+  "description": "Postqueue plugin for wordpress",
+  "autoload": {
+    "psr-4": {
+      "Postqueue\\": "classes"
+    }
+  }
+}
