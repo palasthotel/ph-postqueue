@@ -2,10 +2,11 @@ import {useDrag, useDrop} from 'react-dnd';
 
 import {useQueryPosts, useQueueItems} from "../hooks/use-queues";
 import {useCallback, useEffect, useState} from "@wordpress/element";
+import LoadingLine from "./LoadingLine.jsx";
 
 export const TYPE = "dnditem";
 
-const ListItem = ({index, post_id, post_title, moveItem, findItem}) => {
+const ListItem = ({index, post_id, post_title, moveItem, findItem, onDelete}) => {
 
     const originalIndex = findItem(post_id).index;
     const [{isDragging}, drag, preview] = useDrag(() => ({
@@ -39,47 +40,93 @@ const ListItem = ({index, post_id, post_title, moveItem, findItem}) => {
     >
         <div ref={drag} className="drag-handle ui-sortable-handle"/>
         <span>{post_title}</span>
-        <div className="delete-post">Delete</div>
+        <div className="delete-post" onClick={onDelete}>Delete</div>
     </li>
 }
 
-const NewItem = ({onCreate})=>{
-    const [query, setQuery] = useState("");
-    const posts = useQueryPosts(query);
-    return <div>
-        <input type="text" value={query} onChange={e=>setQuery(e.target.value)} />
-        <ul>
-            {posts.map(p=><li key={p.post_id} onClick={()=>onCreate(p)}>{p.post_title}</li>)}
-        </ul>
+const Controls = (
+    {
+        canGoBack,
+        onGoBack,
+        canSave,
+        onSave,
+        canRestore,
+        onRestore,
+        onAddItem,
+        postIdsInQueue = []
+    }
+)=>{
+    return  <div className="post-queue-editor__controls">
+        <button
+            className="cancel-queue queue-control-button button button-secondary"
+            onClick={onGoBack}
+            disabled={!canGoBack}
+        >
+            ‹ Back
+        </button>
+
+        <button
+            className="cancel-queue queue-control-button button button-secondary"
+            disabled={!canSave}
+            onClick={onSave}
+        >
+            Save
+        </button>
+
+        <button
+            className="restore-queue queue-control-button button button-secondary"
+            disabled={!canRestore}
+            onClick={onRestore}
+        >
+            Restore
+        </button>
+
+        <NewItem onCreate={onAddItem} postIdsInQueue={postIdsInQueue} />
     </div>
 }
 
-const QueueEditor = ({id, onCancel}) => {
+const NewItem = ({postIdsInQueue,onCreate})=>{
+    const [query, setQuery] = useState("");
+    const [posts, isLoading] = useQueryPosts(query);
+    return <div className="post-queue__search">
+        {isLoading && <span className="spinner is-active"/>}
+        {!isLoading && query !== "" && <span className="clear-query" onClick={()=>setQuery("")}>×</span>}
+        <input type="text" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search for posts" />
+        <div className="post-queue__search--suggestions">
+            <ul>
+                {posts.filter(p=>!postIdsInQueue.includes(p.post_id)).map(p=>{
+                    return <li key={p.post_id} onClick={()=> {
+                        onCreate(p);
+                        setQuery("");
+                    }}>{p.post_title}</li>;
+                })}
+            </ul>
+        </div>
+    </div>
+}
+
+const QueueEditor = ({id, queueName, onGoBack}) => {
 
     const {
         items,
+        saveItems,
         isLoading,
     } = useQueueItems(id);
 
-    const [addItem, setAddItem] = useState(false);
     const [tmpItems, setTmpItems] = useState([]);
 
     useEffect(() => {
         setTmpItems([...items]);
     }, [items, id]);
 
-    console.debug("tmpItem", tmpItems);
-
     const findItem = useCallback((id) => {
         const item = tmpItems.find(i => i.post_id === id);
-        console.debug("findItem", id, item);
         return {
             item,
             index: tmpItems.indexOf(item),
         }
     }, [tmpItems]);
     const moveItem = useCallback((id, atIndex) => {
-        console.debug("moveItem", id, atIndex);
         const {index, item} = findItem(id);
         const moved = [...tmpItems];
         moved.splice(index, 1);
@@ -94,6 +141,16 @@ const QueueEditor = ({id, onCancel}) => {
         ]);
     }
 
+    const handleSave = ()=>{
+        saveItems(tmpItems.map(i=>i.post_id));
+    }
+    const handleDelete = (item) => {
+        setTmpItems(tmpItems.filter(i=>i.post_id !== item.post_id));
+    }
+    const handleRestore = ()=>{
+        setTmpItems([...items]);
+    }
+
     const canSave = !isLoading && (
         items.length !== tmpItems.length ||
         items.filter((item, index) => {
@@ -102,28 +159,27 @@ const QueueEditor = ({id, onCancel}) => {
         }).length > 0
     );
 
+    const canGoBack = !isLoading && !canSave;
+
     const [, drop] = useDrop(() => ({accept: TYPE}));
 
     return <>
-        <button
-            className="cancel-queue button button-secondary"
-            onClick={onCancel}
-        >
-            Cancel
-        </button>
-        <button
-            disabled={!canSave}
-        >
-            Save
-        </button>
+        <h3>Postqueues › {queueName}</h3>
+        <Controls
+            canGoBack={canGoBack}
+            onGoBack={onGoBack}
+            canSave={canSave}
+            onSave={handleSave}
+            canRestore={canSave}
+            onRestore={handleRestore}
+            onAddItem={handleCreateItem}
+            postIdsInQueue={tmpItems.map(i=>i.post_id)}
+        />
 
-        <button
-            onClick={()=>setAddItem(true)}
-        >
-            Add
-        </button>
 
-        {addItem && <NewItem onCreate={handleCreateItem} />}
+
+        {isLoading && <LoadingLine />}
+
 
         <ul ref={drop} className="the-queue">
             {tmpItems.map((item, index) => <ListItem
@@ -132,6 +188,9 @@ const QueueEditor = ({id, onCancel}) => {
                 index={index}
                 moveItem={moveItem}
                 findItem={findItem}
+                onDelete={()=>{
+                    handleDelete(item);
+                }}
             />)}
         </ul>
     </>

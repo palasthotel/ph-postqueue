@@ -1,9 +1,10 @@
-const SearchOrCreate = ({name, onChangeName, onCreate}) => {
+const SearchOrCreate = ({name = "", onChangeName, onCreate}) => {
     const handleKeyPress = (e) => {
         if (e.keyCode === 13 && name !== "") {
             onCreate();
         }
     }
+    console.debug("PostQueue name", name)
     return <>
         <div className="queue-name">
             <input
@@ -15,7 +16,7 @@ const SearchOrCreate = ({name, onChangeName, onCreate}) => {
                 onKeyDown={handleKeyPress}
             />
         </div>
-        {name && <div className="ph-new-queue" onClick={() => {
+        {name !== "" && <div className="ph-new-queue" onClick={() => {
             onCreate(name);
         }}>
             <p>Create »<span className="queue-name">{name}</span>«</p>

@@ -1,8 +1,13 @@
 
-const QueueList = ({items, onEdit, onDelete})=> <ul className="queues-list">
+const QueueList = (
+    {
+        items,
+        onEdit,
+        onDelete,
+    }
+)=> <ul className="queues-list">
     {items.map(({id, name, slug})=> <li
         key={id}
-
         className="queue"
     >
         <div className="queue-name">{name}</div>

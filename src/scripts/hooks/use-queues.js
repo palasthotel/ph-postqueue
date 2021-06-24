@@ -1,5 +1,12 @@
 import {useEffect, useState} from '@wordpress/element'
-import {apiCreateQueue, apiDeleteQueue, apiReadPosts, apiReadQueue, apiReadQueues} from "../store/api";
+import {
+    apiCreateQueue,
+    apiCreateQueueItems,
+    apiDeleteQueue,
+    apiReadPosts,
+    apiReadQueue,
+    apiReadQueues
+} from "../store/api";
 
 export const useQueues = () => {
 
@@ -53,6 +60,13 @@ export const useQueueItems = (queueId)=>{
     return {
         items,
         isLoading,
+        saveItems: (items)=>{
+            setIsLoading(true);
+            apiCreateQueueItems(queueId, items).then(queue=>{
+                setIsLoading(false);
+                setItems(queue.items);
+            });
+        }
     }
 }
 
@@ -81,5 +95,5 @@ export const useQueryPosts = (query) => {
         }
     }, [query]);
 
-    return posts;
+    return [posts, isLoading];
 }

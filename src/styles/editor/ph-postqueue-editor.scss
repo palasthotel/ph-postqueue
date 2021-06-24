@@ -48,7 +48,7 @@ $error: #dd3d36;
 			}
 		}
 		.queues-list{
-			margin: 0px;
+			margin: 0;
 			.queue{
 				padding: 15px 0;
 				& + .queue{
@@ -60,10 +60,22 @@ $error: #dd3d36;
 					margin-bottom: 4px;
 				}
 				.queue-controls{
-
+					a{
+						display: inline-block;
+						margin: 0 4px;
+					}
 				}
 			}
 
+		}
+		.delete-control{
+			button{
+				margin-right: 5px;
+			}
+			button.button-delete {
+				color: #a00;
+				border-color: #a00;
+			}
 		}
 	}
 	/**
@@ -75,10 +87,9 @@ $error: #dd3d36;
 	.the-queue{
 		position: relative;
 		list-style: none;
-		padding: 0px;
+		padding: 0;
 		margin: 20px 0;
 		counter-reset: posts;
-		margin-right: 315px;
 		min-height: 100px;
 		// &:before{
 		// 	content: "";
@@ -124,8 +135,7 @@ $error: #dd3d36;
 			}
 			.delete-post{
 				position: absolute;
-				display: none;
-				right: 0px;
+				right: 8px;
 				top: 14px;
 				bottom: 11px;
 				width: 60px;
@@ -133,8 +143,10 @@ $error: #dd3d36;
 				color: white;
 				padding: 3px;
 				cursor: pointer;
-				opacity: 0.7;
+				opacity: 0;
 				transition: all 0.3s;
+				border-radius: 2px;
+				text-align: center;
 				&:hover{
 					opacity: 1;
 				}
@@ -191,7 +203,7 @@ $error: #dd3d36;
 				display: block;
 			}
 			&:hover .delete-post{
-				display: block;
+				opacity: 0.7;
 			}
 		}
 		/**
@@ -230,4 +242,73 @@ $error: #dd3d36;
 		}
 	}
 	
+}
+
+.post-queue-editor__controls{
+	display: flex;
+	height: 40px;
+
+	button.queue-control-button {
+		margin-right: 10px;
+	}
+	input {
+		height: 100%;
+		width: 100%;
+	}
+	.post-queue__search{
+		position: relative;
+		width: 200px;
+		@media only screen and (min-width: 550px) {
+			width: 250px;
+		}
+		@media only screen and (min-width: 700px) {
+			width: 400px;
+		}
+		.spinner{
+			position: absolute;
+			right: 0;
+			top: 6px;
+		}
+		.clear-query{
+			position: absolute;
+			right: 6px;
+			top: 8px;
+			background: #999;
+			color: white;
+			border-radius: 40px;
+			width: 25px;
+			height: 25px;
+			padding: 3px;
+			text-align: center;
+			font-weight: bold;
+			&:hover {
+				cursor: pointer;
+				background: #666;
+			}
+		}
+	}
+	.post-queue__search--suggestions {
+		position: absolute;
+		top:40px;
+		background: white;
+		z-index: 1;
+		ul{
+			margin: 0;
+		}
+		li{
+			padding: 8px;
+			border: 1px solid #666;
+			border-bottom: none;
+			margin: 0;
+			min-width: 300px;
+			cursor: pointer;
+			&:hover{
+				color: #2271b1;
+				background-color: rgb(246, 247, 247);
+			}
+		}
+		li:last-child{
+			border-bottom: 1px solid #666;
+		}
+	}
 }
