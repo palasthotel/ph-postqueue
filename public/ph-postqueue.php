@@ -72,10 +72,7 @@ class Plugin extends Component\Plugin {
 	 */
 	function onCreate() {
 
-		$this->textdomainConfig = new TextdomainConfig(
-			Plugin::DOMAIN,
-			"languages"
-		);
+		$this->loadTextdomain(Plugin::DOMAIN, "languages");
 
 		$this->store = new Store();
 

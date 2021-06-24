@@ -3,8 +3,8 @@ Contributors: palasthotel, edwardbock, janame
 Donate link: http://palasthotel.de/
 Tags: loop, order posts, queue
 Requires at least: 4.0
-Tested up to: 5.2.2
-Stable tag: 1.2.4
+Tested up to: 5.7.2
+Stable tag: 1.3.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -31,7 +31,7 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 == Changelog ==
 
 = 1.3.0 =
- * Big refactoring
+ * Post queue editor UI with React
 
 = 1.2.4 =
  * Feature - Limit postqueue length with limiter. Default is -1 no limitation.
