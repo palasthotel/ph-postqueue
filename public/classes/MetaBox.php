@@ -60,16 +60,16 @@ class MetaBox extends Component\Component {
 		*/
 		wp_enqueue_style(
 			'postqueue-metabox-css',
-			$this->plugin->url . 'css/postqueue-metabox.css',
+			$this->plugin->url . 'dist/meta-box.css',
 			array( ),
-			1,
+			filemtime($this->plugin->path."/dist/meta-box.css"),
 			'all'
 		);
 		wp_enqueue_script(
 			'postqueue-metabox',
-			$this->plugin->url . 'js/postqueue-metabox.js',
+			$this->plugin->url . 'dist/meta-box.js',
 			array( 'jquery' ),
-			1,
+			filemtime($this->plugin->path."/dist/meta-box.js"),
 			false
 		);
 		wp_localize_script( 'postqueue-metabox', 'PostqueueMetaBoxL10n', array(
