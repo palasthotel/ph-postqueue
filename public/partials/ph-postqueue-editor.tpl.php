@@ -6,13 +6,10 @@
  */
 ?>
 <script type="text/javascript">
-	window.ph_postqueues = <?php echo json_encode($store->get_queues()); ?>;
-
 	//TODO: hard coded?!? please not!
 	window.ph_postqueue_feed_url = "<?php echo get_site_option( 'ph-postqueue-feeds-url', '' ); ?>";
-
 </script>
 <div class="wrap ph-postqueue" id="post-queue-editor">
     <h3>Postqueues</h3>
-    <div class="loader"><div class="bar"/></div>
+    <div class="loader"><div class="bar"></div></div>
 </div>
