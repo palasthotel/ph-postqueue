@@ -3,7 +3,6 @@
 namespace Postqueue;
 
 use Postqueue\Component\Templates;
-use Postqueue\Component\TextdomainConfig;
 
 /**
  * Plugin Name:       Postqueue
