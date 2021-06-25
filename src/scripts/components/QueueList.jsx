@@ -14,7 +14,7 @@ const QueueList = (
         >
             <div className="queue-name">{name}</div>
             <div className="queue-controls">
-                [{slug}]
+                [postqueue slug="{slug}" viewmode=""]
                 |
                 <a href="#" onClick={() => onEdit(id)}>{i18n.edit}</a>
                 |
