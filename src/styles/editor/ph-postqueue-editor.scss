@@ -138,17 +138,16 @@ $error: #dd3d36;
 				right: 8px;
 				top: 14px;
 				bottom: 11px;
-				width: 60px;
 				background-color: $error;
 				color: white;
-				padding: 3px;
+				padding: 3px 6px;
 				cursor: pointer;
 				opacity: 0;
 				transition: all 0.3s;
 				border-radius: 2px;
 				text-align: center;
 				&:hover{
-					opacity: 1;
+					opacity: 1 !important;
 				}
 			}
 		}

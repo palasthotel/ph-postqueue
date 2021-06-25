@@ -7,7 +7,7 @@ import LoadingLine from "./LoadingLine.jsx";
 export const TYPE = "dnditem";
 
 const ListItem = ({index, post_id, post_title, moveItem, findItem, onDelete}) => {
-
+    const {i18n} = PostQueue;
     const originalIndex = findItem(post_id).index;
     const [{isDragging}, drag, preview] = useDrag(() => ({
         type: TYPE,
@@ -40,7 +40,7 @@ const ListItem = ({index, post_id, post_title, moveItem, findItem, onDelete}) =>
     >
         <div ref={drag} className="drag-handle ui-sortable-handle"/>
         <span>{post_title}</span>
-        <div className="delete-post" onClick={onDelete}>Delete</div>
+        <div className="delete-post" onClick={onDelete}>{i18n.remove}</div>
     </li>
 }
 
@@ -56,13 +56,14 @@ const Controls = (
         postIdsInQueue = []
     }
 )=>{
+    const {i18n} = PostQueue;
     return  <div className="post-queue-editor__controls">
         <button
             className="cancel-queue queue-control-button button button-secondary"
             onClick={onGoBack}
             disabled={!canGoBack}
         >
-            ‹ Back
+            ‹ {i18n.back}
         </button>
 
         <button
@@ -70,7 +71,7 @@ const Controls = (
             disabled={!canSave}
             onClick={onSave}
         >
-            Save
+            {i18n.save}
         </button>
 
         <button
@@ -78,7 +79,7 @@ const Controls = (
             disabled={!canRestore}
             onClick={onRestore}
         >
-            Restore
+            {i18n.reset}
         </button>
 
         <NewItem onCreate={onAddItem} postIdsInQueue={postIdsInQueue} />
@@ -86,12 +87,13 @@ const Controls = (
 }
 
 const NewItem = ({postIdsInQueue,onCreate})=>{
+    const {i18n} = PostQueue;
     const [query, setQuery] = useState("");
     const [posts, isLoading] = useQueryPosts(query);
     return <div className="post-queue__search">
         {isLoading && <span className="spinner is-active"/>}
         {!isLoading && query !== "" && <span className="clear-query" onClick={()=>setQuery("")}>×</span>}
-        <input type="text" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search for posts" />
+        <input type="text" value={query} onChange={e=>setQuery(e.target.value)} placeholder={i18n.search_post_placeholder} />
         <div className="post-queue__search--suggestions">
             <ul>
                 {posts.filter(p=>!postIdsInQueue.includes(p.post_id)).map(p=>{
@@ -106,7 +108,6 @@ const NewItem = ({postIdsInQueue,onCreate})=>{
 }
 
 const QueueEditor = ({id, queueName, onGoBack}) => {
-
     const {
         items,
         saveItems,

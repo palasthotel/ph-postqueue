@@ -6,7 +6,7 @@ import QueueEditor from "./QueueEditor.jsx";
 import LoadingLine from "./LoadingLine.jsx";
 
 const Editor = () => {
-
+    const {i18n} = PostQueue;
     const {
         queues,
         createQueue,
@@ -49,18 +49,18 @@ const Editor = () => {
             {isLoading && <LoadingLine />}
 
             {!isLoading && deleteQueueItem && <div className="delete-control">
-                <p>Are you sure you want to delete <strong>{deleteQueueItem.name}</strong>?</p>
+                <p>{i18n.confirm_delete}<br/><strong>{deleteQueueItem.name}</strong></p>
                 <button
                     className="button-delete button button-secondary"
                     onClick={()=>deleteQueue(deleteQueueItem.id)}
                 >
-                    Yes, delete it!
+                    {i18n.confirm_delete_yes}
                 </button>
                 <button
                     className="button button-secondary"
                     onClick={()=> setDeleteQueueId("")}
                 >
-                    No, do not delete.
+                    {i18n.confirm_delete_no}
                 </button>
             </div>}
             <QueueList
