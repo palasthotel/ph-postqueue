@@ -7,7 +7,7 @@ use Postqueue\Component\Templates;
 /**
  * Plugin Name:       Postqueue
  * Description:       Create manually ordered postqueues
- * Version:           1.3.0
+ * Version:           1.3.1
  * Requires at least: 5.0
  * Tested up to:      5.8
  * Requires PHP:      7.4

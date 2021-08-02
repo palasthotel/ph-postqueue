@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: loop, order posts, queue
 Requires at least: 5.0
 Tested up to: 5.8
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 Requires PHP: 7.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
@@ -30,6 +30,9 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 
 
 == Changelog ==
+
+= 1.3.1 =
+ * Bugfix: PHP7.3 compatibility issue fixed
 
 = 1.3.0 =
  * Post queue editor UI with React
