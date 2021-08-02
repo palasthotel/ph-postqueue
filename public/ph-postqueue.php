@@ -10,6 +10,7 @@ use Postqueue\Component\Templates;
  * Version:           1.3.0
  * Requires at least: 4.0
  * Tested up to:      5.7.2
+ * Requires PHP: 5.6
  * Author:            Palasthotel <rezeption@palasthotel.de> (Edward Bock, Jana Marie Eggebrecht)
  * Author URI:        https://palasthotel.de
  * License:           GPL-2.0+
