@@ -106,8 +106,10 @@ $error: #dd3d36;
 			margin: 0;
 			padding: 16px 35px 10px;
 			counter-increment: posts;
-			font-weight: bold;
 			min-height: 50px;
+			.post-item__status{
+				margin-right: 4px;
+			}
 			&:first-child:before{
 				top: 50%;
 			}

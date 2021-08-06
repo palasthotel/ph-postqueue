@@ -6,7 +6,24 @@ import LoadingLine from "./LoadingLine.jsx";
 
 export const TYPE = "dnditem";
 
-const ListItem = ({index, post_id, post_title, moveItem, findItem, onDelete}) => {
+const PostStatus = ({status})=>{
+    const icon = (status === "future") ? "⏱" : "✅";
+    return <span className="post-item__status">{icon}</span>
+}
+
+const ListItem = (
+    {
+        index,
+        post_id,
+        post_title,
+        post_status,
+        post_date,
+        edit_post_link,
+        moveItem,
+        findItem,
+        onDelete
+    }
+) => {
     const {i18n} = PostQueue;
     const originalIndex = findItem(post_id).index;
     const [{isDragging}, drag, preview] = useDrag(() => ({
@@ -39,7 +56,9 @@ const ListItem = ({index, post_id, post_title, moveItem, findItem, onDelete}) =>
         className={`queue-item queue-item-set ${isDragging ? "is-dragging" : ""}`}
     >
         <div ref={drag} className="drag-handle ui-sortable-handle"/>
-        <span>{post_title}</span>
+        <a href={edit_post_link}>{post_title}</a>
+        <br/>
+        <PostStatus status={post_status} /><span className="queue-item__date">{post_date}</span>
         <div className="delete-post" onClick={onDelete}>{i18n.remove}</div>
     </li>
 }

@@ -2,7 +2,9 @@
 
 namespace Postqueue;
 
-
+/**
+ * @deprecated use rest instead. Still used by meta box
+ */
 class Ajax extends Component\Component {
 
 	public function onCreate() {

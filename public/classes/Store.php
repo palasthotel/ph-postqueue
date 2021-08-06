@@ -68,7 +68,7 @@ class Store extends Database {
     /**
      * returns queue by id
      *
-     * @return object queue
+     * @return array queue
      */
     public function get_queue_by_id($qid)
     {
@@ -78,7 +78,7 @@ class Store extends Database {
     /**
      * returns queue by slug
      *
-     * @return object queue
+     * @return array queue
      */
     public function get_queue_by_slug($slug)
     {
@@ -88,7 +88,7 @@ class Store extends Database {
     /**
      * helper function for returning a queue
      *
-     * @return object queue
+     * @return array queue
      */
     private function get_queue($key, $value)
     {

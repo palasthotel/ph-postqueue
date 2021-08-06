@@ -53,7 +53,14 @@ class REST extends Component\Component {
 		register_rest_route( REST::NAMESPACE, '/queues/(?P<id>\d+)', array(
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => function ( WP_REST_Request $request ) {
-				return $this->plugin->store->get_queue_by_id( $request->get_param( "id" ) );
+				$items = $this->plugin->store->get_queue_by_id( $request->get_param( "id" ) );
+				return array_map(function($item){
+					$post_id = $item->post_id;
+					$item->edit_post_link = get_edit_post_link($post_id, '');
+					$item->post_status = get_post_status($post_id);
+					$item->post_date = get_the_date('l, F j, Y', $post_id);
+					return $item;
+				}, $items);
 			},
 			'permission_callback' => [ $this, 'permissionCheck' ],
 		) );
