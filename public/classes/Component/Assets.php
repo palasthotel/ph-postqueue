@@ -8,7 +8,7 @@ namespace Postqueue\Component;
  * @version 0.1.1
  */
 abstract class Assets {
-	private Plugin $plugin;
+	private $plugin;
 
 	public function __construct( Plugin $plugin ) {
 		$this->plugin = $plugin;
