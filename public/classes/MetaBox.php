@@ -4,8 +4,6 @@ namespace Postqueue;
 
 class MetaBox extends Component\Component {
 
-	
-	private $screens;
 
 	public function onCreate() {
 		add_action( "init", array( $this, "init" ) );
@@ -16,7 +14,6 @@ class MetaBox extends Component\Component {
 	 */
 	function init() {
 		
-		$this->screens = get_post_types( array('public' => true) ); //@todo could get a setting page where to choose for which post_types postqueues should be available
 		/**
 		* registers add_meta_boxes action that adds metaboxes to post edit
 		*/
@@ -36,8 +33,10 @@ class MetaBox extends Component\Component {
 	public function add_meta_boxes() {
 
 		if(!current_user_can($this->plugin->editor->getCapability())) return;
-		
-		foreach ( $this->screens as $screen ) {
+
+		$screens = get_post_types( array('public' => true) );
+
+		foreach ( $screens as $screen ) {
 			add_meta_box(
 				'postqueue',
 				__( 'Postqueue', 'postqueue' ),
