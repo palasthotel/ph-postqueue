@@ -32,7 +32,7 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 == Changelog ==
 
 = 1.4.1 =
- * Bugfix: meta box did not appear on custom post types some times
+ * Bugfix: meta box did not appear on custom post types sometimes
 
 = 1.4.0 =
  * Visual update: Date and status information in post queue editor
