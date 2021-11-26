@@ -3,8 +3,8 @@ Contributors: palasthotel, edwardbock, janame
 Donate link: http://palasthotel.de/
 Tags: loop, order posts, queue
 Requires at least: 5.0
-Tested up to: 5.8
-Stable tag: 1.4.0
+Tested up to: 5.8.2
+Stable tag: 1.4.1
 Requires PHP: 7.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
@@ -30,6 +30,9 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 
 
 == Changelog ==
+
+= 1.4.1 =
+ * Bugfix: meta box did not appear on custom post types some times
 
 = 1.4.0 =
  * Visual update: Date and status information in post queue editor
