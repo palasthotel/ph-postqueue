@@ -129,15 +129,23 @@ class REST extends Component\Component {
 				$result         = (object) array();
 				$result->search = sanitize_text_field( $search);
 
-				global $wpdb;
-				$results = $wpdb->get_results(
-					"SELECT ID, post_title FROM " . $wpdb->prefix . "posts" .
-					" WHERE" .
-					" (post_title LIKE '%" . $result->search . "%'" .
-					" AND (post_status = 'publish' OR post_status = 'future' ) )" .
-					" OR ID = '" . $result->search . "'" .
-					" ORDER BY ID DESC LIMIT 10"
+				$postTypes = implode(
+					", ",
+					array_map( function($item){ return "'$item'"; }, get_post_types(["public" => true]))
 				);
+
+				global $wpdb;
+				$sql = "SELECT ID, post_title FROM " . $wpdb->prefix . "posts" .
+				       " WHERE" .
+				       " (".
+				        "post_title LIKE '%" . $result->search . "%'" .
+				        " AND (post_status = 'publish' OR post_status = 'future' ) ".
+				        " AND post_type IN ($postTypes)".
+				       ")" .
+				       " OR ID = '" . $result->search . "'" .
+				       " ORDER BY ID DESC LIMIT 10";
+				$results = $wpdb->get_results($sql);
+
 
 				$result->posts = array();
 				foreach ( $results as $index => $post ) {
