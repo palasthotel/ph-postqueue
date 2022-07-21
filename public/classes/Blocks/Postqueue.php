@@ -7,10 +7,10 @@ namespace Postqueue\Blocks;
 use Palasthotel\WordPress\BlockX\Blocks\_BlockType;
 use Palasthotel\WordPress\BlockX\Model\BlockId;
 use Palasthotel\WordPress\BlockX\Model\ContentStructure;
+use Palasthotel\WordPress\BlockX\Model\Option;
 use Palasthotel\WordPress\BlockX\Widgets\Number;
 use Palasthotel\WordPress\BlockX\Widgets\Select;
 use Palasthotel\WordPress\BlockX\Widgets\Text;
-use Palasthotel\WordPress\Model\Option;
 use Postqueue\Plugin;
 
 class Postqueue extends _BlockType {
