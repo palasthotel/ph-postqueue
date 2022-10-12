@@ -10,13 +10,15 @@ use Palasthotel\WordPress\BlockX\Model\ContentStructure;
 use Palasthotel\WordPress\BlockX\Model\Option;
 use Palasthotel\WordPress\BlockX\Widgets\Number;
 use Palasthotel\WordPress\BlockX\Widgets\Select;
-use Palasthotel\WordPress\BlockX\Widgets\Text;
 use Postqueue\Plugin;
+use stdClass;
 
 class Postqueue extends _BlockType {
 
+	const SLUG = "instance";
+
 	public function id(): BlockId {
-		return BlockId::build(Plugin::DOMAIN, "single");
+		return BlockId::build(Plugin::DOMAIN, self::SLUG);
 	}
 
 	public function category(): string {
@@ -28,18 +30,67 @@ class Postqueue extends _BlockType {
 	}
 
 	public function contentStructure(): ContentStructure {
+
 		return new ContentStructure([
-			Text::build("slug", "Queue slug"), // TODO: custom autocomplete widget
+
+			Select::build("slug", "Queue", array_map(function($queue){
+				return Option::build($queue->slug, $queue->name);
+			},Plugin::instance()->store->get_queues())),
+
 			Select::build(
 				"viewmode",
 				"View mode",
 				array_map(function($item){
-					return Option::build($item["key"], $item["label"]);
+					return Option::build($item["key"], $item["text"]);
 				}, Plugin::getViewmodes())
 			),
-			Number::build("offset", "Offset"),
-			Number::build("limit", "Limit")
-			// TODO: description widget
+
+			Number::build("limit", "Limit", 1),
+			Number::build("offset", "Offset", 0),
+
 		]);
+	}
+
+	public function prepare( stdClass $content ): stdClass {
+		$content->post_ids = [];
+		$content->args = [];
+		if(empty($content->slug)){
+			return $content;
+		}
+
+		$store = Plugin::instance()->store;
+		$queue = $store->get_queue_by_slug($content->slug);
+
+		$pids = array();
+		foreach ($queue as $item) {
+			$pids[]=$item->post_id;
+		}
+
+		/**
+		 * if no id in array return
+		 * otherwise wp_query will render all posts
+		 */
+		$content->post_ids = $pids;
+		if( count($pids) < 1 ) return $content;
+
+		/**
+		 * build query args for loop
+		 */
+		$content->args = array (
+			'post__in'      => $pids,
+			'post_status'   => 'publish',
+			'orderby'       => 'post__in',
+			'post_type'     => 'any',
+			'posts_per_page' => count($pids),
+		);
+
+		if(!empty($content->offset)){
+			$content->args["offset"] = $content->offset;
+		}
+		if(!empty($content->limit)){
+			$content->args["posts_per_page"] = $content->limit;
+		}
+
+		return parent::prepare( $content );
 	}
 }

@@ -3,7 +3,7 @@ Contributors: palasthotel, edwardbock, janame
 Donate link: http://palasthotel.de/
 Tags: loop, order posts, queue
 Requires at least: 5.0
-Tested up to: 5.9.2
+Tested up to: 6.0.2
 Stable tag: 1.4.2
 Requires PHP: 7.4
 License: GPLv3

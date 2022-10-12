@@ -37,6 +37,8 @@ require_once dirname( __FILE__ ) . "/vendor/autoload.php";
  * @property Grid grid
  * @property Assets assets
  * @property REST rest
+ * @property BlockX $blockx
+ * @property Headless $headless
  */
 class Plugin extends Component\Plugin {
 
@@ -72,7 +74,7 @@ class Plugin extends Component\Plugin {
 	 */
 	function onCreate() {
 
-		$this->loadTextdomain(Plugin::DOMAIN, "languages");
+		$this->loadTextdomain( Plugin::DOMAIN, "languages" );
 
 		$this->store = new Store();
 
@@ -86,6 +88,8 @@ class Plugin extends Component\Plugin {
 		$this->rest = new REST( $this );
 
 		$this->editor    = new Editor( $this );
+		$this->blockx    = new BlockX( $this );
+		$this->headless = new Headless($this);
 		$this->post      = new Post( $this );
 		$this->shortcode = new Shortcode( $this );
 		$this->metaBox   = new MetaBox( $this );
