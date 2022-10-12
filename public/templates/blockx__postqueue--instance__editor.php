@@ -9,12 +9,12 @@
 
 $query = new WP_Query($content->args);
 if($query->have_posts()):
-	echo "<ol>";
+	echo "<ul>";
 	while($query->have_posts()){
 		$query->the_post();
 		echo "<li>".get_the_title()."</li>";
 	}
-	echo "</ol>";
+	echo "</ul>";
 endif;
 wp_reset_postdata();
 

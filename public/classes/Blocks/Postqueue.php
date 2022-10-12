@@ -29,6 +29,17 @@ class Postqueue extends _BlockType {
 		return __("PostQueue", Plugin::DOMAIN);
 	}
 
+	public function registerBlockTypeArgs(): array {
+		$args                = parent::registerBlockTypeArgs();
+		$args["icon"]        = "list-view";
+		$args["supports"]    = [
+			"align"           => true,
+			"customClassName" => true,
+		];
+
+		return $args;
+	}
+
 	public function contentStructure(): ContentStructure {
 
 		return new ContentStructure([
