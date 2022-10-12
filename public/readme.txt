@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: loop, order posts, queue
 Requires at least: 5.0
 Tested up to: 6.0.2
-Stable tag: 1.4.2
+Stable tag: 1.5.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
@@ -31,6 +31,9 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 
 == Changelog ==
 
+= 1.5.0 =
+* Feature: Added blockx block
+* Feature: Added headless preparation for blockx block
 
 = 1.4.2 =
  * Bugfix: Query only for public post types in builder search
