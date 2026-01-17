@@ -3,14 +3,9 @@
 
 namespace Postqueue\Component;
 
-/**
- * Class Component
- *
- * @property \Postqueue\Plugin plugin
- *
- * @version 0.1.1
- */
 abstract class Component {
+
+    public Plugin $plugin;
 
 	public function __construct(\Postqueue\Plugin $plugin) {
 		$this->plugin = $plugin;

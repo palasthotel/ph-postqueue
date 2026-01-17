@@ -4,17 +4,14 @@ namespace Postqueue;
 
 use Postqueue\Component\Database;
 
-/**
- *    Postqueue Store class
- * @property string $tableQueues
- * @property string tableContents
- */
 class Store extends Database {
 
 	/**
 	 * @var null|array
 	 */
 	private $queues;
+    public string $tableQueues;
+    public string $tableContents;
 
 	/**
 	 * Define the core functionality of the plugin.

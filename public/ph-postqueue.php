@@ -26,21 +26,20 @@ if ( ! defined( 'WPINC' ) ) {
 
 require_once dirname( __FILE__ ) . "/vendor/autoload.php";
 
-/**
- * @property Store store
- * @property Templates templates
- * @property Ajax ajax
- * @property Editor $editor
- * @property Post post
- * @property Shortcode shortcode
- * @property MetaBox metaBox
- * @property Grid grid
- * @property Assets assets
- * @property REST rest
- * @property BlockX $blockx
- * @property Headless $headless
- */
 class Plugin extends Component\Plugin {
+
+    public Store $store;
+    public Templates $templates;
+    public Ajax $ajax;
+    public Editor $editor;
+    public Post $post;
+    public Shortcode $shortcode;
+    public MetaBox $metaBox;
+    public Grid $grid;
+    public Assets $assets;
+    public REST $rest;
+    public BlockX $blockx;
+    public Headless $headless;
 
 	/**
 	 * Domain for translation
