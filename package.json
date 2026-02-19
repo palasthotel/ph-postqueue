@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "wp-scripts start src/editor.js src/meta-box.js --output-path=public/dist",
-    "build": "wp-scripts build src/editor.js src/meta-box.js --output-path=public/dist"
+    "build": "wp-scripts build src/editor.js src/meta-box.js --output-path=public/dist",
+    "pack": "./bin/build-plugin.sh"
   },
   "repository": {
     "type": "git",
