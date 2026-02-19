@@ -108,10 +108,8 @@ jobs:
           cd svn
           ls -la
           VERSION=${VERSION}
-          rm -rf trunk/* tags/$VERSION || true
-          mkdir -p trunk tags/$VERSION
-          cp -r ../public/* trunk/
-          cp -r trunk/* tags/$VERSION/
+          rsync -aL --delete ../plugin/ trunk/
+          rsync -aL --delete trunk/ "tags/$VERSION/"
           svn add --force . || true
           svn status | awk '/^!/{print $2}' | while IFS= read -r file; do
             [ -n "$file" ] || continue
