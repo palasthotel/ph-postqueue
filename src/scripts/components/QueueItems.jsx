@@ -1,5 +1,5 @@
 import { Button } from '@wordpress/components';
-import { chevronDown, chevronUp, dragHandle } from '@wordpress/icons';
+import { Icon, chevronDown, chevronUp, dragHandle } from '@wordpress/icons';
 import { useState } from '@wordpress/element';
 
 const { i18n } = PostQueue;
@@ -82,7 +82,11 @@ export default function QueueItems( { items, onMove, onRemove } ) {
 									aria-hidden="true"
 									title={ i18n.drag_hint }
 								>
-									{ dragHandle }
+									{ /* Through Icon, not as a bare element: the icons ship
+									     without width or height and the SVG primitive adds
+									     none, so a raw one collapses to nothing. Icon is
+									     what clones it with a size. */ }
+									<Icon icon={ dragHandle } size={ 20 } />
 								</span>
 								<Button
 									size="small"

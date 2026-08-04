@@ -93,11 +93,12 @@ $link: #2271b1;
 	 */
 	.postqueue-items {
 
-		// The order controls need room for a handle and two buttons side by side.
-		// check-column, which this used to borrow, is 2.2em wide in core - the controls
-		// stacked and tripled the height of every row.
+		// Room for the handle, both buttons and the position number: 101px of content
+		// plus the 2x10px a .widefat cell pads with. check-column, which this used to
+		// borrow, is 2.2em wide in core - the controls stacked and tripled the height of
+		// every row.
 		.column-order {
-			width: 108px;
+			width: 130px;
 		}
 
 		.column-status {
@@ -121,6 +122,12 @@ $link: #2271b1;
 			display: flex;
 			align-items: center;
 			gap: 2px;
+
+			// Without this the row squeezes the handle and the buttons flat as soon as
+			// the column is a pixel too narrow, instead of simply overflowing.
+			> * {
+				flex-shrink: 0;
+			}
 		}
 
 		.postqueue-items__handle {
@@ -130,9 +137,15 @@ $link: #2271b1;
 			color: $muted;
 			padding: 2px;
 
+			// The icons carry fill="currentColor" already; this is for the colour to
+			// follow the row on hover.
 			svg {
 				fill: currentColor;
 			}
+		}
+
+		tr:hover .postqueue-items__handle {
+			color: $link;
 		}
 
 		.postqueue-items__position {
