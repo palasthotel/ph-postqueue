@@ -27,9 +27,13 @@ class REST extends Component\Component {
 				$result = $this->plugin->store->create( $name );
 
 				if ( empty( $result->success ) ) {
+					$duplicate = isset( $result->reason ) && 'duplicate' === $result->reason;
+
 					return new \WP_Error(
-						'postqueue_invalid_name',
-						'The queue name is empty after sanitising, or a queue with that slug exists.',
+						$duplicate ? 'postqueue_duplicate_name' : 'postqueue_invalid_name',
+						$duplicate
+							? __( 'A postqueue with that name already exists.', Plugin::DOMAIN )
+							: __( 'Please enter a name for the postqueue.', Plugin::DOMAIN ),
 						array( 'status' => 400 )
 					);
 				}

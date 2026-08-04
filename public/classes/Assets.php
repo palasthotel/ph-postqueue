@@ -31,14 +31,20 @@ class Assets extends Component\Assets {
 				"rest_namespace" => REST::NAMESPACE,
 				"rest_field"     => Plugin::REST_FIELD_QUEUES,
 				"query_key"      => QueryLoop::QUERY_KEY,
-				// Below this many queues a search field is noise; above it, the list
-				// needs one - the same shape as the core category panel.
-				"search_threshold" => (int) apply_filters( Plugin::FILTER_POSTQUEUE_PANEL_SEARCH_THRESHOLD, 3 ),
+				// The core term selector only shows its search field once a taxonomy has
+				// enough terms to need one. The exact number is not readable from the
+				// minified bundle; 8 is what WordPress's own source has used for
+				// MIN_TERMS_COUNT_FOR_FILTER.
+				"search_threshold" => (int) apply_filters( Plugin::FILTER_POSTQUEUE_PANEL_SEARCH_THRESHOLD, 8 ),
 				"i18n"           => [
 					"panel_title"   => esc_html_x( "Postqueues", "block-editor", Plugin::DOMAIN ),
 					"panel_empty"   => esc_html_x( "No postqueues exist yet.", "block-editor", Plugin::DOMAIN ),
 					"panel_search"  => esc_html_x( "Search postqueues", "block-editor", Plugin::DOMAIN ),
 					"panel_no_match" => esc_html_x( "No postqueue matches.", "block-editor", Plugin::DOMAIN ),
+					"create_toggle" => esc_html_x( "Add new postqueue", "block-editor", Plugin::DOMAIN ),
+					"create_label"  => esc_html_x( "New postqueue name", "block-editor", Plugin::DOMAIN ),
+					"create_submit" => esc_html_x( "Add new postqueue", "block-editor", Plugin::DOMAIN ),
+					"create_error"  => esc_html_x( "The postqueue could not be created.", "block-editor", Plugin::DOMAIN ),
 					"variation"     => esc_html_x( "Postqueue", "block-editor", Plugin::DOMAIN ),
 					"variation_desc" => esc_html_x( "A manually ordered queue of posts.", "block-editor", Plugin::DOMAIN ),
 					"select_queue"  => esc_html_x( "Postqueue", "block-editor", Plugin::DOMAIN ),

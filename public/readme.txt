@@ -32,7 +32,11 @@ place the permalink and the categories live. It behaves like the category panel:
 a queue marks the post as changed, and the change is written when you save or update the
 post. Nothing is sent while you are still clicking.
 
-A search field appears once more than three queues exist, which is filterable with
+You can create a queue right there too, the way you add a category: the **Add new
+postqueue** link opens a name field. Creating happens immediately - only the assignment
+waits for the post to be saved.
+
+A search field appears once there are more than eight queues, filterable with
 `postqueue_panel_search_threshold`.
 
 The classic editor keeps the meta box it always had. Only one of the two appears, never
