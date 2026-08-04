@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.1.0](https://github.com/palasthotel/ph-postqueue/compare/v2.0.0...v2.1.0) (2026-08-04)
+
+
+### Features
+
+* let plugins add columns to the Postqueues table ([e78cd47](https://github.com/palasthotel/ph-postqueue/commit/e78cd47e7338461b1ee02c07bca8f26c3b031d26))
+
+
+### Bug Fixes
+
+* render the blockX block on the front end ([cf62c79](https://github.com/palasthotel/ph-postqueue/commit/cf62c7999ea7cc05a7db9304ecd9b9fe1e518bd0))
+
 ## [2.0.0](https://github.com/palasthotel/ph-postqueue/compare/v1.5.1...v2.0.0) (2026-08-04)
 
 

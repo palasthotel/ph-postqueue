@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: loop, order posts, queue
 Requires at least: 6.6
 Tested up to: 7.0.2
-Stable tag: 2.0.0
+Stable tag: 2.1.0
 Requires PHP: 7.4
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -67,6 +67,13 @@ The `[postqueue]` shortcode and the theme templates still work as before.
 
 
 == Changelog ==
+
+= 2.1.0 =
+**Features**
+* let plugins add columns to the Postqueues table (e78cd47)
+
+**Bug Fixes**
+* render the blockX block on the front end (cf62c79)
 
 = 2.0.0 =
 **⚠ BREAKING CHANGES**
