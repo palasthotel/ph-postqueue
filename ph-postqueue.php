@@ -1,16 +1,15 @@
 <?php
 /**
  * Plugin Name:       Postqueue - DEV
- * Description:       Dev inc file
+ * Description:       Loads public/ph-postqueue.php when this repository is checked out into wp-content/plugins/. Not shipped - the released plugin is the content of public/.
  * Version:           X.X.X
- * Requires at least: X.X
- * Tested up to:      X.X.X
+ * Requires at least: 6.6
+ * Tested up to:      7.0.2
  * Author:            PALASTHOTEL by Edward and Julia
  * Author URI:        http://www.palasthotel.de
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * License:           GPL-3.0-or-later
+ * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain:       postqueue
- * Domain Path:       /plugin/languages
  */
 
 include dirname(__FILE__)."/public/ph-postqueue.php";

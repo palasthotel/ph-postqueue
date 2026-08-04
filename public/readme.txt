@@ -1,13 +1,13 @@
 === Postqueue ===
-Contributors: palasthotel, edwardbock, janame
+Contributors: palasthotel, edwardbock, janaeggebrecht
 Donate link: http://palasthotel.de/
 Tags: loop, order posts, queue
-Requires at least: 5.0
-Tested up to: 6.0.2
+Requires at least: 6.6
+Tested up to: 7.0.2
 Stable tag: 1.5.1
 Requires PHP: 7.4
-License: GPLv3
-License URI: http://www.gnu.org/licenses/gpl
+License: GPL-3.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Allows you to create you very own loop order of posts
 
