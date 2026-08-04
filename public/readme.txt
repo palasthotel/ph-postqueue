@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: loop, order posts, queue
 Requires at least: 6.6
 Tested up to: 7.0.2
-Stable tag: 1.5.1
+Stable tag: 2.0.0
 Requires PHP: 7.4
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -67,6 +67,32 @@ The `[postqueue]` shortcode and the theme templates still work as before.
 
 
 == Changelog ==
+
+= 2.0.0 =
+**⚠ BREAKING CHANGES**
+* the editor bundle no longer exports the queue overview, and the page template partials/ph-postqueue-editor.tpl.php is removed. A theme or plugin that included that template, or that styled the .queues-list markup the old React list produced, has to be adjusted.
+* the ph_postqueue_* admin-ajax actions are gone. Nothing in this plugin used them, but code outside it that called them will stop working and has to move to the REST routes under postqueue/v1.
+
+**Features**
+* create postqueues from the sidebar panel, and match the category layout (638093f)
+* filter the core Query Loop by postqueue (1bb79ed)
+* move the queue assignment into the block editor sidebar (7ca3cc3)
+* rebuild the Postqueues overview as a WordPress list table (37102c3)
+* remove the deprecated admin-ajax endpoints (af63bc7)
+* reorder queue items with the keyboard, and drop react-dnd (a528940)
+
+**Bug Fixes**
+* answer a duplicate queue name instead of a database error (cb86ff2)
+* bind the values in every database query (2055a8f)
+* complete the German translations (bc561e3)
+* escape the queue name instead of running it as script (2533838)
+* escape the queue name instead of running it as script (bc4ae10)
+* name the postqueue in the screen heading (41bb4f1)
+* render the queue editor with createRoot (5579734)
+* repair the queue items table (515ddab)
+* show the drag handle icon (2a8b509)
+* stop any logged-in user from editing the queues (fa4239a)
+* stop enqueueing the stylesheet against a script handle (7a644b7)
 
 = 1.5.1 =
 * Update: Update dependencies
