@@ -1,9 +1,4 @@
 <?php
-
-namespace Postqueue;
-
-use Postqueue\Component\Templates;
-
 /**
  * Plugin Name:       Postqueue
  * Description:       Create manually ordered postqueues
@@ -18,6 +13,10 @@ use Postqueue\Component\Templates;
  * Text Domain:       postqueue
  * Domain Path:       /languages
  */
+
+namespace Postqueue;
+
+use Postqueue\Component\Templates;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
