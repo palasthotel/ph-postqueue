@@ -44,6 +44,19 @@ class Store extends Database {
 		if ( '' === $result->name || '' === $result->slug ) {
 			$result->success = false;
 			$result->id      = 0;
+			$result->reason  = 'empty';
+
+			return $result;
+		}
+
+		// Same reason, different cause: two queues whose names sanitise to the same slug
+		// collide on the unique key. That is an everyday case now that queues can be
+		// created by typing a name in the editor sidebar, so it has to be an answer
+		// rather than a database error.
+		if ( $this->slugExists( $result->slug ) ) {
+			$result->success = false;
+			$result->id      = 0;
+			$result->reason  = 'duplicate';
 
 			return $result;
 		}
@@ -382,6 +395,17 @@ class Store extends Database {
 					$post_id
 				)
 			)
+		);
+	}
+
+	/**
+	 * Whether a queue with this slug exists.
+	 */
+	public function slugExists( string $slug ): bool {
+		global $wpdb;
+
+		return (bool) $wpdb->get_var(
+			$wpdb->prepare( "SELECT id FROM $this->tableQueues WHERE slug = %s", $slug )
 		);
 	}
 
