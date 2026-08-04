@@ -85,6 +85,36 @@ _$capabilities_ ==> [WordPress capabilities](https://codex.wordpress.org/Roles_a
 
 ---
 
+## Block editor
+
+**Adding a post to a queue** happens in the document sidebar, through a
+`PluginDocumentSettingPanel` - not in a meta box. The classic meta box is skipped when
+`get_current_screen()->is_block_editor()` is true, so exactly one of the two is shown.
+
+The panel is modelled on the core category panel, in behaviour as well as in looks: the
+queues live in a `postqueues` REST field on the post, the panel edits it with
+`editPost()`, and it is written when the post is saved. Nothing is sent on click. A
+search field appears above the checkboxes once there are more than
+`postqueue_panel_search_threshold` queues (default 3).
+
+**Outputting a queue** is a variation of the core Query Loop, registered as
+`postqueue/queue`. The queue slug is stored in the block's own `query` attribute under
+`postqueue`, and two filters turn that into a real query:
+
+| Where | Hook |
+|---|---|
+| Front end | `query_loop_block_query_vars` |
+| Editor preview | `rest_{$post_type}_query` — the Post Template block spreads query keys it does not know into its REST request, so the same slug arrives there |
+
+Both end in `post__in` plus `orderby => post__in`, which is what preserves the queue's
+order. An empty queue becomes `post__in => [0]`: an empty `post__in` is ignored by
+`WP_Query` and would return every post, which is the opposite of what an empty queue
+means.
+
+The older BlockX block is untouched and still requires the BlockX plugin.
+
+---
+
 ## Repository layout
 
 `public/` is exactly what ships to WordPress.org. Everything outside it is
