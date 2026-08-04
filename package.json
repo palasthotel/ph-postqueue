@@ -4,34 +4,31 @@
   "description": "Be free to order posts as you wish. Plugin is available at [WordPress.org](https://wordpress.org/plugins/postqueue/)",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "wp-scripts start src/editor.js src/meta-box.js --output-path=public/dist",
     "build": "wp-scripts build src/editor.js src/meta-box.js --output-path=public/dist",
-    "pack": "./bin/build-plugin.sh"
+    "pack": "bash ./bin/pack.sh"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/palasthotel/ph-postqueue.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/palasthotel/ph-postqueue/issues"
   },
   "homepage": "https://github.com/palasthotel/ph-postqueue#readme",
-  "dependencies": {
-    "@wordpress/api-fetch": "^5.2.6",
-    "@wordpress/dom-ready": "^3.2.3",
-    "@wordpress/element": "^4.0.4",
-    "@wordpress/scripts": "^19.2.2",
-    "react": "^17.0.2",
-    "react-dnd": "^14.0.4",
-    "react-dnd-html5-backend": "^14.0.2",
-    "react-dom": "^17.0.2",
-    "react-sortablejs": "^6.1.4",
-    "sortablejs": "^1.14.0"
-  },
   "devDependencies": {
-    "@types/sortablejs": "^1.10.7"
+    "@types/sortablejs": "^1.15.9",
+    "@wordpress/api-fetch": "^7.52.0",
+    "@wordpress/dom-ready": "^4.52.0",
+    "@wordpress/element": "^8.4.0",
+    "@wordpress/scripts": "^34.0.0",
+    "react": "^18.3.1",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^18.3.1",
+    "react-sortablejs": "^6.1.4",
+    "sortablejs": "^1.15.7"
   }
 }
