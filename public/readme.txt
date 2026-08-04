@@ -42,6 +42,16 @@ A search field appears once there are more than eight queues, filterable with
 The classic editor keeps the meta box it always had. Only one of the two appears, never
 both.
 
+= Where do I manage the queues themselves? =
+
+Under **Tools → Postqueues**. The overview is the same kind of table WordPress uses for
+posts and pages, with a search box, sortable columns and bulk deletion, and a form next
+to it for adding one. Opening a queue shows its posts in order.
+
+Inside a queue you can reorder by dragging, or with the **Move up** and **Move down**
+buttons - those also work from the keyboard. The order is applied when you press
+**Save**; leaving the page with unsaved changes asks first.
+
 = How do I output a queue with blocks? =
 
 Insert the **Postqueue** block. It is a variation of the core Query Loop, so it comes
