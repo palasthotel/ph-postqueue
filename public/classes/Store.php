@@ -2,6 +2,8 @@
 
 namespace Postqueue;
 
+defined( 'ABSPATH' ) || exit;
+
 use Postqueue\Component\Database;
 
 class Store extends Database {
@@ -87,10 +89,17 @@ class Store extends Database {
 	 */
 	private function get_queue( $key, $value ) {
 		global $wpdb;
+
+		// $key names a column, so it cannot be a placeholder - it is checked against a
+		// list instead. $value comes from a request and is bound.
+		if ( ! in_array( $key, array( 'queue_id', 'slug' ), true ) ) {
+			return array();
+		}
+
 		$query = "SELECT name, slug, contents.id as cid, queue_id, post_id, position, title_overwrite as title FROM";
 		$query .= " $this->tableQueues as queue LEFT JOIN $this->tableContents as contents";
 		$query .= " ON (queue.id = contents.queue_id)";
-		$query .= " WHERE $key = '$value'";
+		$query .= $wpdb->prepare( " WHERE $key = %s", $value );
 		$query .= " ORDER BY position ASC";
 
 		$results = $wpdb->get_results( $query );
@@ -263,7 +272,7 @@ class Store extends Database {
 	public function search( $name = "" ) {
 		global $wpdb;
 		$query = "SELECT * FROM $this->tableQueues";
-		$query .= " WHERE name LIKE '%" . $name . "%'";
+		$query .= $wpdb->prepare( " WHERE name LIKE %s", '%' . $wpdb->esc_like( $name ) . '%' );
 
 		$order = apply_filters( Plugin::FILTER_POSTQUEUE_SEARCH_ORDER, 'id ASC' );
 		$query .= " ORDER BY $order";
@@ -300,7 +309,7 @@ class Store extends Database {
 	public function get_queues_for_post( $post_id ) {
 		global $wpdb;
 		$query      = "SELECT queue_id FROM $this->tableContents";
-		$query      .= " WHERE post_id = '" . $post_id . "'";
+		$query      .= $wpdb->prepare( " WHERE post_id = %d", $post_id );
 		$result     = $wpdb->get_results( $query );
 		$postqueues = array();
 		foreach ( $result as $row ) {
@@ -316,8 +325,7 @@ class Store extends Database {
 	public function is_post_in_queue( $post_id, $queue_id ) {
 		global $wpdb;
 		$query  = "SELECT * FROM $this->tableContents";
-		$query  .= " WHERE post_id = '" . $post_id . "'";
-		$query  .= " AND queue_id = '" . $queue_id . "'";
+		$query  .= $wpdb->prepare( " WHERE post_id = %d AND queue_id = %d", $post_id, $queue_id );
 		$result = $wpdb->get_results( $query );
 		if ( count( $result ) > 0 ) {
 			return true;
@@ -336,7 +344,7 @@ class Store extends Database {
 	public function get_last_position_of_queue( $queue_id ) {
 		global $wpdb;
 		$query = "SELECT MAX(position) FROM $this->tableContents";
-		$query .= " WHERE queue_id = '" . $queue_id . "'";
+		$query .= $wpdb->prepare( " WHERE queue_id = %d", $queue_id );
 
 		return $wpdb->get_var( $query );
 	}

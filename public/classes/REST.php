@@ -3,6 +3,8 @@
 
 namespace Postqueue;
 
+defined( 'ABSPATH' ) || exit;
+
 
 use WP_REST_Request;
 use WP_REST_Server;
@@ -38,7 +40,9 @@ class REST extends Component\Component {
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => function ( WP_REST_Request $request ) {
 				if ( $request->has_param( "search" ) && ! empty( $request->get_param( "search" ) ) ) {
-					$this->plugin->store->search($request->get_param("search"));
+					// The result used to be discarded and the full list returned, so
+					// searching queues did nothing at all.
+					return $this->plugin->store->search( $request->get_param( "search" ) );
 				}
 				return $this->plugin->store->get_queues();
 			},
@@ -127,23 +131,30 @@ class REST extends Component\Component {
 				$search = $request->get_param("search");
 
 				$result         = (object) array();
-				$result->search = sanitize_text_field( $search);
+				$result->search = sanitize_text_field( $search );
 
-				$postTypes = implode(
-					", ",
-					array_map( function($item){ return "'$item'"; }, get_post_types(["public" => true]))
-				);
+				// sanitize_text_field() does not escape SQL - it leaves single quotes
+				// alone - so every value here goes through $wpdb->prepare(), and the
+				// LIKE term through esc_like() so a % in a search does not become a
+				// wildcard.
+				$postTypes    = array_values( get_post_types( [ "public" => true ] ) );
+				$placeholders = implode( ", ", array_fill( 0, max( 1, count( $postTypes ) ), "%s" ) );
 
 				global $wpdb;
-				$sql = "SELECT ID, post_title FROM " . $wpdb->prefix . "posts" .
-				       " WHERE" .
-				       " (".
-				        "post_title LIKE '%" . $result->search . "%'" .
-				        " AND (post_status = 'publish' OR post_status = 'future' ) ".
-				        " AND post_type IN ($postTypes)".
-				       ")" .
-				       " OR ID = '" . $result->search . "'" .
-				       " ORDER BY ID DESC LIMIT 10";
+				$sql = $wpdb->prepare(
+					"SELECT ID, post_title FROM {$wpdb->posts}"
+					. " WHERE ("
+					. " post_title LIKE %s"
+					. " AND (post_status = 'publish' OR post_status = 'future')"
+					. " AND post_type IN ($placeholders)"
+					. " ) OR ID = %d"
+					. " ORDER BY ID DESC LIMIT 10",
+					array_merge(
+						[ '%' . $wpdb->esc_like( $result->search ) . '%' ],
+						$postTypes ?: [ '' ],
+						[ intval( $result->search ) ]
+					)
+				);
 				$results = $wpdb->get_results($sql);
 
 
