@@ -39,13 +39,13 @@ export default function QueueItems( { items, onMove, onRemove } ) {
 		<table className="wp-list-table widefat fixed striped postqueue-items">
 			<thead>
 				<tr>
-					<td className="manage-column column-order check-column">
+					<th scope="col" className="manage-column column-order">
 						<span className="screen-reader-text">{ i18n.column_order }</span>
-					</td>
+					</th>
 					<th scope="col" className="manage-column column-primary">{ i18n.column_post }</th>
-					<th scope="col" className="manage-column">{ i18n.column_status }</th>
-					<th scope="col" className="manage-column">{ i18n.column_date }</th>
-					<th scope="col" className="manage-column">
+					<th scope="col" className="manage-column column-status">{ i18n.column_status }</th>
+					<th scope="col" className="manage-column column-date">{ i18n.column_date }</th>
+					<th scope="col" className="manage-column column-actions">
 						<span className="screen-reader-text">{ i18n.column_actions }</span>
 					</th>
 				</tr>
@@ -75,24 +75,33 @@ export default function QueueItems( { items, onMove, onRemove } ) {
 							overIndex === index && draggedIndex !== index ? 'is-drop-target' : '',
 						].join( ' ' ).trim() }
 					>
-						<td className="column-order check-column">
-							<span className="postqueue-items__handle" aria-hidden="true">
-								{ dragHandle }
-							</span>
-							<Button
-								size="small"
-								icon={ chevronUp }
-								label={ i18n.move_up }
-								disabled={ 0 === index }
-								onClick={ () => onMove( index, index - 1 ) }
-							/>
-							<Button
-								size="small"
-								icon={ chevronDown }
-								label={ i18n.move_down }
-								disabled={ index === items.length - 1 }
-								onClick={ () => onMove( index, index + 1 ) }
-							/>
+						<td className="column-order">
+							<div className="postqueue-items__order">
+								<span
+									className="postqueue-items__handle"
+									aria-hidden="true"
+									title={ i18n.drag_hint }
+								>
+									{ dragHandle }
+								</span>
+								<Button
+									size="small"
+									icon={ chevronUp }
+									label={ i18n.move_up }
+									disabled={ 0 === index }
+									onClick={ () => onMove( index, index - 1 ) }
+								/>
+								<Button
+									size="small"
+									icon={ chevronDown }
+									label={ i18n.move_down }
+									disabled={ index === items.length - 1 }
+									onClick={ () => onMove( index, index + 1 ) }
+								/>
+								<span className="postqueue-items__position" aria-hidden="true">
+									{ index + 1 }
+								</span>
+							</div>
 						</td>
 						<td className="column-primary">
 							<strong>
@@ -103,11 +112,9 @@ export default function QueueItems( { items, onMove, onRemove } ) {
 								) }
 							</strong>
 						</td>
-						<td>
-							{ 'future' === item.post_status ? i18n.status_future : i18n.status_published }
-						</td>
-						<td>{ item.post_date }</td>
-						<td>
+						<td className="column-status">{ item.post_status_label }</td>
+						<td className="column-date">{ item.post_date }</td>
+						<td className="column-actions">
 							<Button variant="link" isDestructive onClick={ () => onRemove( item ) }>
 								{ i18n.remove }
 							</Button>

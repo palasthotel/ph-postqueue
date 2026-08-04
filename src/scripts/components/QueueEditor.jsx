@@ -16,15 +16,17 @@ const AddPost = ( { postIdsInQueue, onAdd } ) => {
 
 	return (
 		<div className="postqueue-add">
-			<Flex justify="flex-start" gap="2">
+			<label htmlFor="postqueue-add-search">{ i18n.search_label }</label>
+			<Flex justify="flex-start" gap="2" expanded={ false }>
 				<FlexItem>
 					<input
 						type="search"
+						id="postqueue-add-search"
 						className="postqueue-add__input"
 						value={ query }
 						onChange={ ( event ) => setQuery( event.target.value ) }
 						placeholder={ i18n.search_post_placeholder }
-						aria-label={ i18n.search_post_placeholder }
+						aria-describedby="postqueue-add-search-help"
 					/>
 				</FlexItem>
 				{ isLoading && (
@@ -33,6 +35,9 @@ const AddPost = ( { postIdsInQueue, onAdd } ) => {
 					</FlexItem>
 				) }
 			</Flex>
+			<p className="postqueue-add__help" id="postqueue-add-search-help">
+				{ i18n.search_help }
+			</p>
 
 			{ '' !== query.trim() && ! isLoading && (
 				<ul className="postqueue-add__suggestions">

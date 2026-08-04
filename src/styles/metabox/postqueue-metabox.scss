@@ -6,11 +6,10 @@
  
 /**
  * colors
+ *
+ * Four more were declared here and read nowhere, one of them through lighten(), which
+ * Sass now warns about on every build.
  */
-$highlight-blue:  #0074a2;
-$active-gray: gray;
-$inactive-gray: lighten($active-gray, 20);
-$background-gray: #222;
 $error: #dd3d36;
 $messages-background: #fff98d;
 
