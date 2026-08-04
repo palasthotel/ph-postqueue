@@ -231,11 +231,18 @@ class Editor extends Component {
 			'before'
 		);
 		?>
-		<h1 class="wp-heading-inline"><?php esc_html_e( 'Edit Postqueue', 'postqueue' ); ?></h1>
+		<h1 class="wp-heading-inline">
+			<?php
+			printf(
+				/* translators: %s: name of the postqueue being edited */
+				esc_html__( 'Edit Postqueue: %s', 'postqueue' ),
+				esc_html( $this->plugin->store->get_queue_name( $queueId ) )
+			);
+			?>
+		</h1>
 		<a href="<?php echo esc_url( $this->pageUrl() ); ?>" class="page-title-action">
 			<?php esc_html_e( 'Back to postqueues', 'postqueue' ); ?>
 		</a>
-		<h2><?php echo esc_html( $this->plugin->store->get_queue_name( $queueId ) ); ?></h2>
 		<hr class="wp-header-end" />
 		<div id="post-queue-editor" class="ph-postqueue"></div>
 		<?php

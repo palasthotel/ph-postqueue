@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-04T20:25:03+00:00\n"
+"POT-Creation-Date: 2026-08-04T20:33:51+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: postqueue\n"
@@ -232,11 +232,13 @@ msgstr ""
 msgid "Search postqueues"
 msgstr ""
 
-#: classes/Editor.php:234
-msgid "Edit Postqueue"
+#. translators: %s: name of the postqueue being edited
+#: classes/Editor.php:238
+#, php-format
+msgid "Edit Postqueue: %s"
 msgstr ""
 
-#: classes/Editor.php:236
+#: classes/Editor.php:244
 msgid "Back to postqueues"
 msgstr ""
 
