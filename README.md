@@ -102,6 +102,29 @@ Under **Tools → Postqueues**, in two views:
 Creating and deleting are form posts handled on `load-{$hook}` and answered with a
 redirect, so a reload does not repeat them.
 
+### Adding a column to the overview
+
+Because the overview is a plain `WP_List_Table`, a column is added with the same two
+hooks a column is added to any core list table with. The screen id is
+`tools_page_` plus `\Postqueue\Editor::PAGE_SLUG`:
+
+```php
+add_filter( 'manage_tools_page_tools-postqueue_columns', function ( $columns ) {
+	$columns['my_column'] = __( 'Mine', 'my-plugin' );
+	return $columns;
+} );
+
+// $item is the row: id, name, slug, items
+add_filter( 'manage_tools_page_tools-postqueue_custom_column', function ( $content, $column, $item ) {
+	return 'my_column' === $column ? esc_html( $item['slug'] ) : $content;
+}, 10, 3 );
+```
+
+Sortable columns go through `manage_tools_page_tools-postqueue_sortable_columns`, and
+WordPress offers the column under **Screen Options** by itself. The
+[Postqueue Feeds](https://wordpress.org/plugins/postqueue-feeds/) plugin uses this to
+show each queue's feed address; Postqueue knows nothing about feeds.
+
 ### Reordering
 
 Two ways, deliberately. Dragging uses the browser's own drag events - no library - and
