@@ -2,6 +2,8 @@
 
 namespace Postqueue\Component;
 
+defined( 'ABSPATH' ) || exit;
+
 use ReflectionClass;
 use ReflectionException;
 

@@ -1,4 +1,6 @@
 <?php
+
+defined( 'ABSPATH' ) || exit;
 /**
  * template for postqueues metabox
  * @var $this \Postqueue\Metabox

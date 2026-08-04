@@ -1,5 +1,7 @@
 <?php
 
+defined( 'ABSPATH' ) || exit;
+
 use Postqueue\Plugin;
 use Postqueue\Store;
 

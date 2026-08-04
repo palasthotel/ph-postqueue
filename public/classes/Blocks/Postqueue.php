@@ -3,6 +3,8 @@
 
 namespace Postqueue\Blocks;
 
+defined( 'ABSPATH' ) || exit;
+
 
 use Palasthotel\WordPress\BlockX\Blocks\_BlockType;
 use Palasthotel\WordPress\BlockX\Model\BlockId;

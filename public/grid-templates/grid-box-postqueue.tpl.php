@@ -1,4 +1,6 @@
 <?php
+
+defined( 'ABSPATH' ) || exit;
 /**
  * @author Palasthotel <rezeption@palasthotel.de>
  * @copyright Copyright (c) 2014, Palasthotel

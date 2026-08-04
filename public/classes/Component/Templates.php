@@ -3,6 +3,8 @@
 
 namespace Postqueue\Component;
 
+defined( 'ABSPATH' ) || exit;
+
 
 class Templates {
 

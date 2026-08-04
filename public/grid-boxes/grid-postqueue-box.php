@@ -1,5 +1,7 @@
 <?php
 
+defined( 'ABSPATH' ) || exit;
+
 class grid_postqueue_box extends grid_list_box
 {
 	public function __construct()

@@ -2,6 +2,8 @@
 
 namespace Postqueue\Headless;
 
+defined( 'ABSPATH' ) || exit;
+
 use Palasthotel\WordPress\Headless\Interfaces\IBlockPreparation;
 use Palasthotel\WordPress\Headless\Model\BlockName;
 use Postqueue\Blocks\Postqueue;

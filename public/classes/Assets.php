@@ -3,6 +3,8 @@
 
 namespace Postqueue;
 
+defined( 'ABSPATH' ) || exit;
+
 
 class Assets extends Component\Assets {
 

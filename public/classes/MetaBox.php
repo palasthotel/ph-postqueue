@@ -2,7 +2,11 @@
 
 namespace Postqueue;
 
+defined( 'ABSPATH' ) || exit;
+
 class MetaBox extends Component\Component {
+
+	const NONCE_ACTION = "postqueue_metabox";
 
 
 	public function onCreate() {
@@ -72,6 +76,7 @@ class MetaBox extends Component\Component {
 			false
 		);
 		wp_localize_script( 'postqueue-metabox', 'PostqueueMetaBoxL10n', array(
+			'nonce' => wp_create_nonce( self::NONCE_ACTION ),
 			'postremoved' => esc_html__( 'Post successfully removed from postqueue.', Plugin::DOMAIN ),
 			'postadded' => esc_html__( 'Post successfully added to postqueue.', Plugin::DOMAIN ),
 			'pleasechoose' => esc_html__( 'Please choose a postqueue!', Plugin::DOMAIN ),
@@ -86,9 +91,27 @@ class MetaBox extends Component\Component {
 	/**
 	* Callback function for the add post action
 	*/
+	/**
+	 * Both AJAX callbacks used to run for any logged-in user, with no capability check
+	 * and no nonce: wp_ajax_ hooks only require *some* login, so a subscriber could add
+	 * a post to a curated queue or empty one. Queues drive what a site puts on its front
+	 * page, so this gate is the same one the editor screen uses.
+	 */
+	private function checkAjaxRequest(): void {
+		if ( ! current_user_can( $this->plugin->editor->getCapability() ) ) {
+			wp_send_json_error( null, 403 );
+		}
+		check_ajax_referer( self::NONCE_ACTION );
+	}
+
 	function ajax_callback_add_post() {
-		$post_id = intval( $_POST['postid'] );
-		$queue_id = intval( $_POST['queueid'] );
+		$this->checkAjaxRequest();
+
+		$post_id = isset( $_POST['postid'] ) ? intval( $_POST['postid'] ) : 0;
+		$queue_id = isset( $_POST['queueid'] ) ? intval( $_POST['queueid'] ) : 0;
+		if ( $post_id <= 0 || $queue_id <= 0 ) {
+			wp_send_json_error( null, 400 );
+		}
 		
 		$position = \apply_filters(Plugin::FILTER_ADD_POSITION, null);
 		
@@ -106,8 +129,13 @@ class MetaBox extends Component\Component {
 	* Callback function for the remove post action
 	*/
 	function ajax_callback_remove_post() {
-		$post_id = intval( $_POST['postid'] );
-		$queue_id = intval( $_POST['queueid'] );
+		$this->checkAjaxRequest();
+
+		$post_id = isset( $_POST['postid'] ) ? intval( $_POST['postid'] ) : 0;
+		$queue_id = isset( $_POST['queueid'] ) ? intval( $_POST['queueid'] ) : 0;
+		if ( $post_id <= 0 || $queue_id <= 0 ) {
+			wp_send_json_error( null, 400 );
+		}
 		$this->plugin->store->remove_post_from_queue( $post_id, $queue_id );
 		echo "Postqueue ID: " . $queue_id;
 		wp_die(); // this is required to terminate immediately and return a proper response

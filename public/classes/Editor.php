@@ -2,6 +2,8 @@
 
 namespace Postqueue;
 
+defined( 'ABSPATH' ) || exit;
+
 use Postqueue\Component\Component;
 
 class Editor extends Component {

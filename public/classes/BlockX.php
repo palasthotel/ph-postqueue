@@ -2,6 +2,8 @@
 
 namespace Postqueue;
 
+defined( 'ABSPATH' ) || exit;
+
 use Palasthotel\WordPress\BlockX\Gutenberg;
 use Postqueue\Blocks\Postqueue;
 
