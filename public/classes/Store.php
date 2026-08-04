@@ -399,6 +399,36 @@ class Store extends Database {
 	}
 
 	/**
+	 * Number of items per queue, keyed by queue id.
+	 *
+	 * One grouped query instead of one per row, because the overview shows a count for
+	 * every queue.
+	 *
+	 * @return array<int,int>
+	 */
+	public function get_queue_item_counts(): array {
+		global $wpdb;
+
+		$counts = array();
+		foreach ( $wpdb->get_results( "SELECT queue_id, COUNT(*) as total FROM $this->tableContents GROUP BY queue_id" ) as $row ) {
+			$counts[ (int) $row->queue_id ] = (int) $row->total;
+		}
+
+		return $counts;
+	}
+
+	/**
+	 * The name of a queue, or an empty string.
+	 */
+	public function get_queue_name( int $queue_id ): string {
+		global $wpdb;
+
+		return (string) $wpdb->get_var(
+			$wpdb->prepare( "SELECT name FROM $this->tableQueues WHERE id = %d", $queue_id )
+		);
+	}
+
+	/**
 	 * Whether a queue with this slug exists.
 	 */
 	public function slugExists( string $slug ): bool {
