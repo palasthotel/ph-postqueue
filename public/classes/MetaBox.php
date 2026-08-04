@@ -38,6 +38,14 @@ class MetaBox extends Component\Component {
 
 		if(!current_user_can($this->plugin->editor->getCapability())) return;
 
+		// The block editor gets the document sidebar panel instead. A meta box would
+		// still render there, in the compatibility area at the bottom of the page,
+		// which is exactly the placement this replaces.
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		if ( $screen && method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) {
+			return;
+		}
+
 		$screens = get_post_types( array('public' => true) );
 
 		foreach ( $screens as $screen ) {

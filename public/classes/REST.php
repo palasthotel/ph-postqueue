@@ -18,6 +18,8 @@ class REST extends Component\Component {
 	}
 
 	public function rest_api_init() {
+
+		$this->register_post_field();
 		register_rest_route( REST::NAMESPACE, '/queues', array(
 			'methods'             => WP_REST_Server::CREATABLE,
 			'callback'            => function ( WP_REST_Request $request ) {
@@ -185,6 +187,61 @@ class REST extends Component\Component {
 			]
 		) );
 
+	}
+
+	/**
+	 * The queues a post belongs to, as a field on the post itself.
+	 *
+	 * A field rather than its own routes, because that is what makes the panel behave
+	 * like the category panel: the editor reads it off the post, edits are held in the
+	 * editor's state, and they are written when the post is saved - not on every click.
+	 */
+	public function register_post_field() {
+		$postTypes = array_values( get_post_types( [ 'public' => true, 'show_in_rest' => true ] ) );
+
+		register_rest_field( $postTypes, Plugin::REST_FIELD_QUEUES, [
+			'get_callback'    => function ( $post ) {
+				return $this->plugin->store->get_queue_ids_for_post( (int) $post['id'] );
+			},
+			'update_callback' => function ( $value, $post ) {
+				// register_rest_field() has no permission_callback - a key passed there
+				// is silently ignored - so the check belongs here. Core already refuses
+				// the request without edit_post; this is the plugin's own gate on top.
+				if ( ! current_user_can( $this->plugin->editor->getCapability() ) ) {
+					return new \WP_Error(
+						'postqueue_cannot_edit',
+						'You are not allowed to change postqueues.',
+						[ 'status' => rest_authorization_required_code() ]
+					);
+				}
+				if ( ! is_array( $value ) ) {
+					return;
+				}
+
+				$store   = $this->plugin->store;
+				$post_id = (int) $post->ID;
+				$wanted  = array_values( array_unique( array_filter(
+					array_map( 'intval', $value ),
+					function ( $id ) use ( $store ) {
+						return $id > 0 && $store->queueExists( $id );
+					}
+				) ) );
+				$current = $store->get_queue_ids_for_post( $post_id );
+
+				foreach ( array_diff( $current, $wanted ) as $queue_id ) {
+					$store->remove_post_from_queue( $post_id, $queue_id );
+				}
+				foreach ( array_diff( $wanted, $current ) as $queue_id ) {
+					$store->add_post_to_queue( $post_id, $queue_id );
+				}
+			},
+			'schema'          => [
+				'description' => 'Ids of the postqueues this post belongs to.',
+				'type'        => 'array',
+				'items'       => [ 'type' => 'integer' ],
+				'context'     => [ 'view', 'edit' ],
+			],
+		] );
 	}
 
 	public function permissionCheck( WP_REST_Request $request ): bool {

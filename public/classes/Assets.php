@@ -8,6 +8,48 @@ defined( 'ABSPATH' ) || exit;
 
 class Assets extends Component\Assets {
 
+	public function __construct( Component\Plugin $plugin ) {
+		parent::__construct( $plugin );
+		add_action( 'enqueue_block_editor_assets', [ $this, 'onBlockEditorEnqueue' ] );
+	}
+
+	/**
+	 * The document sidebar panel and the Query Loop variation. Block editor only, so
+	 * neither is loaded on the classic editor or the front end.
+	 */
+	public function onBlockEditorEnqueue() {
+		if ( ! current_user_can( Plugin::instance()->editor->getCapability() ) ) {
+			return;
+		}
+		if ( ! $this->registerScript( Plugin::HANDLE_BLOCK_EDITOR_JS, 'dist/block-editor.js' ) ) {
+			return;
+		}
+		wp_localize_script(
+			Plugin::HANDLE_BLOCK_EDITOR_JS,
+			'PostQueueBlockEditor',
+			[
+				"rest_namespace" => REST::NAMESPACE,
+				"rest_field"     => Plugin::REST_FIELD_QUEUES,
+				"query_key"      => QueryLoop::QUERY_KEY,
+				// Below this many queues a search field is noise; above it, the list
+				// needs one - the same shape as the core category panel.
+				"search_threshold" => (int) apply_filters( Plugin::FILTER_POSTQUEUE_PANEL_SEARCH_THRESHOLD, 3 ),
+				"i18n"           => [
+					"panel_title"   => esc_html_x( "Postqueues", "block-editor", Plugin::DOMAIN ),
+					"panel_empty"   => esc_html_x( "No postqueues exist yet.", "block-editor", Plugin::DOMAIN ),
+					"panel_search"  => esc_html_x( "Search postqueues", "block-editor", Plugin::DOMAIN ),
+					"panel_no_match" => esc_html_x( "No postqueue matches.", "block-editor", Plugin::DOMAIN ),
+					"variation"     => esc_html_x( "Postqueue", "block-editor", Plugin::DOMAIN ),
+					"variation_desc" => esc_html_x( "A manually ordered queue of posts.", "block-editor", Plugin::DOMAIN ),
+					"select_queue"  => esc_html_x( "Postqueue", "block-editor", Plugin::DOMAIN ),
+					"select_none"   => esc_html_x( "— none —", "block-editor", Plugin::DOMAIN ),
+					"select_help"   => esc_html_x( "The loop shows the posts of this queue, in the queue's order.", "block-editor", Plugin::DOMAIN ),
+				],
+			]
+		);
+		wp_enqueue_script( Plugin::HANDLE_BLOCK_EDITOR_JS );
+	}
+
 	public function onAdminEnqueue( string $hook ) {
 		parent::onAdminEnqueue( $hook );
 		$this->registerStyle(

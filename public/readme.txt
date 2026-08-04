@@ -25,6 +25,29 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 
 == Frequently Asked Questions ==
 
+= Where do I add a post to a queue? =
+
+In the block editor, in the document sidebar next to the other post settings - the same
+place the permalink and the categories live. It behaves like the category panel: ticking
+a queue marks the post as changed, and the change is written when you save or update the
+post. Nothing is sent while you are still clicking.
+
+A search field appears once more than three queues exist, which is filterable with
+`postqueue_panel_search_threshold`.
+
+The classic editor keeps the meta box it always had. Only one of the two appears, never
+both.
+
+= How do I output a queue with blocks? =
+
+Insert the **Postqueue** block. It is a variation of the core Query Loop, so it comes
+with the same pagination, layout options and Post Template inner blocks as any other
+loop - pick a queue in the block sidebar instead of a category. The posts appear in the
+order the queue defines, and an empty queue outputs nothing rather than everything.
+
+The `[postqueue]` shortcode and the theme templates still work as before.
+
+
 
 == Screenshots ==
 
