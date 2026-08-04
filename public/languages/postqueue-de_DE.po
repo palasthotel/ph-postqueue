@@ -1,175 +1,349 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Postqueue\n"
-"POT-Creation-Date: 2021-06-25 07:18+0200\n"
-"PO-Revision-Date: 2021-06-25 07:18+0200\n"
+"POT-Creation-Date: 2026-08-04 22:22+0200\n"
+"PO-Revision-Date: 2026-08-04 22:22+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-WPHeader: ph-postqueue.php\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.4.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: ph-postqueue.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
 "_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
 
-#: classes/Assets.php:27
-msgctxt "editor.jsx"
-msgid "Create"
-msgstr "Erstellen"
+#: classes/Assets.php:43
+msgctxt "block editor"
+msgid "Postqueues"
+msgstr "Postqueues"
 
-#: classes/Assets.php:28
-msgctxt "editor.jsx"
-msgid "Are you sure you want to delete this queue?"
-msgstr "Möchten Sie diese Warteschlange wirklich löschen?"
+#: classes/Assets.php:44
+msgctxt "block editor"
+msgid "No postqueues exist yet."
+msgstr "Es gibt noch keine Postqueues."
 
-#: classes/Assets.php:29
-msgctxt "editor.jsx"
-msgid "Yes, delete it!"
-msgstr "Ja, löschen!"
+#: classes/Assets.php:45
+msgctxt "block editor"
+msgid "Search postqueues"
+msgstr "Postqueues durchsuchen"
 
-#: classes/Assets.php:30
-msgctxt "editor.jsx"
-msgid "No, do not delete."
-msgstr "Nein, nicht löschen."
+#: classes/Assets.php:46
+msgctxt "block editor"
+msgid "No postqueue matches."
+msgstr "Keine Postqueue gefunden."
 
-#: classes/Assets.php:31
-msgctxt "editor.jsx"
-msgid "Search or create queue"
-msgstr "Suchen oder Erstellen einer Queue"
+#: classes/Assets.php:47 classes/Assets.php:49
+msgctxt "block editor"
+msgid "Add new postqueue"
+msgstr "Neue Postqueue hinzufügen"
 
-#: classes/Assets.php:32
-msgctxt "editor.jsx"
-msgid "Back"
-msgstr "Zurück"
+#: classes/Assets.php:48
+msgctxt "block editor"
+msgid "New postqueue name"
+msgstr "Name der neuen Postqueue"
 
-#: classes/Assets.php:33
-msgctxt "editor.jsx"
-msgid "Save"
-msgstr "Speichern"
+#: classes/Assets.php:50
+msgctxt "block editor"
+msgid "The postqueue could not be created."
+msgstr "Die Postqueue konnte nicht angelegt werden."
 
-#: classes/Assets.php:34
-msgctxt "editor.jsx"
-msgid "Reset"
-msgstr "Zurücksetzen"
-
-#: classes/Assets.php:35
-msgctxt "editor.jsx"
-msgid "Search for posts"
-msgstr "Nach Beiträgen suchen"
-
-#: classes/Assets.php:36
-msgctxt "editor.jsx"
-msgid "Edit"
-msgstr "Bearbeiten"
-
-#: classes/Assets.php:37
-msgctxt "editor.jsx"
-msgid "Delete"
-msgstr "Löschen"
-
-#: classes/Assets.php:38
-msgctxt "editor.jsx"
-msgid "Remove"
-msgstr "Entfernen"
-
-#: classes/Assets.php:39
-msgctxt "editor.jsx"
-msgid "Add post"
-msgstr "Inhalt hinzufügen"
-
-#: classes/Assets.php:40
-msgctxt "editor.jsx"
-msgid "Cancel"
-msgstr "Abbrechen"
-
-#: classes/Assets.php:41
-msgctxt "editor.jsx"
-msgid "Post title or ID"
-msgstr "Beitragstitel oder ID"
-
-#. Plugin Name of the plugin/theme
-#: classes/MetaBox.php:43
+#: classes/Assets.php:51 classes/Assets.php:53
+msgctxt "block editor"
 msgid "Postqueue"
 msgstr "Postqueue"
 
-#: classes/MetaBox.php:76
+#: classes/Assets.php:52
+msgctxt "block editor"
+msgid "A manually ordered queue of posts."
+msgstr "Eine händisch sortierte Liste von Inhalten."
+
+#: classes/Assets.php:54
+msgctxt "block editor"
+msgid "— none —"
+msgstr "— keine —"
+
+#: classes/Assets.php:55
+msgctxt "block editor"
+msgid "The loop shows the posts of this queue, in the queue's order."
+msgstr ""
+"Die Schleife zeigt die Inhalte dieser Postqueue, in der Reihenfolge der "
+"Postqueue."
+
+#: classes/Assets.php:86
+msgctxt "postqueue screen"
+msgid "Save"
+msgstr "Speichern"
+
+#: classes/Assets.php:87
+msgctxt "postqueue screen"
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: classes/Assets.php:88
+msgctxt "postqueue screen"
+msgid "Order saved."
+msgstr "Reihenfolge gespeichert."
+
+#: classes/Assets.php:89
+msgctxt "postqueue screen"
+msgid "Remove"
+msgstr "Entfernen"
+
+#: classes/Assets.php:90
+msgctxt "postqueue screen"
+msgid "Add a post to this postqueue"
+msgstr "Inhalt zu dieser Postqueue hinzufügen"
+
+#: classes/Assets.php:91
+msgctxt "postqueue screen"
+msgid "Search for posts"
+msgstr "Nach Inhalten suchen"
+
+#: classes/Assets.php:92
+msgctxt "postqueue screen"
+msgid "Pick a result to put it at the top of the queue."
+msgstr "Wähle ein Ergebnis, um es an den Anfang der Postqueue zu setzen."
+
+#: classes/Assets.php:93
+msgctxt "postqueue screen"
+msgid "No posts found."
+msgstr "Keine Inhalte gefunden."
+
+#: classes/Assets.php:94
+msgctxt "postqueue screen"
+msgid "This postqueue is empty. Search for a post above to add one."
+msgstr ""
+"Diese Postqueue ist leer. Suche oben nach einem Inhalt, um einen "
+"hinzuzufügen."
+
+#: classes/Assets.php:95
+msgctxt "postqueue screen"
+msgid "Order"
+msgstr "Reihenfolge"
+
+#: classes/Assets.php:96
+msgctxt "postqueue screen"
+msgid "Post"
+msgstr "Inhalt"
+
+#: classes/Assets.php:97
+msgctxt "postqueue screen"
+msgid "Status"
+msgstr "Status"
+
+#: classes/Assets.php:98
+msgctxt "postqueue screen"
+msgid "Date"
+msgstr "Datum"
+
+#: classes/Assets.php:99
+msgctxt "postqueue screen"
+msgid "Actions"
+msgstr "Aktionen"
+
+#: classes/Assets.php:100
+msgctxt "postqueue screen"
+msgid "Move up"
+msgstr "Nach oben"
+
+#: classes/Assets.php:101
+msgctxt "postqueue screen"
+msgid "Move down"
+msgstr "Nach unten"
+
+#: classes/Assets.php:102
+msgctxt "postqueue screen"
+msgid "Drag to reorder"
+msgstr "Zum Umsortieren ziehen"
+
+#: classes/Blocks/Postqueue.php:32
+msgctxt "block title"
+msgid "Postqueue"
+msgstr "Postqueue"
+
+#: classes/Editor.php:42 classes/Editor.php:180
+msgctxt "admin page"
+msgid "Postqueues"
+msgstr "Postqueues"
+
+#: classes/Editor.php:43
+msgctxt "admin menu"
+msgid "Postqueues"
+msgstr "Postqueues"
+
+#: classes/Editor.php:146
+msgid "Postqueue created."
+msgstr "Postqueue angelegt."
+
+#: classes/Editor.php:147 classes/REST.php:66
+msgid "A postqueue with that name already exists."
+msgstr "Eine Postqueue mit diesem Namen gibt es schon."
+
+#: classes/Editor.php:148 classes/REST.php:67
+msgid "Please enter a name for the postqueue."
+msgstr "Bitte gib einen Namen für die Postqueue ein."
+
+#. translators: %s: number of deleted postqueues
+#: classes/Editor.php:153
+#, php-format
+msgid "%s postqueue deleted."
+msgid_plural "%s postqueues deleted."
+msgstr[0] "%s Postqueue gelöscht."
+msgstr[1] "%s Postqueues gelöscht."
+
+#: classes/Editor.php:188 classes/Editor.php:197
+msgid "Add new postqueue"
+msgstr "Neue Postqueue hinzufügen"
+
+#: classes/Editor.php:193
+msgid "Name"
+msgstr "Name"
+
+#: classes/Editor.php:195
+msgid "Shown wherever a queue is picked. The slug is derived from it."
+msgstr ""
+"Wird überall angezeigt, wo eine Postqueue ausgewählt wird. Die Titelform "
+"wird daraus abgeleitet."
+
+#: classes/Editor.php:206
+msgid "Search postqueues"
+msgstr "Postqueues durchsuchen"
+
+#: classes/Editor.php:234
+msgid "Edit Postqueue"
+msgstr "Postqueue bearbeiten"
+
+#: classes/Editor.php:235
+msgid "Back to postqueues"
+msgstr "Zurück zu den Postqueues"
+
+#. Plugin Name of the plugin/theme
+#: classes/MetaBox.php:54
+msgid "Postqueue"
+msgstr "Postqueue"
+
+#: classes/MetaBox.php:88
 msgid "Post successfully removed from postqueue."
 msgstr "Inhalt wurde aus der Postqueue entfernt."
 
-#: classes/MetaBox.php:77
+#: classes/MetaBox.php:89
 msgid "Post successfully added to postqueue."
 msgstr "Inhalt wurde zur Postqueue hinzugefügt."
 
-#: classes/MetaBox.php:78
+#: classes/MetaBox.php:90
 msgid "Please choose a postqueue!"
 msgstr "Bitte wähle eine Postqueue!"
 
-#: classes/MetaBox.php:79
+#: classes/MetaBox.php:91
 msgid "An error occured while sending the request. Please try again later."
 msgstr "Ein Fehler ist aufgetreten. Bitte versuch es später erneut."
 
-#: classes/MetaBox.php:80 partials/postqueue-metabox.tpl.php:21
+#: classes/MetaBox.php:92 partials/postqueue-metabox.tpl.php:23
 msgid "Remove post from this postqueue."
-msgstr "Inhalt aus Postqueue entfernene."
+msgstr "Inhalt aus dieser Postqueue entfernen."
 
-#: classes/MetaBox.php:81
+#: classes/MetaBox.php:93
 msgid ""
 "This post is not saved in any postqueue yet. You can add it to one below."
 msgstr ""
 "Dieser Inhalt ist bisher in keiner Postqueue gespeichert. Du kannst ihn "
 "unten einer hinzufügen."
 
-#: grid-boxes/grid-postqueue-box.php:83
-#, php-format
-msgctxt "Grid box content structure"
-msgid "Goto %s%s%s to edit queue contents."
-msgstr "Gehe zu %s%s%s um den Inhalt einer Postqueue zu bearbeiten."
+#: classes/QueuesListTable.php:38
+msgctxt "list table"
+msgid "Name"
+msgstr "Name"
 
-#: grid-boxes/grid-postqueue-box.php:85
-msgctxt "Grid box content structure"
+#: classes/QueuesListTable.php:39
+msgctxt "list table"
+msgid "Slug"
+msgstr "Titelform"
+
+#: classes/QueuesListTable.php:40
+msgctxt "list table"
+msgid "Posts"
+msgstr "Inhalte"
+
+#: classes/QueuesListTable.php:41
+msgctxt "list table"
+msgid "Shortcode"
+msgstr "Shortcode"
+
+#: classes/QueuesListTable.php:55 classes/QueuesListTable.php:89
+msgctxt "list table"
+msgid "Delete"
+msgstr "Löschen"
+
+#: classes/QueuesListTable.php:83
+msgctxt "list table"
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: classes/QueuesListTable.php:88
+msgid "Delete this postqueue? Its order is lost, the posts are not touched."
+msgstr ""
+"Diese Postqueue löschen? Die Reihenfolge geht verloren, die Inhalte selbst "
+"bleiben unberührt."
+
+#: classes/QueuesListTable.php:122
+msgid "No postqueues yet. Create one above."
+msgstr "Noch keine Postqueues. Lege links eine an."
+
+#. translators: %s: link to the Postqueues screen, labelled "Tools › Postqueues"
+#: grid-boxes/grid-postqueue-box.php:86
+#, php-format
+msgctxt "grid box"
+msgid "Go to %s to edit queue contents."
+msgstr "Unter %s lassen sich die Inhalte der Postqueues bearbeiten."
+
+#: grid-boxes/grid-postqueue-box.php:90
+msgctxt "grid box"
 msgid "Tools › Postqueues"
 msgstr "Werkzeuge › Postqueues"
 
-#: partials/postqueue-metabox.tpl.php:10
+#: partials/postqueue-metabox.tpl.php:12
 msgid "Lets you add this post to a postqueue or delete it from."
 msgstr ""
-"Hier kannst Du diesen Inhalt zu einer Postqueue hinzufügen oder entfernen."
+"Hier lässt sich dieser Inhalt zu einer Postqueue hinzufügen oder daraus "
+"entfernen."
 
-#: partials/postqueue-metabox.tpl.php:17
+#: partials/postqueue-metabox.tpl.php:19
 msgid "Linked postqueues"
 msgstr "Verknüpfte Postqueues"
 
-#: partials/postqueue-metabox.tpl.php:31
+#: partials/postqueue-metabox.tpl.php:33
 msgid "Add post to postqueue"
 msgstr "Inhalt zu Postqueue hinzufügen"
 
-#: partials/postqueue-metabox.tpl.php:34
+#: partials/postqueue-metabox.tpl.php:36
 msgid "choose"
 msgstr "auswählen"
 
-#: partials/postqueue-metabox.tpl.php:42
+#: partials/postqueue-metabox.tpl.php:44
 msgid "There are no available postqueues yet."
 msgstr "Bisher gibt es keine Postqueues."
 
-#: partials/postqueue-metabox.tpl.php:44
+#: partials/postqueue-metabox.tpl.php:46
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: ph-postqueue.php:106
+#: ph-postqueue.php:113
 msgid "Default"
 msgstr "Standard"
 
 #. Description of the plugin/theme
 msgid "Create manually ordered postqueues"
-msgstr "Erstelle händisch sortierte Listen von Inhalten."
+msgstr "Händisch sortierte Listen von Inhalten anlegen"
 
 #. Author of the plugin/theme
 msgid ""

@@ -39,8 +39,8 @@ class Editor extends Component {
 	public function tools_page() {
 		$hook = add_submenu_page(
 			'tools.php',
-			_x( 'Postqueues', 'admin page', Plugin::DOMAIN ),
-			_x( 'Postqueues', 'admin menu', Plugin::DOMAIN ),
+			_x( 'Postqueues', 'admin page', 'postqueue' ),
+			_x( 'Postqueues', 'admin menu', 'postqueue' ),
 			$this->getCapability(),
 			self::PAGE_SLUG,
 			array( $this, 'render' )
@@ -143,14 +143,14 @@ class Editor extends Component {
 
 		$count   = isset( $_GET['count'] ) ? (int) $_GET['count'] : 1;
 		$notices = array(
-			'created'   => array( 'success', __( 'Postqueue created.', Plugin::DOMAIN ) ),
-			'duplicate' => array( 'error', __( 'A postqueue with that name already exists.', Plugin::DOMAIN ) ),
-			'invalid'   => array( 'error', __( 'Please enter a name for the postqueue.', Plugin::DOMAIN ) ),
+			'created'   => array( 'success', __( 'Postqueue created.', 'postqueue' ) ),
+			'duplicate' => array( 'error', __( 'A postqueue with that name already exists.', 'postqueue' ) ),
+			'invalid'   => array( 'error', __( 'Please enter a name for the postqueue.', 'postqueue' ) ),
 			'deleted'   => array(
 				'success',
 				sprintf(
 					/* translators: %s: number of deleted postqueues */
-					_n( '%s postqueue deleted.', '%s postqueues deleted.', $count, Plugin::DOMAIN ),
+					_n( '%s postqueue deleted.', '%s postqueues deleted.', $count, 'postqueue' ),
 					number_format_i18n( $count )
 				),
 			),
@@ -177,7 +177,7 @@ class Editor extends Component {
 
 	private function renderOverview(): void {
 		?>
-		<h1 class="wp-heading-inline"><?php echo esc_html_x( 'Postqueues', 'admin page', Plugin::DOMAIN ); ?></h1>
+		<h1 class="wp-heading-inline"><?php echo esc_html_x( 'Postqueues', 'admin page', 'postqueue' ); ?></h1>
 		<hr class="wp-header-end" />
 		<?php $this->renderNotice(); ?>
 
@@ -185,16 +185,16 @@ class Editor extends Component {
 			<div id="col-left">
 				<div class="col-wrap">
 					<div class="form-wrap">
-						<h2><?php esc_html_e( 'Add new postqueue', Plugin::DOMAIN ); ?></h2>
+						<h2><?php esc_html_e( 'Add new postqueue', 'postqueue' ); ?></h2>
 						<form method="post" action="<?php echo esc_url( $this->pageUrl() ); ?>">
 							<?php wp_nonce_field( self::NONCE_ACTION ); ?>
 							<input type="hidden" name="action" value="create" />
 							<div class="form-field form-required">
-								<label for="postqueue_name"><?php esc_html_e( 'Name', Plugin::DOMAIN ); ?></label>
+								<label for="postqueue_name"><?php esc_html_e( 'Name', 'postqueue' ); ?></label>
 								<input name="postqueue_name" id="postqueue_name" type="text" value="" size="40" required />
-								<p><?php esc_html_e( 'Shown wherever a queue is picked. The slug is derived from it.', Plugin::DOMAIN ); ?></p>
+								<p><?php esc_html_e( 'Shown wherever a queue is picked. The slug is derived from it.', 'postqueue' ); ?></p>
 							</div>
-							<?php submit_button( __( 'Add new postqueue', Plugin::DOMAIN ) ); ?>
+							<?php submit_button( __( 'Add new postqueue', 'postqueue' ) ); ?>
 						</form>
 					</div>
 				</div>
@@ -203,7 +203,7 @@ class Editor extends Component {
 				<div class="col-wrap">
 					<form method="get" action="<?php echo esc_url( admin_url( 'tools.php' ) ); ?>">
 						<input type="hidden" name="page" value="<?php echo esc_attr( self::PAGE_SLUG ); ?>" />
-						<?php $this->table->search_box( __( 'Search postqueues', Plugin::DOMAIN ), 'postqueue' ); ?>
+						<?php $this->table->search_box( __( 'Search postqueues', 'postqueue' ), 'postqueue' ); ?>
 					</form>
 					<form method="post" action="<?php echo esc_url( $this->pageUrl() ); ?>">
 						<?php
@@ -231,10 +231,11 @@ class Editor extends Component {
 			'before'
 		);
 		?>
-		<h1 class="wp-heading-inline"><?php echo esc_html( $this->plugin->store->get_queue_name( $queueId ) ); ?></h1>
+		<h1 class="wp-heading-inline"><?php esc_html_e( 'Edit Postqueue', 'postqueue' ); ?></h1>
 		<a href="<?php echo esc_url( $this->pageUrl() ); ?>" class="page-title-action">
-			<?php esc_html_e( 'Back to postqueues', Plugin::DOMAIN ); ?>
+			<?php esc_html_e( 'Back to postqueues', 'postqueue' ); ?>
 		</a>
+		<h2><?php echo esc_html( $this->plugin->store->get_queue_name( $queueId ) ); ?></h2>
 		<hr class="wp-header-end" />
 		<div id="post-queue-editor" class="ph-postqueue"></div>
 		<?php

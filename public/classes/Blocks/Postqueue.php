@@ -28,7 +28,8 @@ class Postqueue extends _BlockType {
 	}
 
 	public function title(): string {
-		return __("PostQueue", Plugin::DOMAIN);
+		// "Postqueue" everywhere else, including the plugin name and the menu entry.
+		return _x( "Postqueue", "block title", 'postqueue' );
 	}
 
 	public function registerBlockTypeArgs(): array {

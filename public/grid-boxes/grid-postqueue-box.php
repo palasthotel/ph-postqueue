@@ -82,10 +82,13 @@ class grid_postqueue_box extends grid_list_box
 		$cs[] = array(
 			'label' => '',
 			'text' => sprintf(
-				_x('Goto %s%s%s to edit queue contents.','Grid box content structure', \Postqueue\Plugin::DOMAIN),
-				'<a href="'.admin_url('/tools.php?page=tools-postqueue').'">',
-				_x('Tools › Postqueues', 'Grid box content structure', \Postqueue\Plugin::DOMAIN),
-				'</a>'
+				/* translators: %s: link to the Postqueues screen, labelled "Tools › Postqueues" */
+				_x( 'Go to %s to edit queue contents.', 'grid box', 'postqueue' ),
+				sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( admin_url( 'tools.php?page=' . \Postqueue\Editor::PAGE_SLUG ) ),
+					esc_html_x( 'Tools › Postqueues', 'grid box', 'postqueue' )
+				)
 			),
 			'type' => 'info',
 		);

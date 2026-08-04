@@ -35,10 +35,10 @@ class QueuesListTable extends \WP_List_Table {
 	public function get_columns(): array {
 		return [
 			'cb'        => '<input type="checkbox" />',
-			'name'      => _x( 'Name', 'list table', Plugin::DOMAIN ),
-			'slug'      => _x( 'Slug', 'list table', Plugin::DOMAIN ),
-			'items'     => _x( 'Posts', 'list table', Plugin::DOMAIN ),
-			'shortcode' => _x( 'Shortcode', 'list table', Plugin::DOMAIN ),
+			'name'      => _x( 'Name', 'list table', 'postqueue' ),
+			'slug'      => _x( 'Slug', 'list table', 'postqueue' ),
+			'items'     => _x( 'Posts', 'list table', 'postqueue' ),
+			'shortcode' => _x( 'Shortcode', 'list table', 'postqueue' ),
 		];
 	}
 
@@ -52,7 +52,7 @@ class QueuesListTable extends \WP_List_Table {
 
 	protected function get_bulk_actions(): array {
 		return [
-			'delete' => _x( 'Delete', 'list table', Plugin::DOMAIN ),
+			'delete' => _x( 'Delete', 'list table', 'postqueue' ),
 		];
 	}
 
@@ -80,13 +80,13 @@ class QueuesListTable extends \WP_List_Table {
 			'edit'   => sprintf(
 				'<a href="%s">%s</a>',
 				esc_url( $editUrl ),
-				esc_html_x( 'Edit', 'list table', Plugin::DOMAIN )
+				esc_html_x( 'Edit', 'list table', 'postqueue' )
 			),
 			'delete' => sprintf(
 				'<a href="%s" class="submitdelete" onclick="return confirm(%s)">%s</a>',
 				esc_url( $deleteUrl ),
-				esc_js( wp_json_encode( __( 'Delete this postqueue? Its order is lost, the posts are not touched.', Plugin::DOMAIN ) ) ),
-				esc_html_x( 'Delete', 'list table', Plugin::DOMAIN )
+				esc_js( wp_json_encode( __( 'Delete this postqueue? Its order is lost, the posts are not touched.', 'postqueue' ) ) ),
+				esc_html_x( 'Delete', 'list table', 'postqueue' )
 			),
 		];
 
@@ -119,7 +119,7 @@ class QueuesListTable extends \WP_List_Table {
 	}
 
 	public function no_items() {
-		esc_html_e( 'No postqueues yet. Create one above.', Plugin::DOMAIN );
+		esc_html_e( 'No postqueues yet. Create one above.', 'postqueue' );
 	}
 
 	public function prepare_items() {
