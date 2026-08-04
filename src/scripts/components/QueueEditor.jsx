@@ -1,219 +1,150 @@
-import {useDrag, useDrop} from 'react-dnd';
+import { Button, Flex, FlexItem, Notice, Spinner } from '@wordpress/components';
+import { useEffect, useState } from '@wordpress/element';
+import { useQueryPosts, useQueueItems } from '../hooks/use-queues';
+import QueueItems from './QueueItems.jsx';
 
-import {useQueryPosts, useQueueItems} from "../hooks/use-queues";
-import {useCallback, useEffect, useState} from "@wordpress/element";
-import LoadingLine from "./LoadingLine.jsx";
+const { i18n } = PostQueue;
+const screen = window.PostQueueScreen || {};
 
-export const TYPE = "dnditem";
+/**
+ * Search for a post and put it at the top of the queue.
+ */
+const AddPost = ( { postIdsInQueue, onAdd } ) => {
+	const [ query, setQuery ] = useState( '' );
+	const [ posts, isLoading ] = useQueryPosts( query );
+	const suggestions = posts.filter( ( p ) => ! postIdsInQueue.includes( p.post_id ) );
 
-const PostStatus = ({status})=>{
-    const icon = (status === "future") ? "⏱" : "✅";
-    return <span className="post-item__status">{icon}</span>
+	return (
+		<div className="postqueue-add">
+			<Flex justify="flex-start" gap="2">
+				<FlexItem>
+					<input
+						type="search"
+						className="postqueue-add__input"
+						value={ query }
+						onChange={ ( event ) => setQuery( event.target.value ) }
+						placeholder={ i18n.search_post_placeholder }
+						aria-label={ i18n.search_post_placeholder }
+					/>
+				</FlexItem>
+				{ isLoading && (
+					<FlexItem>
+						<Spinner />
+					</FlexItem>
+				) }
+			</Flex>
+
+			{ '' !== query.trim() && ! isLoading && (
+				<ul className="postqueue-add__suggestions">
+					{ 0 === suggestions.length && <li className="is-empty">{ i18n.no_posts_found }</li> }
+					{ suggestions.map( ( post ) => (
+						<li key={ post.post_id }>
+							<Button
+								variant="link"
+								onClick={ () => {
+									onAdd( post );
+									setQuery( '' );
+								} }
+							>
+								{ post.post_title }
+							</Button>
+						</li>
+					) ) }
+				</ul>
+			) }
+		</div>
+	);
+};
+
+export default function QueueEditor() {
+	const queueId = screen.queueId;
+	const { items, saveItems, isLoading } = useQueueItems( queueId );
+
+	const [ draft, setDraft ] = useState( [] );
+	const [ saved, setSaved ] = useState( false );
+
+	useEffect( () => {
+		setDraft( [ ...items ] );
+	}, [ items, queueId ] );
+
+	const isDirty =
+		items.length !== draft.length ||
+		draft.some( ( item, index ) => items[ index ]?.post_id !== item.post_id );
+
+	// The overview is a normal page now, so leaving is a link rather than a button we
+	// can disable. This is the only thing standing between a reorder and losing it.
+	useEffect( () => {
+		if ( ! isDirty ) {
+			return;
+		}
+		const warn = ( event ) => {
+			event.preventDefault();
+			event.returnValue = '';
+		};
+		window.addEventListener( 'beforeunload', warn );
+		return () => window.removeEventListener( 'beforeunload', warn );
+	}, [ isDirty ] );
+
+	const move = ( from, to ) => {
+		if ( from === to || to < 0 || to >= draft.length ) {
+			return;
+		}
+		const next = [ ...draft ];
+		const [ moved ] = next.splice( from, 1 );
+		next.splice( to, 0, moved );
+		setDraft( next );
+		setSaved( false );
+	};
+
+	return (
+		<>
+			{ saved && ! isDirty && (
+				<Notice status="success" onRemove={ () => setSaved( false ) }>
+					{ i18n.saved }
+				</Notice>
+			) }
+
+			<AddPost
+				postIdsInQueue={ draft.map( ( item ) => item.post_id ) }
+				onAdd={ ( post ) => {
+					setDraft( [ post, ...draft ] );
+					setSaved( false );
+				} }
+			/>
+
+			{ isLoading && (
+				<Flex justify="center" style={ { height: '40px' } }>
+					<Spinner />
+				</Flex>
+			) }
+
+			{ ! isLoading && (
+				<QueueItems
+					items={ draft }
+					onMove={ move }
+					onRemove={ ( item ) => {
+						setDraft( draft.filter( ( it ) => it.post_id !== item.post_id ) );
+						setSaved( false );
+					} }
+				/>
+			) }
+
+			<p className="submit">
+				<Button
+					variant="primary"
+					disabled={ ! isDirty || isLoading }
+					onClick={ () => {
+						saveItems( draft.map( ( item ) => item.post_id ) );
+						setSaved( true );
+					} }
+				>
+					{ i18n.save }
+				</Button>
+				{ ' ' }
+				<Button variant="tertiary" disabled={ ! isDirty } onClick={ () => setDraft( [ ...items ] ) }>
+					{ i18n.reset }
+				</Button>
+			</p>
+		</>
+	);
 }
-
-const ListItem = (
-    {
-        index,
-        post_id,
-        post_title,
-        post_status,
-        post_date,
-        edit_post_link,
-        moveItem,
-        findItem,
-        onDelete
-    }
-) => {
-    const {i18n} = PostQueue;
-    const originalIndex = findItem(post_id).index;
-    const [{isDragging}, drag, preview] = useDrag(() => ({
-        type: TYPE,
-        item: {post_id, originalIndex},
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging(),
-        }),
-        end: (item, monitor) => {
-            const {post_id: droppedId, originalIndex} = item;
-            const didDrop = monitor.didDrop();
-            if (!didDrop) {
-                moveItem(droppedId, originalIndex);
-            }
-        },
-    }), [post_id, originalIndex, moveItem]);
-    const [, drop] = useDrop(() => ({
-        accept: TYPE,
-        canDrop: () => false,
-        hover({post_id: draggedId}) {
-            if (draggedId !== post_id) {
-                const {index: overIndex} = findItem(post_id);
-                moveItem(draggedId, overIndex);
-            }
-        },
-    }), [findItem, moveItem]);
-
-    return <li
-        ref={(node) => preview(drop(node))}
-        className={`queue-item queue-item-set ${isDragging ? "is-dragging" : ""}`}
-    >
-        <div ref={drag} className="drag-handle ui-sortable-handle"/>
-        <a href={edit_post_link}>{post_title}</a>
-        <br/>
-        <PostStatus status={post_status} /><span className="queue-item__date">{post_date}</span>
-        <div className="delete-post" onClick={onDelete}>{i18n.remove}</div>
-    </li>
-}
-
-const Controls = (
-    {
-        canGoBack,
-        onGoBack,
-        canSave,
-        onSave,
-        canRestore,
-        onRestore,
-        onAddItem,
-        postIdsInQueue = []
-    }
-)=>{
-    const {i18n} = PostQueue;
-    return  <div className="post-queue-editor__controls">
-        <button
-            className="cancel-queue queue-control-button button button-secondary"
-            onClick={onGoBack}
-            disabled={!canGoBack}
-        >
-            ‹ {i18n.back}
-        </button>
-
-        <button
-            className="cancel-queue queue-control-button button button-secondary"
-            disabled={!canSave}
-            onClick={onSave}
-        >
-            {i18n.save}
-        </button>
-
-        <button
-            className="restore-queue queue-control-button button button-secondary"
-            disabled={!canRestore}
-            onClick={onRestore}
-        >
-            {i18n.reset}
-        </button>
-
-        <NewItem onCreate={onAddItem} postIdsInQueue={postIdsInQueue} />
-    </div>
-}
-
-const NewItem = ({postIdsInQueue,onCreate})=>{
-    const {i18n} = PostQueue;
-    const [query, setQuery] = useState("");
-    const [posts, isLoading] = useQueryPosts(query);
-    return <div className="post-queue__search">
-        {isLoading && <span className="spinner is-active"/>}
-        {!isLoading && query !== "" && <span className="clear-query" onClick={()=>setQuery("")}>×</span>}
-        <input type="text" value={query} onChange={e=>setQuery(e.target.value)} placeholder={i18n.search_post_placeholder} />
-        <div className="post-queue__search--suggestions">
-            <ul>
-                {posts.filter(p=>!postIdsInQueue.includes(p.post_id)).map(p=>{
-                    return <li key={p.post_id} onClick={()=> {
-                        onCreate(p);
-                        setQuery("");
-                    }}>{p.post_title}</li>;
-                })}
-            </ul>
-        </div>
-    </div>
-}
-
-const QueueEditor = ({id, queueName, onGoBack}) => {
-    const {
-        items,
-        saveItems,
-        isLoading,
-    } = useQueueItems(id);
-
-    const [tmpItems, setTmpItems] = useState([]);
-
-    useEffect(() => {
-        setTmpItems([...items]);
-    }, [items, id]);
-
-    const findItem = useCallback((id) => {
-        const item = tmpItems.find(i => i.post_id === id);
-        return {
-            item,
-            index: tmpItems.indexOf(item),
-        }
-    }, [tmpItems]);
-    const moveItem = useCallback((id, atIndex) => {
-        const {index, item} = findItem(id);
-        const moved = [...tmpItems];
-        moved.splice(index, 1);
-        moved.splice(atIndex, 0, item);
-        setTmpItems(moved);
-    }, [findItem, tmpItems, setTmpItems]);
-
-    const handleCreateItem = (post)=>{
-        setTmpItems([
-            post,
-            ...tmpItems,
-        ]);
-    }
-
-    const handleSave = ()=>{
-        saveItems(tmpItems.map(i=>i.post_id));
-    }
-    const handleDelete = (item) => {
-        setTmpItems(tmpItems.filter(i=>i.post_id !== item.post_id));
-    }
-    const handleRestore = ()=>{
-        setTmpItems([...items]);
-    }
-
-    const canSave = !isLoading && (
-        items.length !== tmpItems.length ||
-        items.filter((item, index) => {
-            const itemAtIndex = tmpItems[index];
-            return typeof itemAtIndex === "undefined" || item.post_id !== tmpItems[index].post_id;
-        }).length > 0
-    );
-
-    const canGoBack = !isLoading && !canSave;
-
-    const [, drop] = useDrop(() => ({accept: TYPE}));
-
-    return <>
-        <h3>Postqueues › {queueName}</h3>
-        <Controls
-            canGoBack={canGoBack}
-            onGoBack={onGoBack}
-            canSave={canSave}
-            onSave={handleSave}
-            canRestore={canSave}
-            onRestore={handleRestore}
-            onAddItem={handleCreateItem}
-            postIdsInQueue={tmpItems.map(i=>i.post_id)}
-        />
-
-
-
-        {isLoading && <LoadingLine />}
-
-
-        <ul ref={drop} className="the-queue">
-            {tmpItems.map((item, index) => <ListItem
-                key={item.post_id}
-                {...item}
-                index={index}
-                moveItem={moveItem}
-                findItem={findItem}
-                onDelete={()=>{
-                    handleDelete(item);
-                }}
-            />)}
-        </ul>
-    </>
-}
-
-export default QueueEditor;

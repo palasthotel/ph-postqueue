@@ -89,6 +89,18 @@ class Assets extends Component\Assets {
 					'add_post'                => esc_html_x( 'Add post', "editor.jsx", Plugin::DOMAIN ),
 					'cancel'                  => esc_html_x( 'Cancel', "editor.jsx", Plugin::DOMAIN ),
 					'post_title_or_id'        => esc_html_x( 'Post title or ID', "editor.jsx", Plugin::DOMAIN ),
+					'queue_empty'             => esc_html_x( 'This postqueue is empty. Search for a post above to add one.', "editor.jsx", Plugin::DOMAIN ),
+					'column_order'            => esc_html_x( 'Order', "editor.jsx", Plugin::DOMAIN ),
+					'column_post'             => esc_html_x( 'Post', "editor.jsx", Plugin::DOMAIN ),
+					'column_status'           => esc_html_x( 'Status', "editor.jsx", Plugin::DOMAIN ),
+					'column_date'             => esc_html_x( 'Date', "editor.jsx", Plugin::DOMAIN ),
+					'column_actions'          => esc_html_x( 'Actions', "editor.jsx", Plugin::DOMAIN ),
+					'move_up'                 => esc_html_x( 'Move up', "editor.jsx", Plugin::DOMAIN ),
+					'move_down'               => esc_html_x( 'Move down', "editor.jsx", Plugin::DOMAIN ),
+					'status_future'           => esc_html_x( 'Scheduled', "editor.jsx", Plugin::DOMAIN ),
+					'status_published'        => esc_html_x( 'Published', "editor.jsx", Plugin::DOMAIN ),
+					'no_posts_found'          => esc_html_x( 'No posts found.', "editor.jsx", Plugin::DOMAIN ),
+					'saved'                   => esc_html_x( 'Order saved.', "editor.jsx", Plugin::DOMAIN ),
 				],
 			]
 		);
