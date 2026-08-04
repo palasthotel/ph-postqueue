@@ -91,11 +91,21 @@ _$capabilities_ ==> [WordPress capabilities](https://codex.wordpress.org/Roles_a
 `PluginDocumentSettingPanel` - not in a meta box. The classic meta box is skipped when
 `get_current_screen()->is_block_editor()` is true, so exactly one of the two is shown.
 
-The panel is modelled on the core category panel, in behaviour as well as in looks: the
-queues live in a `postqueues` REST field on the post, the panel edits it with
-`editPost()`, and it is written when the post is saved. Nothing is sent on click. A
-search field appears above the checkboxes once there are more than
-`postqueue_panel_search_threshold` queues (default 3).
+The panel is modelled on the core category panel, in behaviour as well as in markup:
+
+- The queues live in a `postqueues` REST field on the post. The panel edits it with
+  `editPost()`, so the post becomes dirty and the assignment is written when the post is
+  saved — nothing is sent on click.
+- Creating a queue *is* immediate, exactly as adding a category is. Only the assignment
+  waits.
+- The markup mirrors `HierarchicalTermSelector`, which WordPress does **not** export: a
+  `Flex direction="column" gap="4"` for the spacing, and core's own class names on the
+  list, the choices, the add button and the name field. That inherits core's styling
+  including the list scrolling at `max-height: 14em`. If core renames those classes the
+  panel loses its polish but keeps working.
+- A search field appears once there are more than
+  `postqueue_panel_search_threshold` queues (default 8, which is the value WordPress's
+  own term selector uses).
 
 **Outputting a queue** is a variation of the core Query Loop, registered as
 `postqueue/queue`. The queue slug is stored in the block's own `query` attribute under
