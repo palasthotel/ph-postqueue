@@ -85,6 +85,34 @@ _$capabilities_ ==> [WordPress capabilities](https://codex.wordpress.org/Roles_a
 
 ---
 
+## The Postqueues screen
+
+Under **Tools → Postqueues**, in two views:
+
+- **the overview** is a `WP_List_Table` - core's own table class, the one behind Posts,
+  Pages and Users. That is where the search box, the sortable columns, the row actions,
+  bulk delete and pagination come from; none of it is ours. Core marks the class
+  private, but reimplementing it means reimplementing all of that and still not matching
+  it. Creating happens through an ordinary form next to the table, the layout the
+  taxonomy screens use.
+- **a single queue** (`&queue=<id>`) is a small React app, because the order is edited
+  live. Its items render as a `wp-list-table` too, so it looks like the rest of the
+  admin.
+
+Creating and deleting are form posts handled on `load-{$hook}` and answered with a
+redirect, so a reload does not repeat them.
+
+### Reordering
+
+Two ways, deliberately. Dragging uses the browser's own drag events - no library - and
+**Move up / Move down** buttons do the same thing for anyone working from the keyboard,
+which dragging alone never covers. It is the pair the block editor offers for moving
+blocks. `react-dnd` is gone, and with it `react-sortablejs` and `sortablejs`, which
+nothing had imported for some time.
+
+Changes to the order are held in the app until **Save**; leaving the page with unsaved
+changes triggers the browser's own warning.
+
 ## Block editor
 
 **Adding a post to a queue** happens in the document sidebar, through a

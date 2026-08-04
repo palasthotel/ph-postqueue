@@ -17,6 +17,37 @@ class REST extends Component\Component {
 		add_action( 'rest_api_init', [ $this, 'rest_api_init' ] );
 	}
 
+	/**
+	 * The items of a queue, with what the screen needs to display them.
+	 *
+	 * Every route that answers with items goes through here. Reading one used to add the
+	 * link, the status and the date while saving and removing returned the rows raw, so
+	 * the status and date columns emptied out as soon as anything was changed.
+	 *
+	 * @param int $queue_id
+	 * @return array
+	 */
+	private function queue_items( int $queue_id ): array {
+		return array_map( function ( $item ) {
+			$post_id = (int) $item->post_id;
+			$status  = get_post_status( $post_id );
+
+			$item->edit_post_link = get_edit_post_link( $post_id, '' );
+			$item->post_status    = $status;
+
+			// Core already translates every status it knows, and knows more of them than
+			// a published/scheduled guess: drafts, pending, private.
+			$statusObject             = $status ? get_post_status_object( $status ) : null;
+			$item->post_status_label  = $statusObject ? $statusObject->label : '';
+
+			// An empty format means the site's own date format, set under Settings.
+			// Hardcoding one showed every German site "Monday, January 5, 2026".
+			$item->post_date = get_the_date( '', $post_id );
+
+			return $item;
+		}, $this->plugin->store->get_queue_by_id( $queue_id ) );
+	}
+
 	public function rest_api_init() {
 
 		$this->register_post_field();
@@ -32,8 +63,8 @@ class REST extends Component\Component {
 					return new \WP_Error(
 						$duplicate ? 'postqueue_duplicate_name' : 'postqueue_invalid_name',
 						$duplicate
-							? __( 'A postqueue with that name already exists.', Plugin::DOMAIN )
-							: __( 'Please enter a name for the postqueue.', Plugin::DOMAIN ),
+							? __( 'A postqueue with that name already exists.', 'postqueue' )
+							: __( 'Please enter a name for the postqueue.', 'postqueue' ),
 						array( 'status' => 400 )
 					);
 				}
@@ -71,14 +102,7 @@ class REST extends Component\Component {
 		register_rest_route( REST::NAMESPACE, '/queues/(?P<id>\d+)', array(
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => function ( WP_REST_Request $request ) {
-				$items = $this->plugin->store->get_queue_by_id( $request->get_param( "id" ) );
-				return array_map(function($item){
-					$post_id = $item->post_id;
-					$item->edit_post_link = get_edit_post_link($post_id, '');
-					$item->post_status = get_post_status($post_id);
-					$item->post_date = get_the_date('l, F j, Y', $post_id);
-					return $item;
-				}, $items);
+				return $this->queue_items( (int) $request->get_param( "id" ) );
 			},
 			'permission_callback' => [ $this, 'permissionCheck' ],
 		) );
@@ -105,7 +129,7 @@ class REST extends Component\Component {
 
 				return [
 					"queue_id" => $queue_id,
-					"items"    => $this->plugin->store->get_queue_by_id( $queue_id ),
+					"items"    => $this->queue_items( (int) $queue_id ),
 				];
 			},
 			'args'                => [
@@ -134,7 +158,7 @@ class REST extends Component\Component {
 
 				return [
 					"queue_id" => $queue_id,
-					"items"    => $this->plugin->store->get_queue_by_id( $queue_id ),
+					"items"    => $this->queue_items( (int) $queue_id ),
 				];
 			},
 			'permission_callback' => [ $this, 'permissionCheck' ],

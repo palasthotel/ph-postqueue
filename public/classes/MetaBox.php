@@ -85,12 +85,12 @@ class MetaBox extends Component\Component {
 		);
 		wp_localize_script( 'postqueue-metabox', 'PostqueueMetaBoxL10n', array(
 			'nonce' => wp_create_nonce( self::NONCE_ACTION ),
-			'postremoved' => esc_html__( 'Post successfully removed from postqueue.', Plugin::DOMAIN ),
-			'postadded' => esc_html__( 'Post successfully added to postqueue.', Plugin::DOMAIN ),
-			'pleasechoose' => esc_html__( 'Please choose a postqueue!', Plugin::DOMAIN ),
-			'erroroccured' => esc_html__( 'An error occured while sending the request. Please try again later.', Plugin::DOMAIN ),
-			'removepostfromthispostqueue' => esc_html__( 'Remove post from this postqueue.', Plugin::DOMAIN ),
-			'notstoredyet' => esc_html__( 'This post is not saved in any postqueue yet. You can add it to one below.', Plugin::DOMAIN )
+			'postremoved' => esc_html__( 'Post successfully removed from postqueue.', 'postqueue' ),
+			'postadded' => esc_html__( 'Post successfully added to postqueue.', 'postqueue' ),
+			'pleasechoose' => esc_html__( 'Please choose a postqueue!', 'postqueue' ),
+			'erroroccured' => esc_html__( 'An error occured while sending the request. Please try again later.', 'postqueue' ),
+			'removepostfromthispostqueue' => esc_html__( 'Remove post from this postqueue.', 'postqueue' ),
+			'notstoredyet' => esc_html__( 'This post is not saved in any postqueue yet. You can add it to one below.', 'postqueue' )
 		));
 		$store = $this->plugin->store;
 		require $this->plugin->path .'partials/postqueue-metabox.tpl.php';

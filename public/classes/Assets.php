@@ -36,20 +36,23 @@ class Assets extends Component\Assets {
 				// minified bundle; 8 is what WordPress's own source has used for
 				// MIN_TERMS_COUNT_FOR_FILTER.
 				"search_threshold" => (int) apply_filters( Plugin::FILTER_POSTQUEUE_PANEL_SEARCH_THRESHOLD, 8 ),
+				// Plain _x() for the same reason as on the postqueue screen: localize()
+				// does not decode entities nested this deep, so esc_html_x() turned the
+				// apostrophe in select_help into a literal &#039; on screen.
 				"i18n"           => [
-					"panel_title"   => esc_html_x( "Postqueues", "block-editor", Plugin::DOMAIN ),
-					"panel_empty"   => esc_html_x( "No postqueues exist yet.", "block-editor", Plugin::DOMAIN ),
-					"panel_search"  => esc_html_x( "Search postqueues", "block-editor", Plugin::DOMAIN ),
-					"panel_no_match" => esc_html_x( "No postqueue matches.", "block-editor", Plugin::DOMAIN ),
-					"create_toggle" => esc_html_x( "Add new postqueue", "block-editor", Plugin::DOMAIN ),
-					"create_label"  => esc_html_x( "New postqueue name", "block-editor", Plugin::DOMAIN ),
-					"create_submit" => esc_html_x( "Add new postqueue", "block-editor", Plugin::DOMAIN ),
-					"create_error"  => esc_html_x( "The postqueue could not be created.", "block-editor", Plugin::DOMAIN ),
-					"variation"     => esc_html_x( "Postqueue", "block-editor", Plugin::DOMAIN ),
-					"variation_desc" => esc_html_x( "A manually ordered queue of posts.", "block-editor", Plugin::DOMAIN ),
-					"select_queue"  => esc_html_x( "Postqueue", "block-editor", Plugin::DOMAIN ),
-					"select_none"   => esc_html_x( "— none —", "block-editor", Plugin::DOMAIN ),
-					"select_help"   => esc_html_x( "The loop shows the posts of this queue, in the queue's order.", "block-editor", Plugin::DOMAIN ),
+					"panel_title"    => _x( "Postqueues", "block editor", 'postqueue' ),
+					"panel_empty"    => _x( "No postqueues exist yet.", "block editor", 'postqueue' ),
+					"panel_search"   => _x( "Search postqueues", "block editor", 'postqueue' ),
+					"panel_no_match" => _x( "No postqueue matches.", "block editor", 'postqueue' ),
+					"create_toggle"  => _x( "Add new postqueue", "block editor", 'postqueue' ),
+					"create_label"   => _x( "New postqueue name", "block editor", 'postqueue' ),
+					"create_submit"  => _x( "Add new postqueue", "block editor", 'postqueue' ),
+					"create_error"   => _x( "The postqueue could not be created.", "block editor", 'postqueue' ),
+					"variation"      => _x( "Postqueue", "block editor", 'postqueue' ),
+					"variation_desc" => _x( "A manually ordered queue of posts.", "block editor", 'postqueue' ),
+					"select_queue"   => _x( "Postqueue", "block editor", 'postqueue' ),
+					"select_none"    => _x( "— none —", "block editor", 'postqueue' ),
+					"select_help"    => _x( "The loop shows the posts of this queue, in the queue's order.", "block editor", 'postqueue' ),
 				],
 			]
 		);
@@ -62,11 +65,17 @@ class Assets extends Component\Assets {
 			Plugin::HANDLE_EDITOR_CSS,
 			'dist/editor.css'
 		);
+		// The dependencies come from dist/editor.asset.php, which the build writes. The
+		// editor used to name jquery, jquery-ui-autocomplete and jquery-ui-sortable on
+		// top of that; nothing in it has touched jQuery since the rewrite.
 		$this->registerScript(
 			Plugin::HANDLE_EDITOR_JS,
-			'dist/editor.js',
-			[ 'jquery', 'jquery-ui-autocomplete', 'jquery-ui-sortable' ]
+			'dist/editor.js'
 		);
+		// Plain _x() here, no esc_html_x(). WP_Scripts::localize() only runs
+		// html_entity_decode() over top-level scalars and skips anything that is not one,
+		// so entities inside this nested array would reach the screen as written - an
+		// apostrophe showing up as &#039;.
 		wp_localize_script(
 			Plugin::HANDLE_EDITOR_JS,
 			'PostQueue',
@@ -74,21 +83,23 @@ class Assets extends Component\Assets {
 				"rest_namespace" => REST::NAMESPACE,
 				"DOMAIN"         => Plugin::DOMAIN,
 				"i18n"           => [
-					"create"                  => esc_html_x( "Create", "editor.jsx", Plugin::DOMAIN ),
-					"confirm_delete"          => esc_html_x( "Are you sure you want to delete this queue?", "editor.jsx", Plugin::DOMAIN ),
-					"confirm_delete_yes"      => esc_html_x( "Yes, delete it!", "editor.jsx", Plugin::DOMAIN ),
-					"confirm_delete_no"       => esc_html_x( "No, do not delete.", "editor.jsx", Plugin::DOMAIN ),
-					"search_or_create"        => esc_html_x( "Search or create queue", "editor.jsx", Plugin::DOMAIN ),
-					"back"                    => esc_html_x( "Back", "editor.jsx", Plugin::DOMAIN ),
-					"save"                    => esc_html_x( "Save", "editor.jsx", Plugin::DOMAIN ),
-					"reset"                    => esc_html_x( "Reset", "editor.jsx", Plugin::DOMAIN ),
-					"search_post_placeholder" => esc_html_x( "Search for posts", "editor.jsx", Plugin::DOMAIN ),
-					'edit'                    => esc_html_x( 'Edit', "editor.jsx", Plugin::DOMAIN ),
-					'delete'                  => esc_html_x( 'Delete', "editor.jsx", Plugin::DOMAIN ),
-					'remove'                  => esc_html_x( 'Remove', "editor.jsx", Plugin::DOMAIN ),
-					'add_post'                => esc_html_x( 'Add post', "editor.jsx", Plugin::DOMAIN ),
-					'cancel'                  => esc_html_x( 'Cancel', "editor.jsx", Plugin::DOMAIN ),
-					'post_title_or_id'        => esc_html_x( 'Post title or ID', "editor.jsx", Plugin::DOMAIN ),
+					"save"                    => _x( "Save", "postqueue screen", 'postqueue' ),
+					"reset"                   => _x( "Reset", "postqueue screen", 'postqueue' ),
+					"saved"                   => _x( "Order saved.", "postqueue screen", 'postqueue' ),
+					"remove"                  => _x( "Remove", "postqueue screen", 'postqueue' ),
+					"search_label"            => _x( "Add a post to this postqueue", "postqueue screen", 'postqueue' ),
+					"search_post_placeholder" => _x( "Search for posts", "postqueue screen", 'postqueue' ),
+					"search_help"             => _x( "Pick a result to put it at the top of the queue.", "postqueue screen", 'postqueue' ),
+					"no_posts_found"          => _x( "No posts found.", "postqueue screen", 'postqueue' ),
+					"queue_empty"             => _x( "This postqueue is empty. Search for a post above to add one.", "postqueue screen", 'postqueue' ),
+					"column_order"            => _x( "Order", "postqueue screen", 'postqueue' ),
+					"column_post"             => _x( "Post", "postqueue screen", 'postqueue' ),
+					"column_status"           => _x( "Status", "postqueue screen", 'postqueue' ),
+					"column_date"             => _x( "Date", "postqueue screen", 'postqueue' ),
+					"column_actions"          => _x( "Actions", "postqueue screen", 'postqueue' ),
+					"move_up"                 => _x( "Move up", "postqueue screen", 'postqueue' ),
+					"move_down"               => _x( "Move down", "postqueue screen", 'postqueue' ),
+					"drag_hint"               => _x( "Drag to reorder", "postqueue screen", 'postqueue' ),
 				],
 			]
 		);
