@@ -32,8 +32,22 @@ class Store extends Database {
 	public function create( $name ) {
 		global $wpdb;
 		$result          = (object) array();
-		$result->name    = $name;
+		// Stored raw until now, and the meta box echoed it into the page - so a queue
+		// name was a stored XSS vector. Escaping on output is the actual fix; this
+		// keeps markup out of the column in the first place.
+		$result->name    = sanitize_text_field( $name );
 		$result->slug    = sanitize_title( $result->name );
+
+		// A name made only of markup sanitises to nothing, and so does a blank one.
+		// Without this the INSERT ran with an empty slug and failed against the unique
+		// key, printing a database error and returning id 0 to the caller.
+		if ( '' === $result->name || '' === $result->slug ) {
+			$result->success = false;
+			$result->id      = 0;
+
+			return $result;
+		}
+
 		$result->success = $wpdb->insert(
 			$this->tableQueues,
 			array(
