@@ -24,6 +24,14 @@ class REST extends Component\Component {
 				$name   = $request->get_param( "name" );
 				$result = $this->plugin->store->create( $name );
 
+				if ( empty( $result->success ) ) {
+					return new \WP_Error(
+						'postqueue_invalid_name',
+						'The queue name is empty after sanitising, or a queue with that slug exists.',
+						array( 'status' => 400 )
+					);
+				}
+
 				do_action( "ph_postqueue_created", (object) array( "id" => $result->id, "slug" => $result->slug ) );
 
 				return $result;
