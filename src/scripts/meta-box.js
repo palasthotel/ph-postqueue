@@ -59,7 +59,15 @@
    */
     function postqueue_metabox_add_selectoption( queueid, queuename, postid ) {
         const $wrapper = $(wrapperSelector).find('.postqueue-metabox-postqueueselect-wrapper');
-        $wrapper.find('select').append('<option value="'+queueid+'" data-queuename="'+queuename+'">'+queuename+'</option>');
+        // Built as DOM nodes, not as an HTML string: queuename is read back out of a
+        // data attribute, so concatenating it into markup would undo the escaping the
+        // template did and turn a queue name into script (CodeQL js/xss-through-dom).
+        $wrapper.find('select').append(
+            $('<option></option>')
+                .attr('value', queueid)
+                .attr('data-queuename', queuename)
+                .text(queuename)
+        );
     }
     /*
    * helper function, removes selectoption to metabox DOM
@@ -74,7 +82,18 @@
     function postqueue_metabox_add_listitem( queueid, queuename, postid ) {
 
         const $wrapper = $(wrapperSelector).find('.postqueue-metabox-postqueuelist-wrapper');
-        $wrapper.find('ul').append('<li>'+queuename+'<span class="dashicons dashicons-no postqueue-remove" data-queueid="'+queueid+'" data-postid="'+postid+'" title="'+objectL10n.removepostfromthispostqueue+'" data-queuename="'+queuename+'"></span></li>');
+        $wrapper.find('ul').append(
+            $('<li></li>')
+                .text(queuename)
+                .append(
+                    $('<span></span>')
+                        .addClass('dashicons dashicons-no postqueue-remove')
+                        .attr('data-queueid', queueid)
+                        .attr('data-postid', postid)
+                        .attr('title', objectL10n.removepostfromthispostqueue)
+                        .attr('data-queuename', queuename)
+                )
+        );
         postqueue_add_remove_eventlisteners( $(wrapperSelector).find('.messages') );
     }
     /*
@@ -91,7 +110,11 @@
     function postqueue_check_empty_list() {
         const $wrapper = $(wrapperSelector).find('.postqueue-metabox-postqueuelist-wrapper ul');
         if( !$wrapper.html().trim() ) {
-            $wrapper.parent().append('<span class="postqueue-metabox-postqueuelist-emptyinfo">'+objectL10n.notstoredyet+'</span>');
+            $wrapper.parent().append(
+                $('<span></span>')
+                    .addClass('postqueue-metabox-postqueuelist-emptyinfo')
+                    .text(objectL10n.notstoredyet)
+            );
         } else {
             $wrapper.parent().find('.postqueue-metabox-postqueuelist-emptyinfo').remove();
         }
