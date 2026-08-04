@@ -3,6 +3,8 @@
 
 namespace Postqueue\Component;
 
+defined( 'ABSPATH' ) || exit;
+
 abstract class Component {
 
     public Plugin $plugin;

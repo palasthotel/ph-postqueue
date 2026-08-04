@@ -2,6 +2,8 @@
 
 namespace Postqueue;
 
+defined( 'ABSPATH' ) || exit;
+
 class Shortcode extends Component\Component {
 
 	public function onCreate() {

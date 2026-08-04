@@ -1,5 +1,7 @@
 <?php
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * @var \Postqueue\Blocks\Postqueue $this
  * @var object $content

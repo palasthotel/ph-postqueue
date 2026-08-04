@@ -3,6 +3,8 @@
 
 namespace Postqueue\Component;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Class Assets
  * @version 0.1.1

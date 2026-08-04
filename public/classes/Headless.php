@@ -2,6 +2,8 @@
 
 namespace Postqueue;
 
+defined( 'ABSPATH' ) || exit;
+
 
 use Palasthotel\WordPress\Headless\Model\BlockPreparations;
 use Postqueue\Headless\PostqueueBlockPreparation;

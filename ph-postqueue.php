@@ -5,7 +5,7 @@
  * Version:           X.X.X
  * Requires at least: 6.6
  * Tested up to:      7.0.2
- * Author:            PALASTHOTEL by Edward and Julia
+ * Author:            PALASTHOTEL
  * Author URI:        http://www.palasthotel.de
  * License:           GPL-3.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.html

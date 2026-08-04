@@ -1,5 +1,7 @@
 <?php
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * @return \Postqueue\Plugin
  * @deprecated use postqueue_plugin() instead

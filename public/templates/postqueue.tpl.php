@@ -1,4 +1,6 @@
 <?php
+
+defined( 'ABSPATH' ) || exit;
 /**
  * @var $queue array queue object for shortcode
  * @var $store \Postqueue\Store the store object

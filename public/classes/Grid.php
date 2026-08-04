@@ -3,6 +3,8 @@
 
 namespace Postqueue;
 
+defined( 'ABSPATH' ) || exit;
+
 
 class Grid extends Component\Component {
 

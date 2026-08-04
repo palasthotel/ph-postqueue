@@ -1,4 +1,6 @@
 <?php
+
+defined( 'ABSPATH' ) || exit;
 /**
  * template for postqueues tools admin interface
  * @var $this \Postqueue\Editor
