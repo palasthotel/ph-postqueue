@@ -118,13 +118,39 @@ class QueuesListTable extends \WP_List_Table {
 		);
 	}
 
+	/**
+	 * Cells of columns this class does not know.
+	 *
+	 * A column added through "manage_{$screen->id}_columns" has no column_<name>() here,
+	 * so WP_List_Table falls back to this method - which without the filter below would
+	 * print an empty cell. Named after core's own hook on the terms table, and a filter
+	 * rather than an action for the same reason: the caller wants the cell back, not
+	 * whatever happened to be echoed.
+	 *
+	 * @param array  $item        the queue row, with id, name, slug and items
+	 * @param string $column_name
+	 * @return string
+	 */
+	protected function column_default( $item, $column_name ) {
+		return (string) apply_filters(
+			"manage_{$this->screen->id}_custom_column",
+			'',
+			$column_name,
+			$item
+		);
+	}
+
 	public function no_items() {
 		esc_html_e( 'No postqueues yet. Create one above.', 'postqueue' );
 	}
 
 	public function prepare_items() {
-		$this->_column_headers = [ $this->get_columns(), [], $this->get_sortable_columns() ];
-
+		// _column_headers is deliberately left alone. WP_List_Table's constructor hooks
+		// this class's get_columns() into "manage_{$screen->id}_columns" at priority 0,
+		// and get_column_info() only consults that filter while _column_headers is
+		// unset - so assigning it here, as this did, switched off the one extension
+		// point another plugin has for adding a column. Same for sortable columns and
+		// for the hidden-columns box in Screen Options.
 		$search = isset( $_REQUEST['s'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['s'] ) ) : '';
 		$queues = '' === $search ? $this->store->get_queues() : $this->store->search( $search );
 		$counts = $this->store->get_queue_item_counts();
