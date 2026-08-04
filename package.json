@@ -4,8 +4,8 @@
   "description": "Be free to order posts as you wish. Plugin is available at [WordPress.org](https://wordpress.org/plugins/postqueue/)",
   "private": true,
   "scripts": {
-    "watch": "wp-scripts start src/editor.js src/meta-box.js --output-path=public/dist",
-    "build": "wp-scripts build src/editor.js src/meta-box.js --output-path=public/dist",
+    "watch": "wp-scripts start src/editor.js src/meta-box.js src/block-editor.js --output-path=public/dist",
+    "build": "wp-scripts build src/editor.js src/meta-box.js src/block-editor.js --output-path=public/dist",
     "pack": "bash ./bin/pack.sh"
   },
   "repository": {

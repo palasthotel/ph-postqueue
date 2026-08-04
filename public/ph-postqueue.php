@@ -37,6 +37,7 @@ class Plugin extends Component\Plugin {
     public Assets $assets;
     public REST $rest;
     public BlockX $blockx;
+    public QueryLoop $queryLoop;
     public Headless $headless;
 
 	/**
@@ -51,6 +52,10 @@ class Plugin extends Component\Plugin {
 
 	const HANDLE_EDITOR_CSS = "postqueue-css";
 	const HANDLE_EDITOR_JS = "postqueue-js";
+	const HANDLE_BLOCK_EDITOR_JS = "postqueue-block-editor-js";
+
+	const REST_FIELD_QUEUES = "postqueues";
+	const FILTER_POSTQUEUE_PANEL_SEARCH_THRESHOLD = "postqueue_panel_search_threshold";
 
 	/**
 	 * filters
@@ -85,6 +90,7 @@ class Plugin extends Component\Plugin {
 
 		$this->editor    = new Editor( $this );
 		$this->blockx    = new BlockX( $this );
+		$this->queryLoop = new QueryLoop( $this );
 		$this->headless = new Headless($this);
 		$this->post      = new Post( $this );
 		$this->shortcode = new Shortcode( $this );

@@ -363,6 +363,42 @@ class Store extends Database {
 		return $wpdb->get_var( $query );
 	}
 
+	/**
+	 * The ids of the queues a post belongs to.
+	 *
+	 * get_queues_for_post() returns a nested array of queue rows, which is more than a
+	 * caller that just wants the ids needs.
+	 *
+	 * @return int[]
+	 */
+	public function get_queue_ids_for_post( int $post_id ): array {
+		global $wpdb;
+
+		return array_map(
+			'intval',
+			$wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT DISTINCT queue_id FROM $this->tableContents WHERE post_id = %d ORDER BY queue_id ASC",
+					$post_id
+				)
+			)
+		);
+	}
+
+	/**
+	 * Whether a queue row exists.
+	 *
+	 * get_queue_by_id() joins the contents table, so an existing but empty queue comes
+	 * back as an empty array - indistinguishable from "no such queue".
+	 */
+	public function queueExists( int $queue_id ): bool {
+		global $wpdb;
+
+		return (bool) $wpdb->get_var(
+			$wpdb->prepare( "SELECT id FROM $this->tableQueues WHERE id = %d", $queue_id )
+		);
+	}
+
 	public function createTables() {
 		parent::createTables();
 
