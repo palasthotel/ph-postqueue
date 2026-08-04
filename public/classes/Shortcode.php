@@ -121,7 +121,11 @@ class Shortcode extends Component\Component {
 		 * style for dialog
 		 */
 		wp_enqueue_script( "postqueue_data", '/wp-admin/admin-ajax.php?action=postqueue_data_script', array(), 1, 'all' );
-		wp_enqueue_style( "postqueue", $this->plugin->url . '/css/tinymce.css', array("postqueue_data"), 2, 'all' );
+		// The dependency used to be "postqueue_data", which is a *script* handle -
+		// styles and scripts are separate queues, so it could never have ordered
+		// anything. WordPress 6.9.1 started warning about it. What this stylesheet
+		// actually builds on is the dialog styling enqueued just above.
+		wp_enqueue_style( "postqueue", $this->plugin->url . '/css/tinymce.css', array( 'wp-jquery-ui-dialog' ), 2, 'all' );
 		
 		/**
 		 * add plugin js
