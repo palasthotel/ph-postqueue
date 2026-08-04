@@ -30,7 +30,6 @@ class Plugin extends Component\Plugin {
 
     public Store $store;
     public Templates $templates;
-    public Ajax $ajax;
     public Editor $editor;
     public Post $post;
     public Shortcode $shortcode;
@@ -83,7 +82,6 @@ class Plugin extends Component\Plugin {
 
 		$this->assets = new Assets( $this );
 
-		$this->ajax = new Ajax( $this );
 		$this->rest = new REST( $this );
 
 		$this->editor    = new Editor( $this );
