@@ -220,13 +220,15 @@ class Editor extends Component {
 	private function renderQueue( int $queueId ): void {
 		wp_enqueue_style( Plugin::HANDLE_EDITOR_CSS );
 		wp_enqueue_script( Plugin::HANDLE_EDITOR_JS );
+		// Only the queue id. The old template also handed over a listUrl the screen never
+		// read, and a feedUrl from the site option "ph-postqueue-feeds-url" - an option
+		// that only ph-postqueue-feeds ever wrote, the 2015 attempt at a feeds plugin
+		// that was never published and is now archived. Postqueue Feeds, the one on
+		// wordpress.org, does not know that option at all.
 		wp_add_inline_script(
 			Plugin::HANDLE_EDITOR_JS,
 			'window.PostQueueScreen = ' . wp_json_encode( array(
 				'queueId' => $queueId,
-				'listUrl' => $this->pageUrl(),
-				// Was echoed straight into a script tag by the old template, unescaped.
-				'feedUrl' => (string) get_site_option( 'ph-postqueue-feeds-url', '' ),
 			) ) . ';',
 			'before'
 		);
