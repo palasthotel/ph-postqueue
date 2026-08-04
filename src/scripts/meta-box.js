@@ -28,6 +28,7 @@
                 const queuename = $selectedoption.data('queuename');
                 const data = {
                     'action': 'postqueue_add_post',
+                    '_ajax_nonce': objectL10n.nonce,
                     'postid': postid,
                     'queueid': queueid
                 };
@@ -107,6 +108,7 @@
             const queuename = $this.data('queuename');
             const data = {
                 'action': 'postqueue_remove_post',
+                '_ajax_nonce': objectL10n.nonce,
                 'postid': postid,
                 'queueid': queueid
             };
