@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/palasthotel/ph-postqueue/compare/v2.1.0...v2.1.1) (2026-08-05)
+
+
+### Bug Fixes
+
+* hide the Query Loop's post type, order and sticky controls ([0d94c3c](https://github.com/palasthotel/ph-postqueue/commit/0d94c3c4198108e8a3d3aa2238b646c640a2e5be))
+
 ## [2.1.0](https://github.com/palasthotel/ph-postqueue/compare/v2.0.0...v2.1.0) (2026-08-04)
 
 
