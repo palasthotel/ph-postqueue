@@ -49,6 +49,19 @@ function myplugin_postqueue_boxes(){
 }
 ```
 
+### Queue created / queue deleting
+
+Fired from the REST routes a queue is created and deleted through (`classes/REST.php`).
+
+```php
+add_action( 'ph_postqueue_created', function ( $queue ) {
+	// $queue->id, $queue->slug
+} );
+add_action( 'ph_postqueue_deleting', function ( $queue_id ) {
+	// about to be deleted, not deleted yet
+} );
+```
+
 ## Filters
 
 Available filters for postqueue plugin.
@@ -82,6 +95,78 @@ function postqueue_edit_capability($capabilities){
 **Parameters:**
 
 _$capabilities_ ==> [WordPress capabilities](https://codex.wordpress.org/Roles_and_Capabilities) string
+
+### Postqueue length limit
+
+Caps every queue at a fixed length; adding past it drops the oldest items. `-1` (the
+default) means unlimited.
+
+```php
+add_filter( 'postqueue_limiter', function ( $limit ) {
+	return 20;
+} );
+```
+
+### Postqueue search order
+
+The `ORDER BY` clause used when searching queues by name in the Tools screen and the
+classic meta box's picker.
+
+```php
+add_filter( 'postqueue_store_search_order', function ( $order ) {
+	return 'name ASC'; // default: 'id ASC'
+} );
+```
+
+### Add-to-queue position
+
+Where the classic editor's meta box puts a post it adds to a queue: `'first'`, `'last'`,
+or anything else for the store's own default.
+
+```php
+add_filter( 'postqueue_add_position', function ( $position ) {
+	return 'first';
+} );
+```
+
+### Template lookup paths
+
+Lets another plugin add a directory `get_template_path()` searches, alongside the theme
+and the plugin's own `templates/` folder.
+
+```php
+add_filter( 'postqueue_add_template_paths', function ( $paths ) {
+	$paths[] = __DIR__ . '/my-postqueue-templates';
+	return $paths;
+} );
+```
+
+---
+
+## Public functions
+
+```php
+postqueue_plugin(); // -> Postqueue\Plugin::instance()
+postqueue_store();  // -> the Postqueue\Store instance
+```
+
+The replacement for the deprecated `postqueue_get()`/`global $postqueue` (see the
+changelog).
+
+## Shortcode
+
+```
+[postqueue slug="my-queue" viewmode="" offset="0" limit="-1"]
+```
+
+_slug_ ==> the queue's slug (required)
+
+_viewmode_ ==> a key registered through the `postqueue_viewmodes` filter, or empty for
+the default
+
+_offset_ ==> number of posts to skip
+
+_limit_ ==> number of posts to show, `-1` for all
 
 ---
 
@@ -136,6 +221,22 @@ nothing had imported for some time.
 Changes to the order are held in the app until **Save**; leaving the page with unsaved
 changes triggers the browser's own warning.
 
+## REST API
+
+Namespace `postqueue/v1` (`classes/REST.php`), used by the Postqueues screen and the
+block editor - not documented as a stable public API, but there if you need it:
+
+| Method | Route | |
+|---|---|---|
+| GET, POST | `/queues` | list (optional `?search=`), or create (`name`) |
+| GET, DELETE | `/queues/{id}` | a queue's items, or delete the queue |
+| POST | `/queues/{id}/items` | replace a queue's items (`items`: post ids, in order) |
+| DELETE | `/queues/{id}/items/{pid}` | remove one post from a queue |
+| GET | `/posts` | post search for the "add a post" pickers (`?search=`) |
+
+All of them require `postqueue_edit_capability`. Also see the `postqueues` REST field on
+every public post type, and `ph_postqueue_created`/`ph_postqueue_deleting` above.
+
 ## Block editor
 
 **Adding a post to a queue** happens in the document sidebar, through a
@@ -172,7 +273,10 @@ order. An empty queue becomes `post__in => [0]`: an empty `post__in` is ignored 
 `WP_Query` and would return every post, which is the opposite of what an empty queue
 means.
 
-The older BlockX block is untouched and still requires the BlockX plugin.
+The older BlockX block is untouched and still requires the BlockX plugin. If
+[ph-headless](https://github.com/palasthotel/ph-headless) is active, `classes/Headless.php`
+registers a block-preparation extension so that block still resolves correctly in
+headless REST output.
 
 ---
 

@@ -1,7 +1,7 @@
 === Postqueue ===
 Contributors: palasthotel, edwardbock, janaeggebrecht
 Donate link: http://palasthotel.de/
-Tags: loop, order posts, queue
+Tags: loop, order posts, queue, gutenberg, curated
 Requires at least: 6.6
 Tested up to: 7.0.2
 Stable tag: 2.1.0
@@ -59,7 +59,10 @@ with the same pagination, layout options and Post Template inner blocks as any o
 loop - pick a queue in the block sidebar instead of a category. The posts appear in the
 order the queue defines, and an empty queue outputs nothing rather than everything.
 
-The `[postqueue]` shortcode and the theme templates still work as before.
+The `[postqueue]` shortcode and the theme templates still work as before:
+`[postqueue slug="my-queue" viewmode="" offset="0" limit="-1"]`. Only `slug` is
+required; `viewmode` is one of the view modes registered with `postqueue_viewmodes`,
+`offset` skips that many posts, and `limit` caps how many are shown (`-1` for all).
 
 
 
