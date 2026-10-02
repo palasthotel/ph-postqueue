@@ -37,10 +37,13 @@ class Shortcode extends Component\Component {
 		
 		if ( ! isset( $atts['slug'] ) ) return '';
 		
-		$slug = $atts['slug'];
-		$viewmode = (!empty($atts['viewmode']))? $atts["viewmode"] : "" ;
-		$offset = (!empty($atts['offset']))? $atts['offset']: 0;
-		$limit = (!empty($atts['limit']))? $atts['limit']: -1;
+		$slug = sanitize_title( $atts['slug'] );
+		// viewmode ends up in a class attribute of the template - also in templates a
+		// theme copied - so only class name tokens are passed on.
+		$viewmode = (!empty($atts['viewmode']))? (string) $atts["viewmode"] : "" ;
+		$viewmode = implode( ' ', array_filter( array_map( 'sanitize_html_class', preg_split( '/\s+/', $viewmode ) ) ) );
+		$offset = (!empty($atts['offset']))? max( 0, (int) $atts['offset'] ): 0;
+		$limit = (!empty($atts['limit']))? (int) $atts['limit']: -1;
 		
 		$store = $this->plugin->store;
 		$queue = $store->get_queue_by_slug($slug);
