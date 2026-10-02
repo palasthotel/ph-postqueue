@@ -1,2 +1,2 @@
-import "./styles/metabox/postqueue-metabox.scss";
+import "./styles/metabox/postqueue-metabox.css";
 import "./scripts/meta-box.js";
