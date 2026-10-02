@@ -41,7 +41,8 @@ defined( 'ABSPATH' ) || exit;
       <?php endforeach; ?>
       </select>
     <?php else: ?>
-      <?php esc_html_e( 'There are no available postqueues yet.', 'postqueue' ); ?> (@todo link zur settings page)
+      <?php esc_html_e( 'There are no available postqueues yet.', 'postqueue' ); ?>
+      <a href="<?php echo esc_url( admin_url( 'tools.php?page=' . \Postqueue\Editor::PAGE_SLUG ) ); ?>"><?php echo esc_html_x( 'Postqueues', 'admin menu', 'postqueue' ); ?></a>
     <?php endif; ?>
     <span class="button button-secondary hide-if-no-js postqueue-add" data-postid="<?php echo esc_attr( get_the_ID() ); ?>"><?php esc_html_e( 'Add', 'postqueue' ); ?></span>
   </div>
