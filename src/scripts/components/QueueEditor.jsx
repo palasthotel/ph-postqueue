@@ -3,16 +3,22 @@ import { useEffect, useState } from '@wordpress/element';
 import { useQueryPosts, useQueueItems } from '../hooks/use-queues';
 import QueueItems from './QueueItems.jsx';
 
-const { i18n } = PostQueue;
+const { i18n } = window.PostQueue;
 const screen = window.PostQueueScreen || {};
 
 /**
  * Search for a post and put it at the top of the queue.
+ *
+ * @param {Object}                 props
+ * @param {Array}                  props.postIdsInQueue ids already in the queue, left out of the suggestions
+ * @param {(post: Object) => void} props.onAdd          called with the picked post
  */
 const AddPost = ( { postIdsInQueue, onAdd } ) => {
 	const [ query, setQuery ] = useState( '' );
 	const [ posts, isLoading ] = useQueryPosts( query );
-	const suggestions = posts.filter( ( p ) => ! postIdsInQueue.includes( p.post_id ) );
+	const suggestions = posts.filter(
+		( p ) => ! postIdsInQueue.includes( p.post_id )
+	);
 
 	return (
 		<div className="postqueue-add">
@@ -41,7 +47,9 @@ const AddPost = ( { postIdsInQueue, onAdd } ) => {
 
 			{ '' !== query.trim() && ! isLoading && (
 				<ul className="postqueue-add__suggestions">
-					{ 0 === suggestions.length && <li className="is-empty">{ i18n.no_posts_found }</li> }
+					{ 0 === suggestions.length && (
+						<li className="is-empty">{ i18n.no_posts_found }</li>
+					) }
 					{ suggestions.map( ( post ) => (
 						<li key={ post.post_id }>
 							<Button
@@ -74,7 +82,9 @@ export default function QueueEditor() {
 
 	const isDirty =
 		items.length !== draft.length ||
-		draft.some( ( item, index ) => items[ index ]?.post_id !== item.post_id );
+		draft.some(
+			( item, index ) => items[ index ]?.post_id !== item.post_id
+		);
 
 	// The overview is a normal page now, so leaving is a link rather than a button we
 	// can disable. This is the only thing standing between a reorder and losing it.
@@ -128,7 +138,11 @@ export default function QueueEditor() {
 					items={ draft }
 					onMove={ move }
 					onRemove={ ( item ) => {
-						setDraft( draft.filter( ( it ) => it.post_id !== item.post_id ) );
+						setDraft(
+							draft.filter(
+								( it ) => it.post_id !== item.post_id
+							)
+						);
 						setSaved( false );
 					} }
 				/>
@@ -144,9 +158,12 @@ export default function QueueEditor() {
 					} }
 				>
 					{ i18n.save }
-				</Button>
-				{ ' ' }
-				<Button variant="tertiary" disabled={ ! isDirty } onClick={ () => setDraft( [ ...items ] ) }>
+				</Button>{ ' ' }
+				<Button
+					variant="tertiary"
+					disabled={ ! isDirty }
+					onClick={ () => setDraft( [ ...items ] ) }
+				>
 					{ i18n.reset }
 				</Button>
 			</p>

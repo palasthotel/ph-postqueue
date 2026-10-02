@@ -6,7 +6,8 @@
   "scripts": {
     "watch": "wp-scripts start src/editor.js src/meta-box.js src/block-editor.js --output-path=public/dist",
     "build": "wp-scripts build src/editor.js src/meta-box.js src/block-editor.js --output-path=public/dist",
-    "pack": "bash ./bin/pack.sh"
+    "pack": "bash ./bin/pack.sh",
+    "lint:js": "wp-scripts lint-js src"
   },
   "repository": {
     "type": "git",

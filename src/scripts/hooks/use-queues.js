@@ -1,99 +1,93 @@
-import {useEffect, useState} from '@wordpress/element'
+import { useEffect, useState } from '@wordpress/element';
 import {
-    apiCreateQueue,
-    apiCreateQueueItems,
-    apiDeleteQueue,
-    apiReadPosts,
-    apiReadQueue,
-    apiReadQueues
-} from "../store/api";
+	apiCreateQueue,
+	apiCreateQueueItems,
+	apiDeleteQueue,
+	apiReadPosts,
+	apiReadQueue,
+	apiReadQueues,
+} from '../store/api';
 
 export const useQueues = () => {
+	const [ isLoading, setIsLoading ] = useState( false );
+	const [ items, setItems ] = useState( [] );
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [items, setItems] = useState([]);
+	useEffect( () => {
+		setIsLoading( true );
+		apiReadQueues().then( ( queues ) => {
+			setIsLoading( false );
+			setItems( queues );
+		} );
+	}, [] );
 
-    useEffect(() => {
-        setIsLoading(true);
-        apiReadQueues().then(queues => {
-            setIsLoading(false);
-            setItems(queues);
-        });
-    }, []);
+	return {
+		queues: items,
+		createQueue: ( name ) => {
+			setIsLoading( true );
+			apiCreateQueue( name ).then( ( queue ) => {
+				setIsLoading( false );
+				setItems( [ queue, ...items ] );
+			} );
+		},
+		deleteQueue: ( id ) => {
+			setIsLoading( true );
+			apiDeleteQueue( id ).then( () => {
+				setIsLoading( false );
+				setItems( items.filter( ( item ) => item.id !== id ) );
+			} );
+		},
+		isLoading,
+	};
+};
 
-    return {
-        queues: items,
-        createQueue: (name) => {
-            setIsLoading(true);
-            apiCreateQueue(name).then(queue=>{
-                setIsLoading(false);
-                setItems([
-                    queue,
-                    ...items,
-                ]);
-            });
-        },
-        deleteQueue: (id)=>{
-            setIsLoading(true);
-            apiDeleteQueue(id).then(_=>{
-                setIsLoading(false);
-                setItems(items.filter(item=>item.id !== id));
-            });
-        },
-        isLoading
-    }
-}
+export const useQueueItems = ( queueId ) => {
+	const [ isLoading, setIsLoading ] = useState( false );
+	const [ items, setItems ] = useState( [] );
 
-export const useQueueItems = (queueId)=>{
+	useEffect( () => {
+		setIsLoading( true );
+		apiReadQueue( queueId ).then( ( loaded ) => {
+			setIsLoading( false );
+			setItems( loaded );
+		} );
+	}, [ queueId ] );
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [items, setItems] = useState([]);
+	return {
+		items,
+		isLoading,
+		saveItems: ( nextItems ) => {
+			setIsLoading( true );
+			apiCreateQueueItems( queueId, nextItems ).then( ( queue ) => {
+				setIsLoading( false );
+				setItems( queue.items );
+			} );
+		},
+	};
+};
 
-    useEffect(()=>{
-        setIsLoading(true);
-        apiReadQueue(queueId).then(items=>{
-            setIsLoading(false);
-            setItems(items);
-        })
-    }, [queueId]);
+export const useQueryPosts = ( query ) => {
+	const [ isLoading, setIsLoading ] = useState( false );
+	const [ posts, setPosts ] = useState( [] );
 
-    return {
-        items,
-        isLoading,
-        saveItems: (items)=>{
-            setIsLoading(true);
-            apiCreateQueueItems(queueId, items).then(queue=>{
-                setIsLoading(false);
-                setItems(queue.items);
-            });
-        }
-    }
-}
+	useEffect( () => {
+		let abort = false;
+		if ( query === '' ) {
+			setIsLoading( false );
+			setPosts( [] );
+			return;
+		}
+		setIsLoading( true );
+		apiReadPosts( query ).then( ( response ) => {
+			if ( abort ) {
+				return;
+			}
+			setIsLoading( false );
+			setPosts( response.posts );
+		} );
+		return () => {
+			abort = true;
+		};
+	}, [ query ] );
 
-export const useQueryPosts = (query) => {
-
-    const [isLoading, setIsLoading] = useState(false);
-    const [posts, setPosts] = useState([]);
-
-    useEffect(()=>{
-        let abort = false;
-        if(query === ""){
-            setIsLoading(false);
-            setPosts([]);
-            return;
-        }
-        setIsLoading(true);
-        apiReadPosts(query).then(response=>{
-            if(abort){
-                return;
-            }
-            setIsLoading(false);
-            setPosts(response.posts);
-        });
-        return ()=>{
-            abort = true;
-        }
-    }, [query]);
-
-    return [posts, isLoading];
-}
+	return [ posts, isLoading ];
+};
