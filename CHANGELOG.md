@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.2](https://github.com/palasthotel/ph-postqueue/compare/v2.1.1...v2.1.2) (2026-10-02)
+
+
+### Bug Fixes
+
+* escape the postqueue shortcode's output ([1d8c9b1](https://github.com/palasthotel/ph-postqueue/commit/1d8c9b1dcc523d1d6db3487a135256aac0491666))
+* link the empty meta box to the Postqueues screen ([558b7cc](https://github.com/palasthotel/ph-postqueue/commit/558b7ccc4b5ef91eba50a89f666b6fdcb8a3d750))
+
 ## [2.1.1](https://github.com/palasthotel/ph-postqueue/compare/v2.1.0...v2.1.1) (2026-08-05)
 
 
