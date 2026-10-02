@@ -4,9 +4,9 @@
  * Description:       Create manually ordered postqueues
  * Version:           2.1.1
  * Requires at least: 6.6
- * Tested up to:      7.0.2
+ * Tested up to:      7.1.2
  * Requires PHP:      7.4
- * Author:            Palasthotel <rezeption@palasthotel.de> (Edward Bock, Jana Marie Eggebrecht)
+ * Author:            Palasthotel <webmaster@palasthotel.de>
  * Author URI:        https://palasthotel.de
  * License:           GPL-3.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
