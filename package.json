@@ -6,14 +6,18 @@
   "scripts": {
     "watch": "wp-scripts start src/editor.js src/meta-box.js src/block-editor.js --output-path=public/dist",
     "build": "wp-scripts build src/editor.js src/meta-box.js src/block-editor.js --output-path=public/dist",
-    "pack": "bash ./bin/pack.sh",
+    "pack": "npm run build && SLUG=postqueue bash ../github-workflows/wp-plugin/bin/pack.sh",
     "lint:js": "wp-scripts lint-js src"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/palasthotel/ph-postqueue.git"
   },
-  "author": "",
+  "author": {
+    "name": "Palasthotel",
+    "email": "webmaster@palasthotel.de",
+    "url": "https://palasthotel.de"
+  },
   "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/palasthotel/ph-postqueue/issues"
