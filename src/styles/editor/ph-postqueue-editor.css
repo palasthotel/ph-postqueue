@@ -1,0 +1,173 @@
+/**
+ * The postqueue screen under Tools.
+ *
+ * Everything structural comes from core: .wp-list-table for the items, .search-box for
+ * the search, p.submit for the buttons. What is left here is the little core has no
+ * opinion on - the order column, the drag feedback, and the suggestion list.
+ *
+ * Plain CSS: wp-scripts runs it through PostCSS (autoprefixer, minification), no Sass.
+ * The colours are wp-admin's: #c3c4c7 border, #646970 muted text, #2271b1 link blue.
+ */
+
+/* Adding a post */
+.ph-postqueue .postqueue-add {
+	position: relative;
+	margin: 0 0 12px;
+}
+
+/* Core sizes search fields by character count, not by pixels. */
+.ph-postqueue .postqueue-add .postqueue-add__input {
+	width: 100%;
+	max-width: 400px;
+}
+
+/* The label sits above the field, as it does in a core form-field. */
+.ph-postqueue .postqueue-add label {
+	display: block;
+	margin-bottom: 4px;
+	font-weight: 600;
+}
+
+.ph-postqueue .postqueue-add .postqueue-add__help {
+	margin: 4px 0 0;
+	color: #646970;
+	font-style: italic;
+}
+
+.ph-postqueue .postqueue-add__suggestions {
+	position: absolute;
+	z-index: 10;
+	margin: 2px 0 0;
+	padding: 0;
+	width: 100%;
+	max-width: 400px;
+	max-height: 20em;
+	overflow-y: auto;
+	list-style: none;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.ph-postqueue .postqueue-add__suggestions li {
+	margin: 0;
+}
+
+.ph-postqueue .postqueue-add__suggestions li + li {
+	border-top: 1px solid #f0f0f1;
+}
+
+.ph-postqueue .postqueue-add__suggestions li.is-empty {
+	padding: 8px 12px;
+	color: #646970;
+	font-style: italic;
+}
+
+/*
+ * The suggestion is a Button variant="link", which core renders inline. Filling the row
+ * makes the whole line clickable, the way an autocomplete behaves.
+ */
+.ph-postqueue .postqueue-add__suggestions .components-button.is-link {
+	display: block;
+	width: 100%;
+	padding: 8px 12px;
+	text-align: left;
+	text-decoration: none;
+	height: auto;
+}
+
+.ph-postqueue .postqueue-add__suggestions .components-button.is-link:hover,
+.ph-postqueue .postqueue-add__suggestions .components-button.is-link:focus {
+	background: #f0f6fc;
+}
+
+/*
+ * The queue itself.
+ *
+ * Room for the handle, both buttons and the position number: 101px of content plus the
+ * 2x10px a .widefat cell pads with. check-column, which this used to borrow, is 2.2em
+ * wide in core - the controls stacked and tripled the height of every row.
+ */
+.ph-postqueue .postqueue-items .column-order {
+	width: 130px;
+}
+
+.ph-postqueue .postqueue-items .column-status {
+	width: 12%;
+}
+
+.ph-postqueue .postqueue-items .column-date {
+	width: 22%;
+}
+
+.ph-postqueue .postqueue-items .column-actions {
+	width: 10%;
+	text-align: right;
+}
+
+.ph-postqueue .postqueue-items td {
+	vertical-align: middle;
+}
+
+.ph-postqueue .postqueue-items .postqueue-items__order {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+}
+
+/*
+ * Without this the row squeezes the handle and the buttons flat as soon as the column is
+ * a pixel too narrow, instead of simply overflowing.
+ */
+.ph-postqueue .postqueue-items .postqueue-items__order > * {
+	flex-shrink: 0;
+}
+
+.ph-postqueue .postqueue-items .postqueue-items__handle {
+	display: flex;
+	align-items: center;
+	cursor: grab;
+	color: #646970;
+	padding: 2px;
+}
+
+/* The icons carry fill="currentColor" already; this is for the colour to follow the row on hover. */
+.ph-postqueue .postqueue-items .postqueue-items__handle svg {
+	fill: currentColor;
+}
+
+.ph-postqueue .postqueue-items tr:hover .postqueue-items__handle {
+	color: #2271b1;
+}
+
+.ph-postqueue .postqueue-items .postqueue-items__position {
+	margin-left: 2px;
+	min-width: 1.5em;
+	color: #646970;
+	font-variant-numeric: tabular-nums;
+	text-align: right;
+}
+
+/*
+ * Dragging feedback. The row being carried fades, the row it would land on shows the
+ * edge it will land against.
+ */
+.ph-postqueue .postqueue-items tr.is-dragging {
+	opacity: 0.5;
+}
+
+.ph-postqueue .postqueue-items tr.is-drop-target > * {
+	box-shadow: 0 -2px 0 0 #2271b1 inset;
+}
+
+.ph-postqueue .postqueue-items tr:active .postqueue-items__handle {
+	cursor: grabbing;
+}
+
+/* On narrow screens core stacks list tables; the order column keeps its own row. */
+@media screen and (max-width: 782px) {
+
+	.ph-postqueue .postqueue-items .column-order {
+		width: auto;
+	}
+}

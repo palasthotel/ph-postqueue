@@ -76,13 +76,10 @@ class MetaBox extends Component\Component {
 			filemtime($this->plugin->path."/dist/meta-box.css"),
 			'all'
 		);
-		wp_enqueue_script(
-			'postqueue-metabox',
-			$this->plugin->url . 'dist/meta-box.js',
-			array( 'jquery' ),
-			filemtime($this->plugin->path."/dist/meta-box.js"),
-			false
-		);
+		// The dependencies come from dist/meta-box.asset.php; the script has not needed
+		// jQuery since it was rewritten in plain DOM.
+		$this->plugin->assets->registerScript( 'postqueue-metabox', 'dist/meta-box.js' );
+		wp_enqueue_script( 'postqueue-metabox' );
 		wp_localize_script( 'postqueue-metabox', 'PostqueueMetaBoxL10n', array(
 			'nonce' => wp_create_nonce( self::NONCE_ACTION ),
 			'postremoved' => esc_html__( 'Post successfully removed from postqueue.', 'postqueue' ),

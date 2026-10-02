@@ -297,7 +297,6 @@ repository-only.
 | `src/` | JavaScript sources for the editor and the meta box |
 | `assets/` | media for the WordPress.org plugin page — not part of the download |
 | `ph-postqueue.php` | DEV wrapper, loads `public/ph-postqueue.php` when the repository is checked out into `wp-content/plugins/` |
-| `bin/` | release helper scripts |
 | `.github/workflows/` | CI/CD — see [.github/WORKFLOWS.md](.github/WORKFLOWS.md) |
 
 ## Development
@@ -305,14 +304,16 @@ repository-only.
 ```sh
 npm ci
 npm run build      # → public/dist/
+npm run lint:js
 npx wp-env start   # http://localhost:8888, admin / password
-bash bin/pack.sh   # → postqueue.zip
+npm run pack       # → postqueue.zip, via the shared pack.sh
 ```
 
 `public/dist/` is generated and gitignored — the release pipeline builds it. Run
-`npm run build` before `wp-env start` or `bin/pack.sh`; the pack script refuses to
-package an unbuilt payload, and the PHP reads the built files with `filemtime()`, so an
-unbuilt checkout produces warnings in the editor.
+`npm run build` before `wp-env start`; the PHP reads the built files with `filemtime()`,
+so an unbuilt checkout produces warnings in the editor. `npm run pack` builds first and
+needs [palasthotel/github-workflows](https://github.com/palasthotel/github-workflows)
+checked out next to this repository, and `composer`.
 
 ## Releasing
 

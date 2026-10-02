@@ -6,7 +6,11 @@ import { createHigherOrderComponent } from '@wordpress/compose';
 import { useEffect, useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 
-const { rest_namespace: ns, query_key: QUERY_KEY, i18n } = window.PostQueueBlockEditor;
+const {
+	rest_namespace: ns,
+	query_key: QUERY_KEY,
+	i18n,
+} = window.PostQueueBlockEditor;
 
 const VARIATION = 'postqueue/queue';
 
@@ -29,7 +33,16 @@ registerBlockVariation( 'core/query', {
 	// controls - showing them would offer a choice that applyQueue() always overrules.
 	// Everything else (author, search, taxQuery, ...) still narrows the queue further, so
 	// those stay.
-	allowedControls: [ 'inherit', 'author', 'search', 'taxQuery', 'format', 'offset', 'pages', 'parents' ],
+	allowedControls: [
+		'inherit',
+		'author',
+		'search',
+		'taxQuery',
+		'format',
+		'offset',
+		'pages',
+		'parents',
+	],
 	attributes: {
 		namespace: VARIATION,
 		query: {
@@ -70,7 +83,10 @@ const QueueSelect = ( { attributes, setAttributes } ) => {
 
 	const options = [
 		{ label: i18n.select_none, value: '' },
-		...queues.map( ( queue ) => ( { label: queue.name, value: queue.slug } ) ),
+		...queues.map( ( queue ) => ( {
+			label: queue.name,
+			value: queue.slug,
+		} ) ),
 	];
 
 	return (
@@ -92,7 +108,10 @@ const QueueSelect = ( { attributes, setAttributes } ) => {
 
 const withQueueControl = createHigherOrderComponent(
 	( BlockEdit ) => ( props ) => {
-		if ( 'core/query' !== props.name || VARIATION !== props.attributes?.namespace ) {
+		if (
+			'core/query' !== props.name ||
+			VARIATION !== props.attributes?.namespace
+		) {
 			return <BlockEdit { ...props } />;
 		}
 		return (
@@ -109,4 +128,8 @@ const withQueueControl = createHigherOrderComponent(
 	'withPostqueueQueueControl'
 );
 
-addFilter( 'editor.BlockEdit', 'postqueue/query-loop-control', withQueueControl );
+addFilter(
+	'editor.BlockEdit',
+	'postqueue/query-loop-control',
+	withQueueControl
+);

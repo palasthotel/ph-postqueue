@@ -1,9 +1,9 @@
 === Postqueue ===
 Contributors: palasthotel, edwardbock, janaeggebrecht
-Donate link: http://palasthotel.de/
+Donate link: https://palasthotel.de/
 Tags: loop, order posts, queue, gutenberg, curated
 Requires at least: 6.6
-Tested up to: 7.0.2
+Tested up to: 7.1.2
 Stable tag: 2.1.1
 Requires PHP: 7.4
 License: GPL-3.0-or-later
@@ -19,9 +19,9 @@ This Plugin provides a new Box for [Grid](http://wordpress.org/plugins/grid/ "Gr
 
 == Installation ==
 
-1. Upload `postqueue-wordpress.zip` to the `/wp-content/plugins/` directory
-1. Extract the Plugin to a `postqueue` Folder
-1. Activate the plugin through the 'Plugins' menu in WordPress
+1. Install the plugin through **Plugins → Add New**, or upload it to `/wp-content/plugins/postqueue/`.
+2. Activate it through the **Plugins** menu.
+3. Create queues under **Tools → Postqueues**.
 
 == Frequently Asked Questions ==
 

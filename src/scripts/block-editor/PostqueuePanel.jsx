@@ -13,10 +13,15 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useMemo, useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 
-const { rest_namespace: ns, rest_field: FIELD, i18n } = window.PostQueueBlockEditor;
+const {
+	rest_namespace: ns,
+	rest_field: FIELD,
+	i18n,
+} = window.PostQueueBlockEditor;
 
 // wp_localize_script turns scalars into strings, so this is "8", not 8.
-const SEARCH_THRESHOLD = Number( window.PostQueueBlockEditor.search_threshold ) || 8;
+const SEARCH_THRESHOLD =
+	Number( window.PostQueueBlockEditor.search_threshold ) || 8;
 
 /**
  * Which postqueues this content belongs to.
@@ -62,7 +67,8 @@ export default function PostqueuePanel() {
 	// An edit of [] is a real value and has to win over the saved one, so the check is
 	// on undefined rather than on falsiness.
 	const selected = ( undefined !== edited ? edited : saved ) || [];
-	const isSelected = ( id ) => selected.map( Number ).includes( Number( id ) );
+	const isSelected = ( id ) =>
+		selected.map( Number ).includes( Number( id ) );
 
 	const select = ( ids ) => editPost( { [ FIELD ]: ids.map( Number ) } );
 
@@ -109,7 +115,9 @@ export default function PostqueuePanel() {
 		if ( '' === term ) {
 			return queues;
 		}
-		return queues.filter( ( queue ) => queue.name.toLowerCase().includes( term ) );
+		return queues.filter( ( queue ) =>
+			queue.name.toLowerCase().includes( term )
+		);
 	}, [ queues, search ] );
 
 	return (
@@ -137,11 +145,13 @@ export default function PostqueuePanel() {
 					/>
 				) }
 
-				{ null !== queues && 0 === queues.length && <p>{ i18n.panel_empty }</p> }
-
-				{ null !== queues && queues.length > 0 && 0 === visible.length && (
-					<p>{ i18n.panel_no_match }</p>
+				{ null !== queues && 0 === queues.length && (
+					<p>{ i18n.panel_empty }</p>
 				) }
+
+				{ null !== queues &&
+					queues.length > 0 &&
+					0 === visible.length && <p>{ i18n.panel_no_match }</p> }
 
 				{ visible.length > 0 && (
 					<div
@@ -194,7 +204,9 @@ export default function PostqueuePanel() {
 									variant="secondary"
 									type="submit"
 									isBusy={ creating }
-									disabled={ creating || '' === newName.trim() }
+									disabled={
+										creating || '' === newName.trim()
+									}
 								>
 									{ i18n.create_submit }
 								</Button>

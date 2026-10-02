@@ -2,9 +2,9 @@
 
 defined( 'ABSPATH' ) || exit;
 /**
- * @author Palasthotel <rezeption@palasthotel.de>
+ * @author Palasthotel <webmaster@palasthotel.de>
  * @copyright Copyright (c) 2014, Palasthotel
- * @license http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * @license GPL-3.0-or-later https://www.gnu.org/licenses/gpl-3.0.html
  * @package Palasthotel\Postqueue
  *
  * @var $this grid_postqueue_box

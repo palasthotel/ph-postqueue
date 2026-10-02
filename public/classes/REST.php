@@ -198,6 +198,11 @@ class REST extends Component\Component {
 
 				$result->posts = array();
 				foreach ( $results as $index => $post ) {
+					// The id lookup is not limited to published posts; only offer what the
+					// user could open anyway, should the capability be lowered by filter.
+					if ( ! current_user_can( 'read_post', (int) $post->ID ) ) {
+						continue;
+					}
 					$p               = (object) array();
 					$p->post_id      = $post->ID;
 					$p->post_title   = $post->post_title;

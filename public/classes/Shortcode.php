@@ -37,10 +37,13 @@ class Shortcode extends Component\Component {
 		
 		if ( ! isset( $atts['slug'] ) ) return '';
 		
-		$slug = $atts['slug'];
-		$viewmode = (!empty($atts['viewmode']))? $atts["viewmode"] : "" ;
-		$offset = (!empty($atts['offset']))? $atts['offset']: 0;
-		$limit = (!empty($atts['limit']))? $atts['limit']: -1;
+		$slug = sanitize_title( $atts['slug'] );
+		// viewmode ends up in a class attribute of the template - also in templates a
+		// theme copied - so only class name tokens are passed on.
+		$viewmode = (!empty($atts['viewmode']))? (string) $atts["viewmode"] : "" ;
+		$viewmode = implode( ' ', array_filter( array_map( 'sanitize_html_class', preg_split( '/\s+/', $viewmode ) ) ) );
+		$offset = (!empty($atts['offset']))? max( 0, (int) $atts['offset'] ): 0;
+		$limit = (!empty($atts['limit']))? (int) $atts['limit']: -1;
 		
 		$store = $this->plugin->store;
 		$queue = $store->get_queue_by_slug($slug);
@@ -112,20 +115,14 @@ class Shortcode extends Component\Component {
 	 */
 	public function add_tinymce_plugin($plugins_array){
 		/**
-		 * needed for dialog
+		 * The queue list the button's dialog offers. The dialog itself is TinyMCE's own
+		 * windowManager - the jquery-ui-dialog script and style this used to load were
+		 * never used by js/tinymce.js.
 		 */
-		wp_enqueue_script( 'jquery-ui-dialog' );
-		wp_enqueue_style( 'wp-jquery-ui-dialog' );
-		
-		/**
-		 * style for dialog
-		 */
-		wp_enqueue_script( "postqueue_data", '/wp-admin/admin-ajax.php?action=postqueue_data_script', array(), 1, 'all' );
-		// The dependency used to be "postqueue_data", which is a *script* handle -
-		// styles and scripts are separate queues, so it could never have ordered
-		// anything. WordPress 6.9.1 started warning about it. What this stylesheet
-		// actually builds on is the dialog styling enqueued just above.
-		wp_enqueue_style( "postqueue", $this->plugin->url . '/css/tinymce.css', array( 'wp-jquery-ui-dialog' ), 2, 'all' );
+		// admin_url(), not a root-relative /wp-admin/ - that missed sites installed in a
+		// subdirectory.
+		wp_enqueue_script( "postqueue_data", admin_url( 'admin-ajax.php?action=postqueue_data_script' ), array(), 1, true );
+		wp_enqueue_style( "postqueue", $this->plugin->url . '/css/tinymce.css', array(), 2, 'all' );
 		
 		/**
 		 * add plugin js
@@ -138,6 +135,12 @@ class Shortcode extends Component\Component {
 	 * javascript data for postqueue tinymce plugin
 	 */
 	public function postqueue_data_script(){
+		// The list is for the classic editor's Postqueue button, so it goes to the users
+		// who get that editor.
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			status_header( 403 );
+			exit;
+		}
 		header('Content-Type: application/javascript');
 		$queues = $this->plugin->store->get_queues();
 		$viewmodes = \Postqueue::getViewmodes();
@@ -159,10 +162,10 @@ class Shortcode extends Component\Component {
 		}
 		
 		?>
-		window.postqueue_items = <?php echo \json_encode($items); ?>;
+		window.postqueue_items = <?php echo wp_json_encode($items); ?>;
 		window.postqueue = {
-			queues: <?php echo \json_encode($items); ?>,
-			viewmodes: <?php echo \json_encode($viewmode_items); ?>,
+			queues: <?php echo wp_json_encode($items); ?>,
+			viewmodes: <?php echo wp_json_encode($viewmode_items); ?>,
 		};
 		<?php
 		die();

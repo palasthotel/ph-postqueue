@@ -1,4 +1,4 @@
-(function( $ ) {
+(function() {
 	'use strict';
 	
 	if (typeof (tinymce) != "undefined"){
@@ -166,11 +166,15 @@
 					let data = [];
 					for(let i = 0; i < parts.length; i++){
 						
-						if(!parts[i].match(/([\w\-_]+)="([^"]+)"/i)) continue;
+						const attr = parts[i].match(/([\w\-_]+)="([^"]+)"/i);
+						if(!attr) continue;
 						
-						found.push(parts[i].replace(/([\w\-_]+)="([^"]+)"/i, "<b>$1:</b> $2"));
+						// The attribute values are text from the post content: escaped,
+						// so they show as written instead of being parsed as markup.
+						const value = editor.dom.encode(attr[2]);
+						found.push("<b>" + attr[1] + ":</b> " + value);
 						
-						data.push(parts[i].replace(/([\w\-_]+)="([^"]+)"/i, "data-$1=\"$2\""));
+						data.push("data-" + attr[1] + "=\"" + value + "\"");
 					}
 					
 					return '<div data-postqueue="'+window.encodeURIComponent( match )+'" ' +
@@ -211,7 +215,7 @@
 				icon: 'icon dashicons-before dashicons-list-view',
 				onclick: function() {
 					/**
-					 * opens jquery dialog
+					 * opens the dialog
 					 */
 					openEditor(editor.selection.getNode());
 				}
@@ -221,4 +225,4 @@
 		
 	}
 	
-})( jQuery );
+})();

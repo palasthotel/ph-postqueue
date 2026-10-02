@@ -64,22 +64,28 @@ repository-only.
 | `public/languages/` | translations |
 | `public/vendor/` | generated composer autoloader, no third-party code |
 | `src/` | JavaScript sources |
-| `resource/` | wp-env helpers |
-| `bin/` | release helper scripts |
+| `resource/mu-plugins/` | mu-plugins for wp-env |
 
 ## Local setup
 
 ```sh
 npm ci
-npm run build         # → public/dist/
+npm run build         # → public/dist/; npm run watch rebuilds on change
+npm run lint:js
 npx wp-env start      # http://localhost:8888, admin / password
 ```
 
-`bash bin/pack.sh` stages the payload in `build/postqueue/` and zips it to
-`postqueue.zip` — the same payload the release deploys. It needs `composer`,
-because the packed copy gets a freshly generated `--no-dev` autoloader and the
-composer files are dropped from it. Run `npm run build` first; the script refuses to
-pack an unbuilt payload.
+`@wordpress/scripts` needs Node 24 (or 22.22+). Styles are plain CSS, run through PostCSS
+by the build - no Sass. JavaScript strings are translated in PHP and handed over with
+`wp_localize_script` (the `i18n` keys in `classes/Assets.php`), not with
+`@wordpress/i18n` in the bundle.
+
+`npm run pack` builds, then stages the payload in `build/postqueue/` and zips it to
+`postqueue.zip` — the same payload the release deploys. It runs the shared script from
+[palasthotel/github-workflows](https://github.com/palasthotel/github-workflows), which
+has to be checked out next to this repository, and needs `composer`: the packed copy
+gets a freshly generated `--no-dev` autoloader and the composer files are dropped from
+it.
 
 `public/dist/` is generated and gitignored. The release builds it, so there is nothing
 to commit and no stale asset to review.
@@ -97,9 +103,9 @@ entries alone.
 
 ## Checks
 
-Every PR runs `php -l` against PHP 7.4, 8.2, 8.3 and 8.4, builds the editor sources and
-asserts the files the plugin enqueues were produced, and packs the plugin so a broken
-`bin/pack.sh` surfaces in the pull request rather than in a release.
+Every PR runs `php -l` against PHP 7.4, 8.2, 8.3 and 8.4, builds and packs the plugin,
+checks that the payload contains every file the plugin enqueues and none of the
+repository-only files, and checks the version carriers agree.
 
 The plugin declares `Requires at least: 6.6`. That is not cosmetic: the built editor
 bundle depends on the `react-jsx-runtime` script handle, which WordPress only registers

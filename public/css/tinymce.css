@@ -1,2 +1,8 @@
-.postqueue { position: relative; width: 100%; height: 40px !important; background: rgba(0, 0, 0, 0.05) center center no-repeat; background-size: 20px 20px; }
-/*# sourceMappingURL=tinymce.css.map */
+/* The placeholder a [postqueue] shortcode becomes in the classic editor's visual mode. */
+.postqueue {
+	position: relative;
+	width: 100%;
+	height: 40px !important;
+	background: rgba(0, 0, 0, 0.05) center center no-repeat;
+	background-size: 20px 20px;
+}

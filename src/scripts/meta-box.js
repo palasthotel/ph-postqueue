@@ -1,156 +1,150 @@
 /**
- * Javascript for postqueue metabox functionality
+ * The postqueue meta box of the classic editor: add the post to a queue or remove it from
+ * one, through the postqueue_add_post and postqueue_remove_post AJAX actions.
+ *
+ * Plain DOM, no jQuery. Everything that comes from a queue name is set as text or as an
+ * attribute value, never parsed as HTML.
  */
-(function( $, objectL10n ) {
-    'use strict';
+import domReady from '@wordpress/dom-ready';
 
-    const wrapperSelector = '.postqueue-metabox-wrapper';
+const l10n = window.PostqueueMetaBoxL10n || {};
 
-    /**
-     * Start after dom is ready
-     */
-    $(function() {
+/**
+ * Sends one of the meta box's AJAX actions.
+ *
+ * @param {string} action  postqueue_add_post or postqueue_remove_post
+ * @param {string} postId  the post being edited
+ * @param {string} queueId the queue to add it to or remove it from
+ * @return {Promise<boolean>} whether WordPress accepted the request
+ */
+function send( action, postId, queueId ) {
+	const body = new URLSearchParams( {
+		action,
+		_ajax_nonce: l10n.nonce,
+		postid: postId,
+		queueid: queueId,
+	} );
+	return window
+		.fetch( window.ajaxurl, {
+			method: 'POST',
+			credentials: 'same-origin',
+			body,
+		} )
+		.then( ( response ) => response.ok )
+		.catch( () => false );
+}
 
-        const $messages = $(wrapperSelector).find('.messages');
-        postqueue_check_empty_list();
+domReady( () => {
+	const wrapper = document.querySelector( '.postqueue-metabox-wrapper' );
+	if ( ! wrapper ) {
+		return;
+	}
 
-        postqueue_add_remove_eventlisteners( $messages );
+	const messages = wrapper.querySelector( '.messages' );
+	const listWrapper = wrapper.querySelector(
+		'.postqueue-metabox-postqueuelist-wrapper'
+	);
+	const list = listWrapper.querySelector( 'ul' );
+	const selectWrapper = wrapper.querySelector(
+		'.postqueue-metabox-postqueueselect-wrapper'
+	);
+	const select = selectWrapper.querySelector( '.postqueue-select' );
 
-        $('.postqueue-add').on( 'click', function(e) {
-            const $parent = $(this).closest('.postqueue-metabox-postqueueselect-wrapper');
-            $parent.addClass('is-loading');
-            const postqueue_select_value = $parent.find('.postqueue-select').val();
+	const showMessage = ( text, isError ) => {
+		messages.textContent = text;
+		messages.classList.toggle( 'error', isError );
+	};
 
-            if( postqueue_select_value !== 'none' ) {
-                const postid = $(this).attr('data-postid');
-                const queueid = postqueue_select_value;
-                const $selectedoption = $parent.find('[value="' + postqueue_select_value + '"]');
-                const queuename = $selectedoption.data('queuename');
-                const data = {
-                    'action': 'postqueue_add_post',
-                    '_ajax_nonce': objectL10n.nonce,
-                    'postid': postid,
-                    'queueid': queueid
-                };
+	const checkEmptyList = () => {
+		const info = listWrapper.querySelector(
+			'.postqueue-metabox-postqueuelist-emptyinfo'
+		);
+		if ( list.querySelector( 'li' ) ) {
+			if ( info ) {
+				info.remove();
+			}
+			return;
+		}
+		if ( ! info ) {
+			const span = document.createElement( 'span' );
+			span.className = 'postqueue-metabox-postqueuelist-emptyinfo';
+			span.textContent = l10n.notstoredyet;
+			listWrapper.appendChild( span );
+		}
+	};
 
-                $.post( ajaxurl, data, function(response) {
-                    if( response <= 0 ) {
-                        $messages.text(objectL10n.erroroccured);
-                        $messages.addClass('error');
-                    } else {
-                        $messages.text(objectL10n.postadded);
-                        $messages.removeClass('error');
-                        postqueue_metabox_remove_selectoption( queueid, queuename, postid );
-                        postqueue_metabox_add_listitem( queueid, queuename, postid );
-                        postqueue_check_empty_list();
-                    }
-                    $parent.removeClass('is-loading');
-                });
-            } else {
-                $messages.text(objectL10n.pleasechoose);
-                $parent.removeClass('is-loading');
-                $messages.addClass('error');
-            }
-        });
-    });
+	const addListItem = ( queueId, queueName, postId ) => {
+		const li = document.createElement( 'li' );
+		li.textContent = queueName + ' ';
+		const remove = document.createElement( 'span' );
+		remove.className = 'dashicons dashicons-no postqueue-remove';
+		remove.dataset.queueid = queueId;
+		remove.dataset.postid = postId;
+		remove.dataset.queuename = queueName;
+		remove.title = l10n.removepostfromthispostqueue;
+		li.appendChild( remove );
+		list.appendChild( li );
+	};
 
-    /*
-   * helper function, adds selectoption to metabox DOM
-   */
-    function postqueue_metabox_add_selectoption( queueid, queuename, postid ) {
-        const $wrapper = $(wrapperSelector).find('.postqueue-metabox-postqueueselect-wrapper');
-        // Built as DOM nodes, not as an HTML string: queuename is read back out of a
-        // data attribute, so concatenating it into markup would undo the escaping the
-        // template did and turn a queue name into script (CodeQL js/xss-through-dom).
-        $wrapper.find('select').append(
-            $('<option></option>')
-                .attr('value', queueid)
-                .attr('data-queuename', queuename)
-                .text(queuename)
-        );
-    }
-    /*
-   * helper function, removes selectoption to metabox DOM
-   */
-    function postqueue_metabox_remove_selectoption( queueid, queuename, postid ) {
-        const $wrapper = $(wrapperSelector).find('.postqueue-metabox-postqueueselect-wrapper');
-        $wrapper.find("[value='" + queueid + "']").remove();
-    }
-    /*
-     * helper function, adds listitem to metabox DOM
-     */
-    function postqueue_metabox_add_listitem( queueid, queuename, postid ) {
+	const addSelectOption = ( queueId, queueName ) => {
+		if ( ! select ) {
+			return;
+		}
+		const option = document.createElement( 'option' );
+		option.value = queueId;
+		option.dataset.queuename = queueName;
+		option.textContent = queueName;
+		select.appendChild( option );
+	};
 
-        const $wrapper = $(wrapperSelector).find('.postqueue-metabox-postqueuelist-wrapper');
-        $wrapper.find('ul').append(
-            $('<li></li>')
-                .text(queuename)
-                .append(
-                    $('<span></span>')
-                        .addClass('dashicons dashicons-no postqueue-remove')
-                        .attr('data-queueid', queueid)
-                        .attr('data-postid', postid)
-                        .attr('title', objectL10n.removepostfromthispostqueue)
-                        .attr('data-queuename', queuename)
-                )
-        );
-        postqueue_add_remove_eventlisteners( $(wrapperSelector).find('.messages') );
-    }
-    /*
-     * helper function, removes listitem from metabox DOM
-     */
-    function postqueue_metabox_remove_listitem( queueid, queuename, postid ) {
-        const $wrapper = $(wrapperSelector).find('.postqueue-metabox-postqueuelist-wrapper');
-        $wrapper.find("[data-queueid='" + queueid + "']").closest('li').remove();
-    }
+	checkEmptyList();
 
-    /*
-     * helper function, checks if list is empty and prints a text if so
-     */
-    function postqueue_check_empty_list() {
-        const $wrapper = $(wrapperSelector).find('.postqueue-metabox-postqueuelist-wrapper ul');
-        if( !$wrapper.html().trim() ) {
-            $wrapper.parent().append(
-                $('<span></span>')
-                    .addClass('postqueue-metabox-postqueuelist-emptyinfo')
-                    .text(objectL10n.notstoredyet)
-            );
-        } else {
-            $wrapper.parent().find('.postqueue-metabox-postqueuelist-emptyinfo').remove();
-        }
-    }
+	// Removing: delegated, so list items added after the page loaded work too.
+	list.addEventListener( 'click', ( event ) => {
+		const button = event.target.closest( '.postqueue-remove' );
+		if ( ! button ) {
+			return;
+		}
+		const { queueid, postid, queuename } = button.dataset;
+		listWrapper.classList.add( 'is-loading' );
+		send( 'postqueue_remove_post', postid, queueid ).then( ( ok ) => {
+			if ( ok ) {
+				showMessage( l10n.postremoved, false );
+				button.closest( 'li' ).remove();
+				addSelectOption( queueid, queuename );
+				checkEmptyList();
+			} else {
+				showMessage( l10n.erroroccured, true );
+			}
+			listWrapper.classList.remove( 'is-loading' );
+		} );
+	} );
 
-    function postqueue_add_remove_eventlisteners( $messages ) {
-        $('.postqueue-remove').off( 'click' ); //remove all click listeners and add them again
-        $('.postqueue-remove').on( 'click', function(e) {
-            const $this = $(this);
-            const $parent = $this.closest('.postqueue-metabox-postqueuelist-wrapper');
-            $parent.addClass('is-loading');
-            const postid = $this.data('postid');
-            const queueid = $this.data('queueid');
-            const queuename = $this.data('queuename');
-            const data = {
-                'action': 'postqueue_remove_post',
-                '_ajax_nonce': objectL10n.nonce,
-                'postid': postid,
-                'queueid': queueid
-            };
+	const addButton = selectWrapper.querySelector( '.postqueue-add' );
+	if ( ! addButton ) {
+		return;
+	}
+	addButton.addEventListener( 'click', () => {
+		const queueId = select ? select.value : 'none';
+		if ( 'none' === queueId ) {
+			showMessage( l10n.pleasechoose, true );
+			return;
+		}
+		const option = select.options[ select.selectedIndex ];
+		const queueName = option.dataset.queuename;
+		const postId = addButton.dataset.postid;
 
-            jQuery.post( ajaxurl, data, function(response) {
-                if( response <= 0 ) {
-                    $messages.text(objectL10n.erroroccured);
-                    $messages.addClass('error');
-                } else {
-                    $messages.text(objectL10n.postremoved);
-                    $messages.removeClass('error');
-                    postqueue_metabox_remove_listitem( queueid, queuename, postid );
-                    postqueue_metabox_add_selectoption( queueid, queuename, postid );
-                    postqueue_check_empty_list();
-                }
-                $parent.removeClass('is-loading');
-
-            });
-        });
-    }
-
-})( jQuery, PostqueueMetaBoxL10n );
+		selectWrapper.classList.add( 'is-loading' );
+		send( 'postqueue_add_post', postId, queueId ).then( ( ok ) => {
+			if ( ok ) {
+				showMessage( l10n.postadded, false );
+				option.remove();
+				addListItem( queueId, queueName, postId );
+				checkEmptyList();
+			} else {
+				showMessage( l10n.erroroccured, true );
+			}
+			selectWrapper.classList.remove( 'is-loading' );
+		} );
+	} );
+} );
