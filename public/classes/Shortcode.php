@@ -115,22 +115,14 @@ class Shortcode extends Component\Component {
 	 */
 	public function add_tinymce_plugin($plugins_array){
 		/**
-		 * needed for dialog
-		 */
-		wp_enqueue_script( 'jquery-ui-dialog' );
-		wp_enqueue_style( 'wp-jquery-ui-dialog' );
-		
-		/**
-		 * style for dialog
+		 * The queue list the button's dialog offers. The dialog itself is TinyMCE's own
+		 * windowManager - the jquery-ui-dialog script and style this used to load were
+		 * never used by js/tinymce.js.
 		 */
 		// admin_url(), not a root-relative /wp-admin/ - that missed sites installed in a
 		// subdirectory.
 		wp_enqueue_script( "postqueue_data", admin_url( 'admin-ajax.php?action=postqueue_data_script' ), array(), 1, true );
-		// The dependency used to be "postqueue_data", which is a *script* handle -
-		// styles and scripts are separate queues, so it could never have ordered
-		// anything. WordPress 6.9.1 started warning about it. What this stylesheet
-		// actually builds on is the dialog styling enqueued just above.
-		wp_enqueue_style( "postqueue", $this->plugin->url . '/css/tinymce.css', array( 'wp-jquery-ui-dialog' ), 2, 'all' );
+		wp_enqueue_style( "postqueue", $this->plugin->url . '/css/tinymce.css', array(), 2, 'all' );
 		
 		/**
 		 * add plugin js
