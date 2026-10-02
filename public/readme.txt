@@ -4,7 +4,7 @@ Donate link: https://palasthotel.de/
 Tags: loop, order posts, queue, gutenberg, curated
 Requires at least: 6.6
 Tested up to: 7.1.2
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 Requires PHP: 7.4
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -70,6 +70,11 @@ required; `viewmode` is one of the view modes registered with `postqueue_viewmod
 
 
 == Changelog ==
+
+= 2.1.2 =
+**Bug Fixes**
+* escape the postqueue shortcode's output (1d8c9b1)
+* link the empty meta box to the Postqueues screen (558b7cc)
 
 = 2.1.1 =
 **Bug Fixes**

@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Postqueue
  * Description:       Create manually ordered postqueues
- * Version:           2.1.1
+ * Version:           2.1.2
  * Requires at least: 6.6
  * Tested up to:      7.1.2
  * Requires PHP:      7.4
