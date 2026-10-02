@@ -123,7 +123,9 @@ class Shortcode extends Component\Component {
 		/**
 		 * style for dialog
 		 */
-		wp_enqueue_script( "postqueue_data", '/wp-admin/admin-ajax.php?action=postqueue_data_script', array(), 1, 'all' );
+		// admin_url(), not a root-relative /wp-admin/ - that missed sites installed in a
+		// subdirectory.
+		wp_enqueue_script( "postqueue_data", admin_url( 'admin-ajax.php?action=postqueue_data_script' ), array(), 1, true );
 		// The dependency used to be "postqueue_data", which is a *script* handle -
 		// styles and scripts are separate queues, so it could never have ordered
 		// anything. WordPress 6.9.1 started warning about it. What this stylesheet
@@ -141,6 +143,12 @@ class Shortcode extends Component\Component {
 	 * javascript data for postqueue tinymce plugin
 	 */
 	public function postqueue_data_script(){
+		// The list is for the classic editor's Postqueue button, so it goes to the users
+		// who get that editor.
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			status_header( 403 );
+			exit;
+		}
 		header('Content-Type: application/javascript');
 		$queues = $this->plugin->store->get_queues();
 		$viewmodes = \Postqueue::getViewmodes();
@@ -162,10 +170,10 @@ class Shortcode extends Component\Component {
 		}
 		
 		?>
-		window.postqueue_items = <?php echo \json_encode($items); ?>;
+		window.postqueue_items = <?php echo wp_json_encode($items); ?>;
 		window.postqueue = {
-			queues: <?php echo \json_encode($items); ?>,
-			viewmodes: <?php echo \json_encode($viewmode_items); ?>,
+			queues: <?php echo wp_json_encode($items); ?>,
+			viewmodes: <?php echo wp_json_encode($viewmode_items); ?>,
 		};
 		<?php
 		die();
